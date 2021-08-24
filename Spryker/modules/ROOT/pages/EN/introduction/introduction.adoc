@@ -31,6 +31,8 @@ It is *not* intended as a manual for {fs} editors.
 It is assumed that the reader is confident in the use of {fs} and {sp} as well as _{c}_ and _{ocm}_.
 ====
 
+////
+
 // Funktionsumfang
 include::functions.adoc[]
 
@@ -45,3 +47,5 @@ include::requirements.adoc[]
 
 // Wichtige Hinweise
 include::important-information.adoc[]
+
+////

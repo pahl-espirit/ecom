@@ -1,3 +1,3 @@
-* E-Commerce
-* xref:spryker::fsconnect-spryker-documentation_EN.adoc[Spryker]
+spryker::partial$navigation.adoc
+// * xref:spryker::fsconnect-spryker-documentation_EN.adoc[Spryker]
 * xref:spartacus::FS_Connect_SAP_hl_Documentation_EN.adoc[Spartacus]

@@ -1,0 +1,109 @@
+// *********** Konfiguration *********** //
+:lang: de
+:espirit: e-Spirit AG
+:copyright: {espirit}
+:creator: {espirit}
+:publisher: {espirit}
+:toc:
+:toclevels: 4
+:toc-placement: right
+:icons: font
+:sectanchors:
+:experimental:
+:title-logo: firstspirit-logo.png
+:sectnums:
+:source-highlighter: coderay
+ifdef::backend-pdf[]
+:pagenums:
+:pygments-style: bw
+:source-highlighter: pygments
+endif::[]
+:homepage: http://www.e-spirit.com
+:asterisk: &#42;
+// *********** Begriffe *********** //
+:modulname: FirstSpirit Connect
+:espirit: e-Spirit AG
+:creator: {espirit}
+:refproject: FirstSpirit Connect Reference Project
+:ccloud: Commerce Cloud
+:sp: Spartacus
+:c: CaaS
+:ccon: CaaS Connect
+:caas: Content as a Service
+:bwfs: BasicWorkflows
+:ocm: Omnichannel Manager
+:cxt: CXT ContentCreator Extension
+:filter: FirstSpiritPreviewFilter
+:ts: TranslationStudio
+:fs: FirstSpirit
+:manager: ServerManager
+:s_settings: Server-Eigenschaften
+:p_settings: Projekt-Eigenschaften
+:p_set: Projekteinstellungen
+:p_comp: Projekt-Komponente
+:w_comp: Web-Komponente
+:server: FirstSpirit-Server
+:jc: SiteArchitect
+:wc: ContentCreator
+:key: API Key
+:fsdp: {fs} Driven Page
+:sdp: Shop Driven Page
+:sitestore: Strukturverwaltung
+:mediastore: Medienverwaltung
+:pagestore: Inhalteverwaltung
+:admindoc: FirstSpirit Dokumentation für Administratoren
+:tppsnapapi: TPP-SNAP-API
+:blank:
+// DON'T delete the variable blank! It is use for formatting reasons.
+// *********** Links *********** //
+:techsupport: link:https://help.e-spirit.com/[Technical Support]
+:linkfsadoc: link:https://docs.e-spirit.com/odfs/edocs/admi/index.html[{admindoc}]
+:linkfsadocen: link:https://docs.e-spirit.com/odfs/edocs/admi/introduction/index.html[{fs} Manual for Administrators]
+:spartacusdoc: {modulname} (Headless) for {ccloud}-Dokumentation
+:spartacusdocen: {modulname} (Headless) for {ccloud} documentation
+:storefront: link:https://sap.github.io/cloud-commerce-spartacus-storefront-docs/
+:sapblog: link:https://blogs.sap.com/2020/04/07/create-new-page-in-spartacus/
+:npmbrigde: link:https://www.npmjs.com/package/fs-spartacus-bridge
+:npmcomponents: link:https://www.npmjs.com/package/fs-spartacus-view-components
+:npmtppapi: link:https://www.npmjs.com/package/fs-tpp-api
+:npmspcommon: link:https://www.npmjs.com/package/fs-spartacus-common
+:angular: link:https://angular.io/cli/generate
+:bwfdoc: link:https://docs.e-spirit.com/module/basicworkflows/BasicWorkflows_Documentation_DE.html[{bwfs}-Dokumentation]
+:bwfdocen: link:https://docs.e-spirit.com/module/basicworkflows/BasicWorkflows_Documentation_EN.html[{bwfs} Documentation]
+:caasprodde: link:https://docs.e-spirit.com/module/caas/CaaS_Product_Documentation_DE.html
+:caasproden: link:https://docs.e-spirit.com/module/caas/CaaS_Product_Documentation_EN.html
+:ccondoc: link:https://docs.e-spirit.com/module/caas-connect/CaaS_Connect_FSM_Documentation_DE.html[{ccon}-Dokumentation]
+:ccondocen: link:https://docs.e-spirit.com/module/caas-connect/CaaS_Connect_FSM_Documentation_EN.html[{ccon} Documentation]
+:tenantid: link:https://docs.e-spirit.com/module/caas-connect/CaaS_Connect_ServerAdministrator_DE.html#caas-service
+:tenantIden: link:https://docs.e-spirit.com/module/caas-connect/CaaS_Connect_ServerAdministrator_EN.html#caas-service
+:cprojectcomp: link:https://docs.e-spirit.com/module/caas-connect/CaaS_Connect_ServerAdministrator_DE.html#projectapp
+:cprojectcompen: link:https://docs.e-spirit.com/module/caas-connect/CaaS_Connect_ServerAdministrator_EN.html#projectapp
+:cconurlschema: link:https://docs.e-spirit.com/module/caas-connect/CaaS_Connect_FSM_Documentation_DE.html#urlschema
+:cconurlschemaen: link:https://docs.e-spirit.com/module/caas-connect/CaaS_Connect_FSM_Documentation_EN.html#urlschema
+:tppdoc: link:https://docs.e-spirit.com/tpp/
+:tppdocen: link:https://docs.e-spirit.com/tpp/index.html.en
+:tsdocwhitepaper: link:https://docs.e-spirit.com/cloud/translationstudio/TranslationStudio_Whitepaper_DE.html
+:tsdocwhitepaperen: link:https://docs.e-spirit.com/cloud/translationstudio/TranslationStudio_Whitepaper_EN.html
+:tsdocinstall: link:https://docs.e-spirit.com/cloud/translationstudio/TranslationStudio_Installation_Manual_DE.html
+:tsdocinstallen: link:https://docs.e-spirit.com/cloud/translationstudio/TranslationStudio_Installation_Manual_EN.html
+:tsdoceditors: link:https://docs.e-spirit.com/cloud/translationstudio/TranslationStudio_Editor_Manual_DE.html
+:tsdoceditorsen: link:https://docs.e-spirit.com/cloud/translationstudio/TranslationStudio_Editor_Manual_EN.html
+
+// *********** Buttons *********** //
+:settings: btn:[Eigenschaften]
+:install: btn:[Installieren]
+:open: btn:[Öffnen]
+:config: btn:[Konfigurieren]
+:copytocb: btn:[COPY TO CLIPBOARD]
+:add: btn:[Hinzufügen]
+:create: btn:[Anlegen]
+:local: btn:[Lokal]
+:ok: btn:[OK]
+:yes: btn:[Ja]
+:activate: btn:[Aktivieren]
+:upload: btn:[Upload]
+:next: btn:[Next]
+:addvar: btn:[Neue Variable anlegen]
+:value: btn:[Für alle Sprachen übernehmen]
+// if defined, comments are visible in the output
+:showcomments:

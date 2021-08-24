@@ -1,7 +1,7 @@
 = FirstSpirit Connect (Headless) for SAP: Documentation for Server Administrators
 e-Spirit AG
 {docdate}
-include::../../includes/variables.adoc[]
+include::variables.adoc[]
 
 // Einleitung
 include::chapters/serveradmins/introduction.adoc[]

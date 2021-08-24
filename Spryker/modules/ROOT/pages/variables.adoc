@@ -1,0 +1,145 @@
+// *********** Konfiguration *********** //
+:lang: de
+:espirit: e-Spirit AG
+:copyright: {espirit}
+:creator: {espirit}
+:publisher: {espirit}
+:toc:
+:toclevels: 4
+:toc-placement: right
+:icons: font
+:sectanchors:
+:experimental:
+:title-logo: firstspirit-logo.png
+:sectnums:
+:source-highlighter: coderay
+ifdef::backend-pdf[]
+:pagenums:
+:pygments-style: bw
+:source-highlighter: pygments
+endif::[]
+:imagesdir: ../../resources/images/de-DE
+:homepage: http://www.e-spirit.com
+:description: Dieses Dokument enthält die Dokumentation für das {modulname}-Modul von {fs}.
+:asterisk: &#42;
+// *********** Begriffe *********** //
+:modulname: FirstSpirit Connect
+:os: Commerce OS
+:sp: Spryker
+:jen: Jenkins
+:refproject: {modulname} Reference Project
+:c: CaaS
+:caas: Content as a Service
+:ocm: Omnichannel Manager
+:bwfs: BasicWorkflows
+:fs: FirstSpirit
+:manager: ServerManager
+:p_set: Projekteinstellungen
+:s_settings: Server-Eigenschaften
+:p_settings: Projekt-Eigenschaften
+:p_comp: Projekt-Komponente
+:w_comp: Web-Komponente
+:server: FirstSpirit-Server
+:sa: SiteArchitect
+:cc: ContentCreator
+:key: API Key
+:sitestore: Strukturverwaltung
+:mediastore: Medienverwaltung
+:pagestore: Inhalteverwaltung
+:tppsnapapi: TPP-SNAP-API
+// *********** Links *********** //
+:techsupport: link:https://help.e-spirit.com/[Technical Support]
+:sprykerdoc: link:https://docs.e-spirit.com/ecom/contentconnect-spryker/ContentConnect_Spryker_Documentation_DE.html
+:sprykerdocen: link:https://docs.e-spirit.com/ecom/contentconnect-spryker/ContentConnect_Spryker_Documentation_EN.html
+:caasdocen: link:https://docs.e-spirit.com/module/caas/CaaS_FSM_Documentation_EN.html[Content as a Service Documentation]
+:admindocen: link:https://docs.e-spirit.com/odfs/edocs/admi/index.en.html[{fs} Documentation for Administrators]
+:tppdocen: link:https://docs.e-spirit.com/tpp/index.html.en[Documentation for the {ocm}]
+:bwfsdocen: link:https://docs.e-spirit.com/module/basicworkflows/BasicWorkflows_Documentation_EN.html[{bwfs} Documentation]
+:caasdoc: link:https://docs.e-spirit.com/module/caas/CaaS_FSM_Documentation_DE.html[Content as a Service-Dokumentation]
+:admindoc: link:https://docs.e-spirit.com/odfs/edocs/admi/index.html[{fs} Dokumentation für Administratoren]
+:tppdoc: link:https://docs.e-spirit.com/tpp/index.html.de[Dokumentation des {ocm}s]
+:bwfsdoc: link:https://docs.e-spirit.com/module/basicworkflows/BasicWorkflows_Documentation_DE.html[{bwfs}-Dokumentation]
+:corpcontentdoc: link:https://docs.e-spirit.com/odfs/dokumentation/module/entwickler/CONT_DE_FirstSpirit_CorporateContent.pdf
+:corpcontentdocen: link:https://docs.e-spirit.com/odfs/documentation/modules/developers/CONT_EN_FirstSpirit_CorporateContent.pdf
+// *********** Links - Referenzprojekt *********** //
+:refproject_github: link:https://github.com/e-Spirit/ecom-spryker-reference-project/
+:projectsettings_github: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/TemplateStore/PageTemplates/technical/project_settings
+:project_settings_caas_channel: link:https://github.com/e-Spirit/ecom-spryker-reference-project/blob/master/reference-project-export/TemplateStore/PageTemplates/technical/project_settings/ChannelSource_CaaS_CaaS.json
+:mail_template: link:https://github.com/e-Spirit/ecom-spryker-reference-project/blob/master/reference-project-export/TemplateStore/PageTemplates/technical/html_mail_template/ChannelSource_HTML_html.html
+:static_pages_github: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/TemplateStore/PageTemplates/static_pages
+:static_pages_section: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/TemplateStore/SectionTemplates/technical_sections/static_page_url
+:homepage_github: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/TemplateStore/PageTemplates/static_pages/homepage
+:homepage_caas_channel: link:https://github.com/e-Spirit/ecom-spryker-reference-project/blob/master/reference-project-export/TemplateStore/PageTemplates/static_pages/homepage/ChannelSource_CaaS_CaaS.json
+:categorypage_caas_channel: link:https://github.com/e-Spirit/ecom-spryker-reference-project/blob/master/reference-project-export/TemplateStore/PageTemplates/categorypage/ChannelSource_CaaS_CaaS.json
+:contentpage_caas_channel: link:https://github.com/e-Spirit/ecom-spryker-reference-project/blob/master/reference-project-export/TemplateStore/PageTemplates/contentpage/ChannelSource_CaaS_CaaS.json
+:productpage_caas_channel: link:https://github.com/e-Spirit/ecom-spryker-reference-project/blob/master/reference-project-export/TemplateStore/PageTemplates/productpage/ChannelSource_CaaS_CaaS.json
+:magazine_articles: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/ContentStore/magazine_articles
+:magazine_page_caas_channel: link:https://github.com/e-Spirit/ecom-spryker-reference-project/blob/master/reference-project-export/TemplateStore/PageTemplates/magazine_detail_page/ChannelSource_CaaS_CaaS.json
+:magazine_articles_scheme: link:https://github.com/e-Spirit/ecom-spryker-reference-project/blob/master/reference-project-export/TemplateStore/Schemes/magazine/magazine.magazine_articles/ChannelSource_CaaS_CaaS.json
+:magazine_overview: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/TemplateStore/SectionTemplates/reference_components/magazine_overview
+:magazine_overview_caas_channel: link:https://github.com/e-Spirit/ecom-spryker-reference-project/blob/master/reference-project-export/TemplateStore/SectionTemplates/reference_components/magazine_overview/ChannelSource_CaaS_CaaS.json
+:carousel_github: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/TemplateStore/SectionTemplates/reference_components/carousel_section
+:video_caas_channel: link:https://github.com/e-Spirit/ecom-spryker-reference-project/blob/master/reference-project-export/TemplateStore/SectionTemplates/reference_components/shoppable_video/ChannelSource_CaaS_CaaS.json
+:videoitem_github: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/TemplateStore/SectionTemplates/list_elements/shoppable_video_item
+:videoitem_caas_channel: link:https://github.com/e-Spirit/ecom-spryker-reference-project/blob/master/reference-project-export/TemplateStore/SectionTemplates/list_elements/shoppable_video_item/ChannelSource_CaaS_CaaS.json
+:banner_github: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/TemplateStore/SectionTemplates/reference_components/banner_section
+:banner_caas_channel: link:https://github.com/e-Spirit/ecom-spryker-reference-project/blob/master/reference-project-export/TemplateStore/SectionTemplates/reference_components/banner_section/ChannelSource_CaaS_CaaS.json
+:tech_nav_github: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/TemplateStore/PageTemplates/technical/navigations
+:navigation_extensions_page: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/TemplateStore/PageTemplates/technical/navigation_extension
+:navigation_extensions: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/GlobalStore/GlobalContentArea/navigation_extensions
+:navigation_section: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/TemplateStore/SectionTemplates/technical_sections/navigation_node_reference
+:navigation_section_caas_channel: link:https://github.com/e-Spirit/ecom-spryker-reference-project/blob/master/reference-project-export/TemplateStore/SectionTemplates/technical_sections/navigation_node_reference/ChannelSource_CaaS_CaaS.json
+:script_set_sku: link:https://github.com/e-Spirit/ecom-spryker-reference-project/blob/master/reference-project-export/TemplateStore/Scripts/omnichannel_manager/set_product_sku/ChannelSource_HTML_html.html
+:script_storage_infos: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/TemplateStore/Scripts/omnichannel_manager/infer_page_storage_information
+:script_get_nav_gca_pages: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/TemplateStore/Scripts/get_navigation_gca_pages
+:format_block_render: link:https://github.com/e-Spirit/ecom-spryker-reference-project/blob/master/reference-project-export/TemplateStore/FormatTemplates/rendertemplates/block_name_render/ChannelSource_CaaS_CaaS.json
+:format_additional_attributes: link:https://github.com/e-Spirit/ecom-spryker-reference-project/blob/master/reference-project-export/TemplateStore/FormatTemplates/rendertemplates/additional_block_attributes_render/ChannelSource_CaaS_CaaS.json
+:format_magazine_teaser_render: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/TemplateStore/FormatTemplates/rendertemplates/magazine_teaser_render
+:format_magazine_block_render: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/TemplateStore/FormatTemplates/rendertemplates/magazine_intro_block_render_template
+:dom_links: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/TemplateStore/LinkTemplates/dom_links
+:general_links: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/TemplateStore/LinkTemplates/links
+:category_link: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/TemplateStore/LinkTemplates/links/category_link
+:category_link_dom: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/TemplateStore/LinkTemplates/dom_links/dom_category_link
+:product_link: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/TemplateStore/LinkTemplates/links/product_link
+:product_link_dom: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/TemplateStore/LinkTemplates/dom_links/dom_product_link
+:content_link: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/TemplateStore/LinkTemplates/links/content_link
+:content_link_dom: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/TemplateStore/LinkTemplates/dom_links/dom_content_link
+:content_link_caas_channel: link:https://github.com/e-Spirit/ecom-spryker-reference-project/blob/master/reference-project-export/TemplateStore/LinkTemplates/links/content_link/ChannelSource_CaaS_CaaS.json
+:magazine_link: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/TemplateStore/LinkTemplates/links/magazine_article_link
+:magazine_link_dom: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/TemplateStore/LinkTemplates/dom_links/dom_magazine_article_link
+:external_link: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/TemplateStore/LinkTemplates/links/external_link
+:search_link: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/TemplateStore/LinkTemplates/links/search_link
+:search_link_dom: link:https://github.com/e-Spirit/ecom-spryker-reference-project/tree/master/reference-project-export/TemplateStore/LinkTemplates/dom_links/dom_search_link
+// *********** Buttons *********** //
+:activate: btn:[Aktivieren]
+:add: btn:[Hinzufügen]
+:addvar: btn:[Neue Variable anlegen]
+:assign: btn:[Assign Customers]
+:config: btn:[Konfigurieren]
+:create: btn:[Anlegen]
+:deletewvp: btn:[Löschen mit VP]
+:install: btn:[Installieren]
+:local: btn:[Lokal]
+:next: btn:[Next]
+:ok: btn:[OK]
+:open: btn:[Öffnen]
+:openvideo: btn:[Open Video]
+:publish: btn:[Publikation der Seite]
+:settings: btn:[Eigenschaften]
+:staticpagesimport: btn:[Statische Seiten Templates Import]
+:upload: btn:[Upload]
+:value: btn:[Für alle Sprachen übernehmen]
+:yes: btn:[Ja]
+// *********** Übersetzungen *********** //
+:toc-title: Inhaltsverzeichnis
+:caution-caption: Achtung
+:important-caption: Wichtig
+:note-caption: Hinweis
+:tip-caption: Tip
+:warning-caption: Warnung
+:appendix-caption: Anhang
+:example-caption: Beispiel
+:figure-caption: Abbildung
+:table-caption: Tabelle
+// if defined, comments are visible in the output
+:showcomments:

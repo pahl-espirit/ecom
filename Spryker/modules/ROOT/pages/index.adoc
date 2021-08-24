@@ -1,1 +1,3 @@
-= Spyker
+= FirstSpirit Connect for Spyker
+
+include::../nav.adoc[]
