@@ -1,3 +1,2 @@
-spryker::partial$navigation.adoc
-// * xref:spryker::fsconnect-spryker-documentation_EN.adoc[Spryker]
+// * xref:spryker:ROOT:partial$navigation.adoc
 * xref:spartacus::FS_Connect_SAP_hl_Documentation_EN.adoc[Spartacus]
