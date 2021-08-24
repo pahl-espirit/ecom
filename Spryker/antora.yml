@@ -1,4 +1,6 @@
 name: spryker
 title: FirstSpirit Connect for Spryker
 version: '1.0'
+nav:
+- modules/ROOT/nav.adoc
 
