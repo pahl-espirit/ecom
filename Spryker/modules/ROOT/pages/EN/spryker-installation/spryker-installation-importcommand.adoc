@@ -1,0 +1,28 @@
+[[sp-importcommand]]
+=== Import command
+The integration of the contents created or maintained in {fs} into the Shop takes place through {sp}.
+Therefore, {sp} imports the data from the _Online {c}_ and persists them in its data system.
+The transfer of the information must take place with each <<fs-deployment,{fs} deployment>>, which for this reason each time triggers a {sp} sided import command.
+
+The command instructs the importer to import the block data stored in the _Online {c}_.
+To do this, it uses the <<sp_configuration,`{fs} Data Import Block {c} Path`>> stored in the https://documentation.spryker.com/docs/configuration-management[configuration file `config_default-[environment\].php`].
+Using this path, the importer accesses the _{c}_ aggregation that is created by the <<fs-deployment,{fs} deployment>>.
+
+The import command must be registered in {sp} in the `getConsoleCommands`.
+This requires the following extension to the `ConsoleDependencyProvider.php` file in the `*src/Pyz/Zed/Console*` directory:
+
+[source, Spryker]
+.Extension of the getConsoleCommands
+----
+use ESpirit\Zed\FirstSpiritDataImport\Communication\Console\FsDataImportConsole;
+
+[...]
+
+$commands = [
+   // Default commands
+   [...]
+   
+   // FirstSpirit Data importers
+   new FsDataImportConsole(FsDataImportConsole::DEFAULT_NAME)
+];
+----

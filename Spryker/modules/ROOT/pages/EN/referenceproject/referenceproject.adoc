@@ -1,0 +1,33 @@
+[[ref-project]]
+== Reference project
+The _{modulname}_ module provides different ways to access shop content from {sp} and use it in {fs}.
+This requires different templates both within the {fs} project and on the {sp} side.
+These templates and the dependencies between them are described in the following subchapters using the 
+https://github.com/e-Spirit/ecom-spryker-reference-project/[reference project] provided.
+
+[NOTE]
+====
+The section and page templates contained in the reference project require different <<sp_twigtemplates,Twig templates>> for their use in {sp}.
+The descriptions in the following subchapters assume the existence of these templates.
+====
+
+// Pflege bestehender statischer Seiten
+include::static-sites.adoc[]
+
+// Pflege bestehender Kategorieseiten
+include::category-pages.adoc[]
+
+// Pflege bestehender Produktdetailseiten
+include::product-pages.adoc[]
+
+// Erzeugung neuer dynamischer Inhaltsseiten
+include::content-pages.adoc[]
+
+// Magazin
+include::magazine.adoc[]
+
+// Navigation
+include::navigation.adoc[]
+
+// Verweise
+include::links.adoc[]

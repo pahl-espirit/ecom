@@ -1,0 +1,36 @@
+[[install_workflow]]
+=== Workflows
+Content is released and deleted by editors within the supplied reference project _{refproject}_ via the _{bwfs}_.
+They are already added to the project and can be used as an alternative to project-specific workflows.
+
+[underline]#*Installation of the {bwfs} module*#
+
+Before using the workflows, the _{bwfs}_ module must first be installed on the {fs} server and the web component must be activated.
+The necessary steps are the same as the installation of the other modules and activation of the corresponding <<fs_installation_wcomp,web component>>.
+The web component of the _{bwfs}_ is also required in the `*{wc}*` tab.
+
+The use of _{bwfs}_ in {wc} also requires the selection of the provided `{bwfs} Status Provider` in the `*menu:Project properties[{wc}]*` area within the `*{manager}*`.
+This setting has already been made in the reference project _{refproject}_.
+
+.Element Status Provider
+image::images/statusprovider.png[]
+
+[underline]#*Templates*#
+
+The _{bwfs}_ need different templates.
+These usually have to be imported into the {fs} project via the context menu.
+However, they are already included in the reference project and an import of the templates is therefore not necessary.
+
+[underline]#*Permission assignment*#
+
+In the final step, the release workflow must be allowed in each store to run on {fs} elements.
+To do this, you can open the permission assignment on the root nodes of the stores via the context menu entry `*menu:Extras[Change Permissions]*`.
+This step has already been performed in the reference project and is therefore omitted.
+
+The rights set on the stores' root nodes to execute the workflows refer to the `Everyone` group.
+If this is not desired, the rights must be adjusted manually.
+
+[NOTE]
+====
+More information about the installation, configuration and functionality of the workflows can be found in the _{bwfdocen}_.
+====

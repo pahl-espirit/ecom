@@ -1,0 +1,38 @@
+=== Installation of the modules
+In order to provide the functions of the _{modulname}_ module, the modules _{ccon}_ and _{ocm}_ are additionally required, which must also be installed on the {fs} server.
+Furthermore, when using the supplied _{refproject}_, the _{bwfs}_, the _{cxt}_ and optionally _{ts}_ must also be installed.
+
+[NOTE]
+====
+The delivery contains only the _{modulname}_ module.
+The _{ccon}_ and _{ocm}_ modules as well as the _{bwfs}_, the _{cxt}_, and the _{ts}_ module are available from the {techsupport}.
+====
+
+To install the modules, open `*{manager}*` and select `*menu:Server properties[Modules]*`.
+
+.Server properties - Module installation
+image::images/modules.png[]
+
+The main panel displays a list of all modules installed on the {fs} server.
+After clicking btn:[Install], select the following files one after the other and confirm your selection with btn:[Open]:
+
+* `contentconnect-sap-module-<Versionnumber>.fsm` 
+* `caas-connect-<Versionnumber>.fsm`
+* `fs-tpp-api-<Versionnumber>.fsm` 
+* `cxt-cc-extension-<Versionnumber>.fsm` (only required when using the reference project)
+* `basicworkflows-fsm-<Versionnumber>.fsm` (only required when using the _{bwfs}_)
+* `translationstudio-<Versionnumber>.fsm` (only required when using _{ts}_)
+
+After the successful installation, the folders `{modulname} for SAP {ccloud}`, `{ccon}`, `{fs} ThirdPartyPreview` and optionally the folders `{bwfs}`, `{cxt}` and `{fs} {ts}` were added to the list.
+Each of which must have `All rights`.
+
+[IMPORTANT]
+====
+The modules _{modulname}_, _{ccon}_, and _{cxt}_ require a configuration.
+The necessary steps are described in the _{spartacusdocen}_ and _{ccondocen}_.
+====
+
+[IMPORTANT]
+====
+After each installation or update of a module, the {fs} server must be restarted.
+====

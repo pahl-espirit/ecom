@@ -1,0 +1,63 @@
+[[fs-previewdeployment]]
+=== Generation schedule - preview generation
+Under certain <<uc-datasync,circumstances>> it might happen that the datasets in the {fs} project, the {c} and in {sp} differ.
+In this case the contents from the _Online {c}_ and in {sp} can be updated by a <<fs-deployment,full generation>>.
+In contrast, updating the _Preview {c}_ would require all pages within the {fs} project to be saved again separately.
+
+For this reason, the {refproject_github}[reference project] has the schedule _{sp} Preview Deployment_, which is created within the `*{manager}*` in the `*menu:Project properties[Schedule management]*` area and can only be executed by project administrators.
+This schedule has the same actions as the <<fs-deployment,full generation>> with exception of the <<fs-deployment-media,_Execute Publish Media to CDN_>>, <<fs-deployment-aggregations,_Setup {c} Blocks Aggregations_>>, 
+<<fs-deployment-fetch-spryker-logs,_Trigger Fetch {sp} Logs_>>, and <<fs-deployment-spryker-sendmail,_Send Result Mail_>> actions.
+Since the information in the preview is obtained directly from the {fs} project or the _Preview {c}_ and no processing takes place in {sp}, 
+it is not necessary to create aggregations, publish media or determine {sp} logs for the preview generation.
+Furthermore, the preview generation is started from the `*{manager}*`, so sending an e-mail to an administrator is also not required.
+
+[IMPORTANT]
+====
+After a project import a <<uc-datasync,content exchange>> is mandatory.
+For this, however, all configuration steps on both the {fs} and the {sp} side must be completed.
+====
+
+.Actions of the preview generation
+image::previewdeploy_actions.png[]
+
+Within the actions _Initialize {c} Generation_, _{c} Generate_, <<fs-deployment-spryker-import,_Trigger {sp} Import_>>, and <<fs-deployment-spryker-cleanup,_Trigger {sp} Cleanup_>> different settings are necessary.
+
+Initialize {c} Generation::
+Among other things, the action _Initialize {c} Generation_ requires the definition of a {key} and a {c} URL.
+In the case of the preview generation, the _Preview {c}_ data must be specified for both parameters.
++
+[NOTE]
+====
+The {key} requires both read and write permissions.
+====
++
+A description of the action and the parameters needed for it is contained in the _{caasdocen}_.
+
+{c} Generate::
+During preview generation, this action may only deal with the current state of the content.
+For this reason, the checkbox `Generate release status` in the `*Properties*` of the action must be deactivated.
++
+A description of the action is contained in the _{caasdocen}_.
++
+.Properties of the action {c} Generate
+image::deploy_caas_generate.png[]
+
+Trigger {sp} Import::
+In the preview, the import may only consider the contents of the _Preview {c}_.
+For this purpose, the parameter `triggerStagedContentImport` must be added to the action's `*Properties*` and the value `true` must be specified for it.
+By default, the parameter has the value `false` and is therefore not required in the action of the same name in the <<fs-deployment,full generation>>.
++
+This setting is already included in the schedule of the {refproject_github}[reference project].
+
+Trigger {sp} Cleanup::
+As the import action, the cleanup action may only consider the contents of the _Preview {c}_.
+For this purpose, the parameter `triggerStagedContentCleanup` must be added to the action's `*Properties*` and the value `true` must be specified for it.
+By default, this parameter also has the value `false` and is therefore optional in the full generation.
++
+This setting is also already included in the schedule of the reference project.
++
+[IMPORTANT]
+====
+CMS Pages deleted within the {fs} project are only deleted in {sp} if they have not been published before.
+Otherwise, due to technical restrictions, they are kept in {sp} and are only removed when a <<fs-deployment,full generation>> is executed.
+====

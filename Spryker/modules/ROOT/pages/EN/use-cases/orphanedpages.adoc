@@ -1,0 +1,20 @@
+[[uc_orphanedpages]]
+=== Removal of orphaned product and category pages
+In the course of a project, a {sp}-sided deletion or deactivation of no longer needed products or categories can occur at any time.
+However, these are possibly still referenced within the {fs} project.
+The deletion or deactivation results in orphaned <<rp_productpages,product>> and <<rp_categorypages,category pages>>, which can cause errors and warnings during the import.
+These orphaned pages can no longer be accessed and therefore cannot be identified by editors. 
+
+The {cc} therefore provides the report `*Lost and Found*`.
+It shows an overview of all orphaned pages within the {fs} project and allows filtering for product or category pages.
+Each entry has a delete button that appears when hovering over it and, after confirming a security question, triggers a <<fs-delete-wf-report,delete workflow>>.
+The workflow removes the corresponding page from the {fs} project, releases the parent structure, and finally performs a <<fs-deployment,full deployment>>.
+
+[NOTE]
+====
+The execution of the delete workflow requires both delete and release rights.
+If the editor is missing one of these rights, the delete button is hidden for him and the removal of orphaned pages is therefore not possible.
+====
+
+.Report Lost and Found
+image::img_lostandfound.png[]

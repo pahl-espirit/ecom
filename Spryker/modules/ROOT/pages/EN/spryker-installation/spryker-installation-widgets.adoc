@@ -1,0 +1,90 @@
+[[sp_widgets]]
+=== Widgets
+In addition to the <<sp_modules,{sp} modules>> and the <<sp_plugin,plugins>> the delivery contains the following widgets.
+They enable the expandability of the <<rp_navigation,navigations>> contained in the shop, as well as the usage of the <<rp_links,DOM references>> and the <<sp_twigtemplates,Shoppable Image>> contained in the reference project.
+Only if these elements are used a registration of the widgets is required.
+
+* `{fs}PreviewContentNavigationWidget`
+* `{fs}CategoryLinkWidget` 
+* `{fs}ProductLinkWidget`
+* `{fs}ContentLinkWidget`
+* `{fs}ExternalLinkWidget`
+* `{fs}ProductFlyoutWidget`
+
+[underline]#*{fs}PreviewContentNavigationWidget*# +
+The `{fs}PreviewContentNavigationWidget` creates the possibility to maintain the navigations contained in the store with {fs} and to add further menu items.
+It replaces the existing `ContentNavigationWidget` in {sp} and provides various attributes required for displaying the corresponding navigation in the preview.
+Therefore the existing `*ContentNavigationWidget*`, which is stored under the path `*/src/Pyz/Yves*` in {sp}, has to be replaced by the `*{fs}PreviewContentNavigationWidget*` included in the delivery.
+Finally, the use of the `{fs}PreviewContentNavigationWidget` requires a registration.
+This is done by modifying the `TwigDependencyProvider` in the directory `*/src/Pyz/Yves/Twig/*`, 
+in which the `ContentNavigationTwigPlugin` has to be replaced by the `{fs}PreviewNavigationWidgetTwigPlugin`.
+
+.Adaptation of the TwigDependencyProviders
+----
+<?php
+
+namespace Pyz\Yves\Twig;
+
+use ESpirit\Yves\FirstSpiritPreviewNavigationWidget\Plugin\Twig\FirstSpiritPreviewNavigationWidgetTwigPlugin;
+[...]
+
+class TwigDependencyProvider extends SprykerTwigDependencyProvider
+{
+   [...]
+   
+   protected function getTwigPlugins(): array
+   {
+      return [
+         [...]
+         new FirstSpiritPreviewNavigationWidgetTwigPlugin(),
+      ];
+   }
+   
+   [...]
+}
+----
+
+[underline]#*{fs}CategoryLinkWidget und {fs}ProductLinkWidget*# +
+The `{fs}CategoryLinkWidget` and the `{fs}ProductLinkWidget` are used to display editorial DOM links to category or product detail pages.
+In both cases, the widget determines the corresponding category or product using a unique identifier and passes the result to the Twig template that controls the display of the respective link in {sp}.
+Each of the two widgets references its corresponding Twig template.
+The Twig templates are provided by the previously installed {fs}Preview module.
+
+[underline]#*{fs}ContentLinkWidget und {fs}ExternalLinkWidget*# +
+The `{fs}ContentLinkWidget` and the `{fs}ExternalLinkWidget` enable DOM links to editorial content, whereby the type of content differs in each case.
+The `{fs}ExternalLinkWidget` only allows the referencing of external content.
+In contrast, the `{fs}ContentLinkWidget` is used to display internal DOM links to <<rp_contentpage,dynamic content pages>> or <<rp_magazine,magazine articles>> maintained within the {fs} project.
+An important aspect is that the target URL of the internal links to dynamic content pages depends on the output:
+While the link in the live state refers to the published CMS page, the corresponding preview URL must be used in the preview.
+In both cases, the widget controls the determination of the required URL.
+
+[underline]#*{fs}ProductFlyoutWidgets*# +
+The registration of the `{fs}ProductFlyoutWidget` is only required if the Shoppable Image provided with the delivery is used in the project.
+The widget controls the display of flyouts for the products linked to the Shoppable Image.
+
+[underline]#*Registration*# +
+The four link widgets and the flyout widget are registered using the following code, which must be added to the `ShopApplicationDependencyProvider` in the folder `*src/Pyz/Yves/ShopApplication*`.
+
+[source,PHP]
+.Extension of the ShopApplicationDependencyProvider
+----
+use ESpirit\Yves\FirstSpiritPreview\Widget\FirstSpiritCategoryLinkWidget;
+use ESpirit\Yves\FirstSpiritPreview\Widget\FirstSpiritProductLinkWidget;
+use ESpirit\Yves\FirstSpiritPreview\Widget\FirstSpiritContentLinkWidget;
+use ESpirit\Yves\FirstSpiritPreview\Widget\FirstSpiritExternalLinkWidget;
+use ESpirit\Yves\FirstSpiritPreview\Widget\FirstSpiritProductFlyoutWidget;
+
+[...]
+
+protected function getGlobalWidgets(): array
+{
+   return [
+      [...]
+      FirstSpiritCategoryLinkWidget::class,
+      FirstSpiritProductLinkWidget::class,
+      FirstSpiritContentLinkWidget::class,
+      FirstSpiritExternalLinkWidget::class,
+      FirstSpiritProductFlyoutWidget::class
+   ];
+}
+----

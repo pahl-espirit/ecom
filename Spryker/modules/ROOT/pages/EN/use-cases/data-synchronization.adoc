@@ -1,0 +1,44 @@
+[[uc-datasync]]
+=== Content Exchange
+The integration requires that the data within the {fs} project, the corresponding _{c}_ instance and in {sp} are consistent to each other.
+However, this consistency will be violated by the following situations that may occur during the progress of a project:
+
+Project transfer to a new deployment environment (Dev, Prod, QA)::
+Creating a new deployment environment always involves importing an existing {fs} project.
+The import creates a constellation in which contents already exist in {fs}, whereas the _{c}_ instances and {sp} are empty or have different contents.
+
+ContentTransport::
+In contrast to the previous point, which involves the transfer of entire projects to another deployment environment, 
+the {corpcontentdocen}[ContentTransport] is used to transfer editorial content between two projects.
+During the progress of a project, for example, the contents of the production environment can be transferred back to the test and development environment in this way, 
+to exchange existing test data with real information.
++
+Contrary to the project transfer, the target project therefore already exists and will not be created.
+This implies that the corresponding _{c}_ instances and {sp} also already contain content.
+After the ContentTransport these contents differ from those of the {fs} project.
+
+The transfer of content to the _Preview {c}_ and its generation in {sp} is done automatically each time new content is saved.
+In contrast, existing content - as in the situations described - would have to be saved again separately for their persistence.
+For this reason, the {refproject_github}[reference project] has the schedule <<fs-previewdeployment,_{sp} Preview Deployment_>>, 
+which handles both the filling of the _Preview {c}_ and the updating of the preview contents in {sp}.
+It is created within the `*{manager}*` in the `*menu:Project properties[Schedule management]*` area and can only be executed by project administrators.
+
+[IMPORTANT]
+====
+The schedule requires all configuration steps to have been completed beforehand - on both the {fs} and the {sp} side.
+====
+
+Once the schedule has been performed, the _Preview {c}_ is filled with the preview contents of the {fs} project.
+Furthermore, on the spryker side, all <<rp_contentpage,content pages>> and <<rp_magazine,magazine pages>> included in the project were created in addition to the existing <<rp_staticsite,static pages>> and <<rp_categorypages,category pages>>.
+Afterwards the contents are available for the editors in the preview.
+
+[TIP]
+====
+The schedule <<fs-previewdeployment,_{sp} Preview Deployment_>> can be executed at any time.
+If required, the consistency of the preview data can thus be ensured whenever needed.
+====
+
+If, in addition to the consolidation of the preview content, a transfer to the storefront is required, the content needs to be released and published.
+The reference project provides a <<fs-wf,workflow>> for the release, which also enables the <<fs-wf-adaptions,publication of single pages>>.
+In addition, it contains the <<fs-deployment,_{sp} Deployment_>> schedule, which transfers all released contents of the project to the _Online {c}_ and triggers their import to {sp}.
+The schedule can be started by `ChiefEditors` using the action `*Publication*` available in {cc}.

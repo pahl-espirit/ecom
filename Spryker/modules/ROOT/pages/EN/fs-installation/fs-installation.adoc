@@ -1,0 +1,31 @@
+[[fs-installation]]
+== {fs} - Installation and Configuration
+Various components must be installed and configured in order to use the functions of the _{modulname}_ module.
+The following subchapters explain the steps required.
+
+// Konfiguration der Projekt-Komponente
+include::fs-installation-projectcomponent.adoc[]
+
+// Hinzufügen der Web-Komponente
+include::fs-installation-webcomponent.adoc[]
+
+// Definition der externen Vorschau-URL
+include::fs-installation-preview-url.adoc[]
+
+// Konvertierungsregeln
+include::fs-installation-conversionrule.adoc[]
+
+// Ausgabekanal
+include::fs-installation-templateset.adoc[]
+
+// Auflösungen
+include::fs-installation-resolutions.adoc[]
+
+// Deployment-Aufträge
+include::fs-installation-deployment/fs-installation-deployment.adoc[]
+
+// Freigabe-Arbeitsablauf
+include::fs-installation-workflows.adoc[]
+
+// Projekteinstellungen
+include::fs-installation-projectsettings.adoc[]

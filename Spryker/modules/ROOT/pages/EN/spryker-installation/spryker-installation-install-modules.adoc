@@ -1,0 +1,54 @@
+[[sp_install_module]]
+==== Installation of the {sp} modules
+The maintenance of shop contents in {cc} requires the installation of several {sp} modules, which are included in the delivery in the form of zip files.
+They have to be stored in any directory below the {sp} project directory, which must be announced to Composer as another repository.
+This is done via the following command to be executed in the project directory, which extends the `composer.json` file of the {sp} server accordingly.
+
+[source,Spryker]
+.Extension of the composer.json file
+----
+composer config repo.espirit artifact ./PATH-TO-DIRECTORY
+----
+
+The {sp} modules to be installed use the namespace `ESpirit`, which must be announced to {sp}.
+This requires an extension of the `KernelConstants` in the environment-independent file `config_default.php` in the directory `*config/Shared*`:
+
+[source,Spryker]
+.Extension of the KernelConstants
+----
+$config[KernelConstants::CORE_NAMESPACES] = [
+   'SprykerShop',
+   'SprykerEco',
+   'Spryker',
+   'Generated',
+   'ESpirit'
+];
+----
+
+The {sp} modules are then installed using the following commands, which must also be executed in the {sp} project directory in the specified order.
+
+[source,Spryker]
+.Installation commands
+----
+composer require e-spirit/firstspirit-caas
+composer require e-spirit/firstspirit-preview
+composer require e-spirit/firstspirit-preview-navigation
+composer require e-spirit/firstspirit-data-state-writer
+composer require e-spirit/firstspirit-data-cleanup
+composer require e-spirit/firstspirit-data-import
+composer require e-spirit/firstspirit-data-inconsistency-check
+composer require e-spirit/firstspirit-data-rest-api
+composer require e-spirit/firstspirit-cms-data-connector
+composer require e-spirit/firstspirit-cms-data-storage
+----
+
+The commands load the modules from the created repository and install them automatically.
+
+The last step of the installation corresponds to the generation of the transfer objects of the Data Import module and the creation of the database schema contained in the CMS Block Data Connector module:
+
+[source,Spryker]
+.Generation of the transfer objects and creation of the database schema
+----
+vendor/bin/console transfer:generate
+vendor/bin/console propel:install
+----

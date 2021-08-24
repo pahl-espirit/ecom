@@ -1,0 +1,47 @@
+[[sp_navigation]]
+=== Main navigation
+By default, the {sp} B2C Demo Shop contains different navigations, which can be created and edited in {sp}.
+The integration realised with the _{modulname}_ module offers the possibility to maintain these navigations with {fs} and to add further menu items.
+
+Within the reference project the functionality is implemented exemplarily for the main navigation.
+Its usage requires the already described <<sp_widgets,referencing of the `{fs}PreviewContentNavigationWidgets`>>, the creation of a placeholder, and the addition of a preview ID.
+
+The placeholder to be created corresponds to another menu item.
+This is required to display the navigation in the preview and must be added to the `navigation-header.twig` file 
+in the `*src/Pyz/Yves/ShopUi/Theme/default/components/molecules/navigation-header*` directory:
+
+[source,PHP]
+.Adjustment of the navigation-header.twig file
+----
+[..]
+<ul class="menu {{ menuClass }} grid grid--center grid--no-wrap">
+   {% for node in data.nodes %}
+      [..]
+   {% endfor %}
+   
+   {% if isFsPreview() %}
+      <li class="fs-navigation-extension" 
+         style="padding-left: 1rem; transform: translate(0,15% );">
+      </li>
+   {% endif %}
+</ul>
+[..]
+----
+
+In addition, a preview ID is required to display the main navigation in the preview.
+This preview ID is to be defined in the `navigation-multilevel-node.twig` file in the directory `*src/Pyz/Yves/ShopUi/Theme/default/components/molecules/navigation-multilevel-node*`:
+
+[source, PHP]
+.Adjustment of the navigation-multilevel-node.twig file
+----
+{% block attributes %}
+   {% if isFsPreview() and data.node.previewId is defined and data.node.previewId is not empty %}
+      data-preview-id="{{ data.node.previewId }}" style="min-height: unset;"
+   {% endif %}
+{% endblock %}
+----
+
+[NOTE]
+====
+After the changes have been made, it may be necessary to empty the cache for the twig templates and to rebuild the frontend.
+====

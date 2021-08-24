@@ -1,0 +1,26 @@
+[[fs_installation_wcomp]]
+=== Adding the web components
+For the {wc}, a web component is needed, which is already added to the reference project.
+By default it is installed globally in the `*{manager}*` in the area `*menu:Server Properties[Web applications]*`.
+In this case, all installation or configuration steps required for the web component have already been performed by the {creator}.
+
+Alternatively, you may install the web component in the `*Project properties*`.
+*Only in this case* it still needs to be installed on an active web server.
+Therefore, open the `*{manager}*` and select `*menu:Project properties[Web components]*`.
+
+[[webcomponents]]
+.Web components in the Project properties
+image::images/webcomponents.png[]
+
+Within the main panel several tabs are visible, each with a list of the existing web components.
+This list contains the following entries for the `*{wc}*`:
+
+* `BasicWorkflows_ContentCreator_Library` (only required when using the _{bwfs}_)
+* `CXT {wc} Extension: WebApp for {wc}`
+* `{modulname} for SAP {ccloud} Web App`
+* `{fs} ThirdPartyPreview WebApp`
+
+In the tab, select a web server via the selection box and start the installation by clicking the btn:[Install] button.
+After successful installation, a dialog opens, in which the activation of the web server is to be confirmed.
+
+For detailed information about adding web components, see the _{linkfsadocen}_.

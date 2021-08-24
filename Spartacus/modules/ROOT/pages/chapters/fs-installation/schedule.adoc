@@ -1,0 +1,10 @@
+[[install_schedule]]
+=== Deployment schedules
+With _{ccon}_ the publication of editorial content as well as updating the _Online {c}_ takes place with each release.
+An additional deployment process is not necessary in this case. 
+
+However, during the progress of the project, situations may arise that require a deployment.
+Therefore, the _{ccon}_ module provides two schedules that are automatically added to the project.
+They do not require any project-specific customization. 
+
+// A detailed explanation of the schedules is contained in the _{ccondocen}_.

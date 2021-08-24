@@ -1,0 +1,12 @@
+=== Technical requirements
+
+To use the _{modulname}_ module, the following technical requirements must be met:
+
+* the modules _{modulname}_, _{caas}_ and _{ocm}_ in their current versions
+* {fs} (Legacy or Isolated Mode) in version 2020-08 or higher
+* Java 11
+* {sp} {os} 202009.0
+   with the extensions https://documentation.spryker.com/docs/enabling-category-cms-block[`Category CMS Blocks`] and https://documentation.spryker.com/docs/product-block[`Product CMS Blocks`]
+* php in version 7.3 or higher
+
+When using the supplied {refproject_github}[reference project _{refproject}_], the current version of the _{bwfs}_ module is also required.

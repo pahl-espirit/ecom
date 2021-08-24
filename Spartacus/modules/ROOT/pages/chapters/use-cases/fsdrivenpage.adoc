@@ -1,0 +1,58 @@
+[[uc_fsdrivenpage]]
+=== Creation of a {fsdp}
+The maintenance of editorial content both in {fs} and in the {ccloud} is based on a page.
+The integration differentiates between <<concept_pagestypes,Shop and {fsdp}s>>.
+
+In contrast to the {sdp}s, the {fsdp}s exist exclusively in {fs} and do not have an associated page in the {ccloud}.
+They are used to create content or campaign pages, which are not necessarily included in the standard scope of the store.
+{fsdp}s can either use the layout of a {sdp} or their own layout, which is defined in the Storefront.
+In both cases, the styling of the {fsdp}s is done in Angular, for example, in the `styles.scss` file of the Storefront.
+
+To create a new {fsdp}, some steps have to be performed on the SAP and {sp} side as well as in {fs}.
+These steps are described below.
+
+*Configuration in SAP and {sp}*
+
+In the system realized by the _{modulname}_ integration the Storefront takes over the delivery of the content.
+It queries the content from both the {ccloud} and the respective _{c}_ instance and links them together.
+For this purpose it must be extended by the bridge as described in the <<sp_installation_libraries, installation chapter>>.
+
+In turn, the bridge expects a <<sp_installation_config_pages,definition of the pages>>, whose processing is to be enabled in the {wc}.
+For {fsdp}s, the configuration must consider whether the page uses the layout of a {sdp} or its own layout.
+
+In the first case, a dummy page must exist in the {ccloud}, which is empty except for the desired layout.
+This means, for example, that it only includes a general header and footer, but does not contain any other content.
+Such a page is required for every layout that should be usable by {fsdp}s.
+
+In the second case, the {fsdp} does not have a mapping to a {ccloud} page and therefore no layout of such a page is assigned to it.
+Thus the Storefront does not know which slots exist and in which order they should be output.
+For this reason the <<b2clayoutconfig,`b2cLayoutConfig` configuration>> must be extended accordingly.
+
+[NOTE]
+====
+On the {sp} side, there exist several general slots, which are output without additional configuration.
+Their specification is therefore only required in the bridge`s configuration, but not in the `b2cLayoutConfig` configuration.
+An example for this kind of slots is the `BottomHeaderSlot`.
+====
+
+*Configuration in {fs}*
+
+In contrast to the delivery of content, its creation and maintenance is done in the {fs} {wc}.
+In it, Shop and {fsdp}s can be displayed and enriched with editorial content using the {tppdocen}[_{ocm}_].
+
+The creation and editing of editorial content requires a <<rp_pages,page template>> in {fs}, which must be created if necessary.
+It must be ensured that the content areas match the <<sp_installation_config_pages,slots>> configured in the bridge:
+For each defined slot, the page template must have a content area with *the same* name.
+Otherwise, the editorial content will be ignored by the Storefront and not be output in the live state.
+
+[NOTE]
+====
+The mapping between the configured slots and the content areas of the {fs} page templates is not case-sensitive.
+The names `Section1` and `section1` are therefore considered identical and are successfully mapped to each other.
+====
+
+In addition, all page templates must have the <<rp_pages_inputcomponents, text input components `pt_seoUrl` and `pt_cc_identifier`>>. 
+The input component `pt_seoUrl` enables the definition of an SEO url and the input component `pt_cc_identifier` ensures the accessibility of the page in the {wc}.
+
+The transfer of the created or modified content to the _Online {c}_ is done with each release.
+The _{c}_ persists the content in JSON format in the form of content fragments and makes them available to the Storefront, which integrates them into the shop together with the {ccloud} content. 

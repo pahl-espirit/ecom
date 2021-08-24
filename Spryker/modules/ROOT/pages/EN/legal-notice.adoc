@@ -1,0 +1,7 @@
+== Legal notices
+_{modulname}_ is a product of {creator}, Dortmund, Germany.
+Only a license agreed upon with {creator} is valid for using the module.
+
+Details regarding any third-party software products in use but not created by {creator}, as well as the third-party licenses and, if applicable, update information can be found in the file `THIRD-PARTY.txt` included with the module.
+
+All pictures contained in the delivered https://github.com/e-Spirit/ecom-spryker-reference-project/[reference project _{refproject}_] are taken from the provider https://pixabay.com/en[pixabay].

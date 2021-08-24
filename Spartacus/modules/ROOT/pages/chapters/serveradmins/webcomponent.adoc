@@ -1,0 +1,22 @@
+[[install_wcomp]]
+=== Adding the web components
+The _{modulname}_ integration requires various web components to be added to the project used.
+Therefore open the `*menu:Server Properties[Web applications]*` panel in the `*{manager}*`.
+
+Within the main panel several tabs are visible, each with a list of the existing web components.
+Choose the `*{wc}*` tab and add the following web components:
+
+* `BasicWorkflows_ContentCreator_Library` (only required when using the _{bwfs}_)
+* `CXT {wc} Extension: WebApp for {wc}`
+* `{modulname} for SAP {ccloud} Web App`
+* `{fs} ThirdPartyPreview WebApp`
+
+Select the web components one after the other using the btn:[Add] button and confirm each selection with btn:[OK].
+
+.Web components in the Server Properties
+image::images/sp_webcomponents.png[]
+
+Finally, select an `Active web server` in the tab using the selection box of the same name and start the installation by clicking the btn:[Install] button.
+After successful installation, a dialog opens, in which the activation of the web server is to be confirmed.
+
+For detailed information about adding web components, see the _{linkfsadocen}_.

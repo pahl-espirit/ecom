@@ -1,0 +1,44 @@
+[[fs-mediadeployment]]
+=== Generation schedule - Media generation
+Unlike the content created with {fs}, the released media is not transferred to the _{c}_, but to the CDN provided by the {creator}.
+Therefore, the {refproject_github}[reference project] has the schedule _Media Deployment_, which is created within the `*{manager}*` in the `*menu:Project properties[Schedule management]*` area.
+It is triggered by the <<fs-deployment-media,_Execute Publish Media to CDN_>> action contained in the full generation 
+and has the actions <<fs-mediadeployment-generation,_Media Generation_>> and <<fs-mediadeployment-publish,_Publish to CDN_>>.
+These are described in the following subchapters.
+
+.Actions of the Media generation 
+image::mediadeploy_actions.png[]
+
+[NOTE]
+====
+If it is desired to use a local CDN or a MAM instead of the CDN provided by the {creator}, the {techsupport} will assist with the configuration.
+====
+
+[[fs-mediadeployment-generation]]
+==== Media Generation
+To transfer the media to the CDN provided by the {creator}, they must first be generated.
+Therefore the schedule contains the generation action _Media Generation_.
+It represents a partial generation, which refers to the root node of the Media Store.
+
+To avoid inconsistencies in the live state, the options `Clear generation directory beforehand` and `Generate release version` must be activated in the `Properties` of the action.
+Furthermore, it is necessary that the URL Factory selected at this point for `PathGeneration` and the 
+https://docs.e-spirit.com/module/caas/CaaS_FSM_Documentation_DE.html#schedule_conf[`URL-Factory for media use`] configured in the project component of the _{c}_ are identical.
+
+.Properties of the Media Generation action
+image::mediageneration_settings.png[]
+
+[[fs-mediadeployment-publish]]
+==== Publish to CDN
+Once the media have been generated, they are transferred to the CDN.
+Therefore, the schedule contains the action _Publish to CDN_.
+In the Cloud environment, this action is added by the Cloud department of the {creator} and is thus already preconfigured.
+No further configuration is required.
+
+[NOTE]
+====
+In the On Premises environment, a manual creation and configuration of this action is required.
+The necessary information is provided by the {creator}.
+====
+
+.Publish to CDN
+image::mediageneration_publication.png[]

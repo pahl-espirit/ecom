@@ -1,0 +1,241 @@
+[[uc_contentmodule]]
+=== Development of a new content module
+Within the overall system created with the _{modulname}_ integration, the {sp} Storefront delivers the editorial content.
+However, the creation and maintenance of this content shifts from the {ccloud} to {fs}.
+For this reason, the provided reference project _{refproject}_ contains the following section templates:
+
+* `teaser`
+* `carousel`
+* `multi_slot_container`
+* `location_overview`
+
+Each of these section templates requires an Angular UI component on the {sp} side.
+The UI components receive the contents to be displayed and define their output in the shop.
+
+In addition to the creation of a further section template in the {fs} project,
+the development of a new content module therefore always includes the implementation of an associated Angular UI component in the frontend.
+In detail, the following steps are required, which will be explained in more detail in the course of the chapter:
+
+* Creation of a section template including maintenance of contents
+* Import and configuration of the DataVisualizer
+* Creation of a converter
+* Implementation of the Angular UI component
+* Extension of the Storefront
+
+// NICHT LÖSCHEN! - dient der Unterbrechung der Liste
+
+// *********************** Absatzvorlage *********************** //
+[[create_section]]
+Creation of a section template::
+The development of a new content module first requires the creation of a new section template within the {jc}.
+The template must then be integrated into a page and filled with content in all available languages.
+By saving these contents, they are automatically transferred to the _Preview {c}_ and are thus available in the preview.
++ 
+[NOTE]
+====
+In the steps below, the reference name of the new section template has to be specified at various positions.
+These positions are all marked by the placeholder `<SECTION_REF_NAME>`.
+The placeholder must be replaced by the reference name in all cases.
+
+The same applies to an input component contained in the section, which is named `st_input_component` in the following steps.
+====
+
+// *********************** DataVisualizer *********************** //
+Import and configuration of the DataVisualizer::
+The `fs-spartacus-view-components` library contains, among other things, the `DataVisualizer`, which enables an unprocessed output of the JSON structure stored in the _{c}_ in the {wc}.
+Therefore the DataVisualizer requires an import into the main module of the {sp} application (`app.module.ts`)
+as well as the configuration as a display component for the previously created section template.
+In addition, the import of the ConfigModule is necessary to provide all features.
++
+[source, JavaScript]
+.Import of the ConfigModul
+----
+import { ConfigModule } from '@spartacus/core';
+----
++
+The following code snippet shows the necessary adjustments in the main module.
+The placeholder `<SECTION_REF_NAME>` must be replaced by the *reference name* of the <<create_section,section template>> created in the first step.
++
+[source,JavaScript]
+.Import and configuration of the DataVisualizer
+----
+import { ConfigModule } from '@spartacus/core';
+import { DataVisualizerComponent } from 'fs-spartacus-view-components';
+
+[...]
+
+@NgModule({
+   imports: [
+      ConfigModule.withConfig({
+         cmsComponents: {<SECTION_REF_NAME>: {component: DataVisualizerComponent}}
+      })
+   ]
+})
+export class AppModule { }
+----
++
+After the integration of the `DataVisualizer`, the page containing the new section shows its associated _{c}_ information in the preview of the {wc}.
+With the button {copytocb} the displayed data can also be copied to the clipboard.
+They are required for the subsequent creation of the <<create_converter,converter>>.
++
+[IMPORTANT]
+====
+The parameters `uid` and `typeCode` contained in the displayed data are assumed by the Storefront.
+They must therefore be included in the return value of the <<create_converter,converter>> to be created subsequently.
+====
++
+.Data Visualizer
+image::images/datavisualizer.png[]
++
+*Example* +
+In the case of a section, for example, which only contains a `CMS_INPUT_TEXT` input component for a headline (`st_headline`), the output of the `DataVisualizer` corresponds to the following code snippet:
++
+[[caas_document]]
+[source,JSON]
+.Output of the DataVisualizer
+----
+{  "uid": "headline",
+   "typeCode": "headline",
+   "otherProperties": {
+      "formData": {
+         "st_headline": {
+            "fsType": "CMS_INPUT_TEXT",
+            "name": "st_headline",
+            "value": "Only this week: 20% discount"
+         }
+      },
+      "previewId": "b547b345-6077-4574-97b1-308ebcc2e58d.en_GB"
+   }
+}
+----
+
+// *********************** Converter *********************** //
+[[create_converter]]
+Creation of a converter::
+The data stored in the _{c}_ for the new section is very complex and also contains information that is not needed for the output in the shop.
+For this reason, it is recommended to add an additional transformation step before transferring the data to the Angular UI component.
+The transformation of the information into a format that is optimal for the component is performed by a converter.
+This must contain the following code and is to be be saved under the name `<SECTION_REF_NAME>.component.converter.ts` at any position in the {sp} project.
+Thereby the placeholder `<SECTION_REF_NAME>` corresponds to the reference name of the previously created <<create_section,section template>>.
++
+[source,JavaScript]
+.Converter
+----
+import { Injectable, InjectionToken } from '@angular/core';
+import { Converter, CmsComponent } from '@spartacus/core';
+
+@Injectable({ providedIn: 'root' }) <1>
+export class NewSectionComponentConverter implements Converter<CmsComponent, CmsComponent> { <2>
+   public convert(source: CmsComponent): CmsComponent { <3>
+      return {
+         uid: source.uid,
+         typeCode: source.typeCode,
+         previewId: source.otherProperties.previewId,
+         value: source.otherProperties.formData.st_input_component.value <4>
+      } as CmsComponent;
+   }
+}
+
+export const NewSectionConverterToken = new InjectionToken<Converter<CmsComponent,CmsComponent>>('NewSectionConverter'); <5>
+----
+<1> The Injectable annotation creates a new Angular service.
+   This allows the later <<storefront_extension,injection>> of the new converter into the bridge.
+<2> The new class `NewSectionComponentConverter` implements the converter interface provided by {sp}, which expects the method `convert`.
+   Each time the section for which the converter is registered is processed, this method is called automatically.
+<3> Using the `source` parameter, the `convert` method gets all the information available for the section from the _{c}_.
+   The return value of the method allows the filtering of this data and defines which parameters are transferred to the Angular UI component. +
+   The parameters `uid` and `typeCode` are assumed by the Storefront and are therefore mandatory.
+<4> The structure of the associated values is derived from the <<caas_document,_{c}_ document>> and must be adjusted accordingly, especially for the form data to be passed.
+   The displayed line refers to a simple `CMS_INPUT_TEXT` input component.
+<5> The `NewSectionConverterToken` created here enables the later <<storefront_extension,registration>> of the `NewSectionComponentConverter` in the main module of the {sp} application (`app.module.ts`).
+
+// *********************** UI-Komponente *********************** //
+[[create_ui_component]]
+Implementation of the Angular UI component::
+The data format defined with the help of the <<create_converter,converter>> enables the {angular}[implementation of the Angular UI component],
+which must be saved under the name `<SECTION_REF_NAME>.component.ts` at any position in the {sp} project.
++
+The following code snippet shows an example of the content of the component:
++
+[source,JavaScript]
+.Angular UI component
+----
+import { CmsComponent } from '@spartacus/core';
+import { CmsComponentData } from '@spartacus/storefront';
+import { Component } from '@angular/core';
+
+@Component({ <1>
+   template: <2>
+      `<ng-container *ngIf="(componentData?.data$) | async as convertedData">
+         <h1 [attr.data-preview-id]="convertedData.previewId">{{convertedData.value}}</h1> <3>
+      </ng-container>`,
+})
+
+export class NewSectionComponent { <4>
+   constructor(public componentData: CmsComponentData<CmsComponent>) { }
+}
+----
+<1> The new Angular UI component is created using the Component annotation.
+   The annotation enables the later <<storefront_extension,injection>> of the component into the bridge.
+<2> The `template` property defines the HTML output of the transferred data within the shop, which has to be adapted to the component to be created on a project-specific basis.
+   The output is done via a container element (`ng-container`), which is only displayed in the case of existing data.
+   If data exists, it is transferred asynchronously to the content module using the variable `convertedData`.
+<3> In this example, the component only outputs a headline.
+   Therefore it uses the `value` parameter defined in the <<create_converter,converter>>, which contains the corresponding form data of the initially created <<create_section,section>>.
+   It also includes the attribute `data-preview-id`, which contains the `previewId` passed by the converter as a value and allows editing of the headline in the {wc}.
+<4> At this point, the new Angular UI component is created.
+   It receives the data returned by the <<create_converter,converter>> as constructor parameters.
+
+// *********************** Erweiterung der Storefront *********************** //
+[[storefront_extension]]
+Extension of the Storefront::
+The output of the <<create_section,section>> created in the first step assumes the integration of the implemented <<create_ui_component,Angular UI component>>
+and the registration of the new <<create_converter,converter>> in the Storefront.
+This requires the following extension of the main module of the {sp} application (`app.module.ts`):
++
+[source,JavaScript]
+.Extension of the main module
+----
+import { NewSectionComponent } from './<SECTION_REF_NAME>.component';
+import { NewSectionConverterToken, NewSectionComponentConverter } from './<SECTION_REF_NAME>.component.converter';
+import { FsComponentConverter } from 'fs-spartacus-common';
+
+@NgModule({
+   declarations: [NewSectionComponent], <1>
+   imports: [
+      ConfigModule.withConfig({
+         cmsComponents: {<SECTION_REF_NAME>: { component: NewSectionComponent }} <2>
+      })
+   ],
+   providers: [
+      {  provide: NewSectionConverterToken, <3>
+         useClass: NewSectionComponentConverter,
+         multi: true
+      },
+      {  provide: FsComponentConverter, <4>
+         useValue: {
+            <SECTION_REF_NAME>: NewSectionConverterToken
+         },
+         multi: true <5>
+      }
+   ],
+   entryComponents: [NewSectionComponent] <6>
+})
+export class AppModule { }
+----
+<1> Within the main module a declaration of the new component is first made to include it in the {sp} project.
+<2> The `imports' attribute links the <<create_section,section template>> created in the first step to the component, instructing {sp} to always use this link when processing the section.
+   The placeholder `<SECTION_REF_NAME>` must be replaced with the reference name of the new section template.
+<3> The converter is registered in two steps using the `providers` attribute: +
+   The first `provide` entry declares the converter as an Angular service in the Storefront.
+   It causes the Storefront to automatically create an instance of the converter at runtime each time the `NewSectionConverterToken` is used. +
+   For a registration of further converters belonging to other sections, this entry has to be duplicated and adjusted accordingly.
+<4> The second `provide` entry introduces the converter to the bridge
+   by using the `useValue` parameter to create a link between the newly created <<create_section,section>> and the token of the <<create_converter,converter>>.
+   The bridge therefore accesses the token each time the section is processed, which in turn triggers the creation of a new instance of the converter.
+   Also in this case, the placeholder `<SECTION_REF_NAME>` must be replaced by the reference name of the new section template. +
+   The values of the `useValue` parameter are unlimited in their number and correspond to a key/value pair in each case.
+   If further converters belonging to other sections should be introduced to the bridge, the corresponding key/value pairs can be added separated by commas: +
+   Example: `useValue: { headline: HeadlineConverterToken, carousel: CarouselConverterToken }` +
+<5> In both cases, the `multi` parameter prevents previous declarations from being overwritten at runtime.
+<6> The entry `entryComponents` informs the Offline Template Compiler (OTC) of Angular that the component can be generated at runtime.

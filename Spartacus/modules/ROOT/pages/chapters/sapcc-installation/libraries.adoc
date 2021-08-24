@@ -1,0 +1,224 @@
+[[sp_installation_libraries]]
+=== Integration and configuration of the libraries
+In the system realized by the _{modulname}_ integration the Storefront takes over the delivery of the content.
+It queries the content from both the {ccloud} and the respective _{c}_ instance and links them together.
+For this purpose it must be extended by the {npmbrigde}[`fs-spartacus-bridge`] library.
+In order to display and edit the content originating from the reference project, the integration of the libraries 
+{npmcomponents}[`fs-spartacus-view-components`] and {npmtppapi}[`fs-tpp-api`] is also required.
+Furthermore, the {npmspcommon}[`fs-spartacus-common`] library is required. 
+It contains classes that are used by both the bridge and the Angular UI components.
+
+The libraries are provided in the form of npm packages, which can be installed using the following commands:
+
+[source,npm]
+.Installation commands
+----
+npm install fs-spartacus-bridge
+npm install fs-spartacus-view-components
+npm install fs-spartacus-common
+npm install fs-tpp-api@cloud-sap-spartacus
+----
+
+Additional CSS is required for displaying the editing functionality in the {wc}.
+This is included in the bridge and must be imported into the `styles.scss` file of the Storefront afterwards.
+
+[source,css]
+.Integration of the CSS file
+----
+@import '~fs-spartacus-bridge/styles/index';
+----
+
+Furthermore, in the last step of the installation the Angular UI components and the bridge must be included in the `imports` array of the `@NgModules` in the main module of the {sp} application (`app.module.ts`).
+In contrast to the UI components, the bridge thereby requires different information.
+In addition to various _{c}_ information, it expects a <<sp_installation_config_pages,definition of the Shop and {fsdp}s>>, whose processing is to be enabled in the {wc}.
+
+Among others, the _{c}_ information includes the `tenant ID` and the `project ID`: 
+The `tenant ID` is a unique identifier set by the {creator}, and defined in the {tenantiden}[configuration dialog of the _{c}_ service].
+The `project ID` corresponds to the UUID of the {fs} project used.
+It is a part of the _{c}_ URL and in this follows the `tenant ID`.
+In turn, the _{c}_ URL is visible in the {cprojectcompen}[configuration dialog of the _{c}_ {p_comp}].
+More information about the scheme of the _{c}_ URL can be found in the {cconurlschemaen}[_{ccon} module documentation_].
+
+[NOTE]
+====
+The _{c}_ information required for the configuration is provided with the integration by the {espirit}.
+In case of questions the {techsupport} offers expert support.
+====
+
+For the defined pages, the editable slots and optionally a <<sp_installation_mergestrategies,merge strategy>> must also be configured.
+The merge strategy defines how the contents that are maintained for a slot on both the {ccloud} and the {fs} side are merged.
+By default, the {fs} content replaces the existing {ccloud} content in a slot.
+
+The following code block shows the configuration required for the reference project.
+It defines various Shop and {fsdp}s for whose processing the configuration is mandatory.
+
+[source,TypeScript]
+.Extension of the import array
+----
+import { APPEND, FsSpartacusBridgeModule } from 'fs-spartacus-bridge';
+import { FsSpartacusViewComponentsModule } from 'fs-spartacus-view-components';
+import { FirstSpiritManagedPage, fromSlotList } from 'fs-spartacus-common';
+import { NgModule } from '@angular/core';
+
+@NgModule({
+   imports: [
+      FsSpartacusViewComponentsModule,
+      FsSpartacusBridgeModule.withConfig({
+         caas: {
+            baseUrl: 'CAAS BASE URL',
+            project: 'PROJECT ID',
+            apiKey: 'CAAS API KEY',
+            tenantId: 'TENANT ID'
+         },
+         firstSpiritManagedPages: [
+            FirstSpiritManagedPage.enhanceSapPages('CartPageTemplate', 
+               fromSlotList('BottomHeaderSlot', 'PreFooterSlot')),
+            FirstSpiritManagedPage.enhanceSapPages('ProductDetailsPageTemplate',
+               fromSlotList('BottomHeaderSlot', 'PreFooterSlot')),
+            FirstSpiritManagedPage.enhanceSapPages('CategoryPageTemplate',
+               fromSlotList('BottomHeaderSlot', 'PreFooterSlot')),
+            FirstSpiritManagedPage.enhanceSapPages('ProductListPageTemplate',
+               fromSlotList('BottomHeaderSlot', 'PreFooterSlot'))
+            FirstSpiritManagedPage.enhanceSapPages('ProductListPageTemplate',
+               fromSlotList('BottomHeaderSlot', 'PreFooterSlot')),
+            FirstSpiritManagedPage.integrateFsDrivenPagesIntoSapSkeleton(
+               'DummyCampaignPageWithHeader', 
+               PageType.CONTENT_PAGE, 
+               'campaign_page_with_header',
+               fromSlotList('BottomHeaderSlot', 'Section1', 'Section2C', 'Section3', 'PreFooterSlot')),
+            FirstSpiritManagedPage.integrateFsDrivenPages(
+               'campaign_page_without_header',
+               fromSlotList('BottomHeaderSlot', 'NarrowContentSection', 'WideContentSection', 'BottomNarrowSection', 'PreFooterSlot'))
+         ]
+      })
+   ]
+})
+export class AppModule { }
+----
+
+// ********************************************* Definition der Shop und FirstSpirit Driven Pages  *********************************************
+[[sp_installation_config_pages]]
+==== Definition of the Shop and {fsdp}s 
+For the maintenance of editorial content, the integration distinguishes between <<concept_pagestypes,Shop and {fsdp}s>>.
+They differ in the fact that the {sdp}s have a page both in {fs} and in the {ccloud}.
+In contrast, the {fsdp}s exist exclusively in {fs}.
+
+In order to enable the processing of these pages in the {wc}, they must be configured in the Bridge.
+The configuration differs depending on the page type.
+
+{sdp}s::
+In the case of {sdp}s, the name of the {ccloud} template and the editable slots as well as optionally a <<sp_installation_mergestrategies,merge strategy>> must be specified in the configuration.
+The mapping between the defined {ccloud} template and the {fs} template is done in the <<install_pset,project settings>>.
++
+[source,JavaScript]
+.Example configuration - {sdp}
+----
+firstSpiritManagedPages: [
+   FirstSpiritManagedPage.enhanceSapPages('StoreFinderPageTemplate', [
+      { name: 'BottomHeaderSlot' },
+      { name: 'MiddleContent', mergeStrategy: APPEND }
+   ])
+]
+----
+
+{fsdp}s::
+{fsdp}s exist exclusively in {fs} and do not have an associated page in the {ccloud}.
+They can either use the layout of a {sdp} or their own layout, which is defined in the Storefront.
+This distinction must also be considered in the configuration:
+In the first case, the UID of the {ccloud} page to be used, its PageType as well as the {fs} template and the editable slots must be specified.
+In the second case, only the {fs} template and the slots need to be specified.
+In both cases, the styling of the {fsdp}s is done in Angular, for example, in the `styles.scss` file of the Storefront.
++
+[source,JavaScript]
+.Example configuration - {fsdp}s
+----
+firstSpiritManagedPages: [
+
+   // Case 1: The FirstSpirit Driven Page uses the layout of a Shop Driven Page.
+   FirstSpiritManagedPage.integrateFsDrivenPagesIntoSapSkeleton(
+      'DummyCampaignPageWithHeader',
+      PageType.CONTENT_PAGE, 
+      'campaign_page_with_header',
+      fromSlotList('BottomHeaderSlot', 'Section1', 'Section2C', 'Section3', 'PreFooterSlot')),
+   
+   // Case 2: The FirstSpirit Driven Page uses a layout defined in the Storefront.
+   FirstSpiritManagedPage.integrateFsDrivenPages(
+      'campaign_page_without_header', 
+      fromSlotList('BottomHeaderSlot', 'NarrowContentSection', 'WideContentSection', 
+         'BottomNarrowSection', 'PreFooterSlot')
+   )
+]
+----
++
+The {ccloud} page specified in the first case must correspond to a <<sp_installation_dummy_page,dummy page>>, which is empty except for the desired layout.
+This means that it defines the layout and has, for example, a general header and footer, but does not contain any other content.
+Such a page is required for every layout that should be usable by {fsdp}s.
+The {sapblog}[SAP Blog] describes the creation of new pages in {sp}.
++
+[[b2clayoutconfig]]
+In the second case, the {fsdp} does not have a mapping to a {ccloud} page and therefore no layout of such a page is assigned to it.
+Thus the Storefront does not know which slots exist and in which order they should be output.
+To make this information available to the Storefront, the `b2cLayoutConfig` configuration must be extended as follows.
+The shown code snippet represents the configuration for the reference project.
++
+[NOTE]
+====
+On the {sp} side, there exist several general slots, which are output without additional configuration.
+Their specification is therefore only required in the bridge`s configuration, but not in the `b2cLayoutConfig` configuration.
+An example for this kind of slots is the `BottomHeaderSlot` from the previous code snippet.
+====
++ 
+[source,TypeScript]
+.Extension of the b2cLayoutConfig configuration
+----
+import {b2cLayoutConfig, LayoutConfig} from '@spartacus/storefront';
+
+const config: LayoutConfig = JSON.parse(JSON.stringify(b2cLayoutConfig));
+config.layoutSlots.footer['slots'].unshift('PreFooterSlot');
+
+config.layoutSlots.campaign_page_without_header = {
+  slots: ['NarrowContentSection', 'WideContentSection', 'BottomNarrowSection']
+ };
+ 
+export const customLayoutConfig = config;
+----
+
+[underline]#*Requirements on the {fs} side*#
+
+Both the Shop and the {fsdp}s require corresponding <<rp_pages,page templates in the {fs} project>> in which the input components `pt_seoUrl` and `pt_cc_identifier` must be configured.
+The input component `pt_seoUrl` enables the definition of an SEO url and must therefore be editable.
+In contrast, the input component `pt_cc_identifier` is a hidden component.
+It is filled automatically and ensures the accessibility of the page in the {wc}.
+
+In addition, it must be ensured that the content areas of the {fs} templates match the configured slots:
+For each defined slot, the page template must have a content area with *the same* name.
+Otherwise, the editorial content will be ignored by the Storefront and not be output in the live state.
+
+[NOTE]
+====
+The mapping between the configured slots and the content areas of the {fs} page templates is not case-sensitive.
+The names `Section1` and `section1` are therefore considered identical and are successfully mapped to each other.
+====
+
+// ********************************************* Merge-Strategien  *********************************************
+[[sp_installation_mergestrategies]]
+==== Merge strategies
+With the _{modulname}_ integration, the Storefront queries content from both the {ccloud} and the respective _{c}_ instance and links them together before delivery.
+Therefore it must be extended by the <<sp_installation_libraries,`fs-spartacus-bridge` library>>, which needs to be integrated and configured as described in the previous chapter.
+During configuration, a merge strategy can optionally be defined.
+This determines how the content that is maintained for a slot on both the {ccloud} and the {fs} side is merged.
+
+The following options are available:
+
+REPLACE::
+The merge strategy `REPLACE` is the default setting of the bridge and therefore does not need to be specified explicitly.
+It causes the content maintained in {fs} to overwrite the {ccloud} content contained in a slot.
+As a result, only the {fs} content is visible on the corresponding page.
+
+APPEND::
+If a page should show both the {ccloud} and {fs} content for a slot, it is possible to choose between the merge strategies `APPEND` and `PREPEND`.
+With the merge strategy `APPEND` the corresponding page displays the content maintained in {fs} *below* the {ccloud} content existing for a slot.
+
+PREPEND::
+The `PREPEND` merge strategy is equivalent to the `APPEND` option mentioned above.
+However, in this case, the page displays the {fs} content for a slot *above* the content coming from the {ccloud}.

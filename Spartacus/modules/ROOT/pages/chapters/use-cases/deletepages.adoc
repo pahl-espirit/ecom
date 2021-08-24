@@ -1,0 +1,16 @@
+[[uc_delete_pages]]
+=== Page deletion
+Within the progress of a project, some pages are only required for a certain time.
+After that, they are no longer needed and can be removed from the project.
+For this purpose the reference project provides the delete workflow of the _{bwfs}_.
+
+This workflow allows the removal of pages as well as media from the {fs} project.
+The deletion can be performed either directly or based on the principle of dual control.
+After deleting the corresponding element, the workflow releases the parent structure.
+The changes are thus directly transferred to the _Preview_ and the _Online {c}_.
+
+[NOTE]
+====
+The execution of the delete workflow requires both delete and release rights. 
+If the executing person is missing one of these rights, the workflow is not available.
+====

@@ -1,0 +1,9 @@
+=== Query Container
+The previously installed <sp_install_module,Cms Block Data Connector module>> creates a Zed table.
+During the import, the editorial contents determined from the _Online {c}_ are stored in this table.
+The CMS blocks are persisted in another table.
+
+Since the CMS blocks do not contain placeholders, they are not published by {sp} by default.
+For this reason, it is necessary to overwrite the `CmsBlockStorageQueryContainer` and thus adapt the standard behavior of {sp} for publishing CMS blocks.
+The query container is overwritten by creating the class `CmsBlockStorageQueryContainer.php`.
+It is part of the zip file `b2c-demo-shop-extensions-<VERSION>.zip` included in the delivery and must be copied into the directory `*src/Pyz/Zed/CmsBlockStorage/Persistence*` to be created.

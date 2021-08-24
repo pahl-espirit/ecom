@@ -1,0 +1,27 @@
+[[fs-partialdeployment]]
+=== Generation schedule - partial generation
+In addition to the <<fs-deployment,generation of the entire project>> there may be the requirement to publish only individual pages.
+This requires a partial generation.
+
+Therefore the reference project has the order _{sp} Partial Deployment_, which is created within the `*{manager}*` in the `*menu:Project properties[Schedule management]*` area.
+It is referenced by the <<fs-wf,release workflow>> described in the following and has the same actions as the <<<fs-deployment,full generation>> with exception of the _{c} Cleanup_ action.
+In conjunction with a partial deployment, the _{c} Cleanup_ action results in data loss in _{c}_ and may therefore only be used in the full generation schedule.
+
+Furthermore, the radio button `Perform partial generation for the following starting points` must be activated in the properties of the action _{c} Generate_.
+This setting has already been made in the schedule supplied with the reference project.
+
+.Actions of the partial generation
+image::partialdeploy_actions.png[]
+
+[IMPORTANT]
+====
+In case of an error, the action _Send Result Mail_ sends an e-mail with all relevant information to a recipient to be defined.
+The recipient's e-mail address must be specified in the field `e-mail distribution list` in the properties of the schedule.
+
+In addition, the `ChiefEditors` group within the reference project must be enabled to execute both full and partial generation.
+To do so, the group must be allowed to execute the `Interactive execution` in the properties of both schedules. 
+This setting has already been made in the schedules supplied.
+
+.Properties of the schedule
+image::deploy_groups.png[]
+====

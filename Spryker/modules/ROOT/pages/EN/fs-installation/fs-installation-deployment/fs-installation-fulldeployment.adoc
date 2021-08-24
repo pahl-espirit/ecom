@@ -1,0 +1,178 @@
+[[fs-deployment]]
+=== Generation schedule - full generation
+By default, releasing content does not update the _Online {c}_ and does not transfer data to {sp}.
+Instead, it only includes the {fs} release process, which can be mapped using the _{bwfs}_ release workflow, for example.
+An update of the _Online {c}_ as well as a data transfer to {sp} takes place only in the context of a deployment.
+
+The deployment of released editorial content is executed via a _{c}_ schedule.
+Therefore the {refproject_github}[reference project] has the schedule _{sp} Deployment_, which is created within the `*{manager}*` in the `*menu:Project properties[Schedule management]*` area.
+It can be started using the `*Publication*` action available in {cc} and contains the following actions:
+
+[[img_deploy_actions]]
+.Actions of the full generation
+image::deploy_actions.png[]
+
+The schedule executes a full generation and transfers the data to the _Online {c}_, which provides it to {sp} for import.
+The actions _Initialize {c} Generation_, _{c} Generate_, _{c} Cleanup_ and _Finalize {c} Generation_ are used to fill the _Online {c}_.
+They are described in the _{caasdoc}_.
+
+The actions <<fs-deployment-media,_Execute Publish Media to CDN_>>, <<fs-deployment-aggregations,_Setup {c} Blocks Aggregations_>>, <<fs-deployment-spryker-import,_Trigger {sp} Import_>>, <<fs-deployment-fetch-spryker-logs,_Trigger Fetch {sp} Logs_>>,
+<<fs-deployment-spryker-cleanup,_Trigger {sp} Cleanup_>>, and <<fs-deployment-spryker-sendmail,_Send Result Mail_>> extend the schedule and are described in the following chapters.
+
+[IMPORTANT]
+====
+In case of an error, the action _Send Result Mail_ sends an e-mail with all relevant information to a recipient to be defined.
+The recipient's e-mail address must be specified in the field `e-mail distribution list` in the properties of the schedule.
+
+In addition, the `ChiefEditors` group within the {refproject_github}[reference project] must be enabled to execute a full generation.
+To do so, the group must be allowed to execute the `Interactive execution` in the properties of the schedule.
+This setting has already been made in the schedule supplied.
+
+.Properties of the schedule
+image::deploy_groups.png[]
+====
+
+// ********************************************* Execute Publish Media to CDN *********************************************
+[[fs-deployment-media]]
+==== Execute Publish Media to CDN
+Unlike the content created with {fs}, the released media is not transferred to the _{c}_, but to the CDN provided by the {creator}.
+Therefore the schedule contains the script action _Execute Publish Media to CDN_.
+
+[source,Java]
+.Execute Publish Media to CDN
+----
+import de.espirit.firstspirit.access.AdminService;
+
+String SCHEDULER_NAME = "Media Deployment";
+
+connection = context.getConnection();
+adminService = connection.getService(AdminService.class);
+
+scheduleStorage = adminService.getScheduleStorage();
+scheduleEntry = scheduleStorage.getScheduleEntry(context.getProject(), SCHEDULER_NAME);
+
+if(scheduleEntry != null) {
+   control = scheduleEntry.execute();
+   control.awaitTermination();
+   isSuccessful = 
+      control.state.state.equals(de.espirit.firstspirit.access.schedule.RunState.SUCCESS);
+   if(!isSuccessful){
+      context.logWarning(SCHEDULER_NAME + " Completed with errors!");
+   }
+   context.logInfo("Schedule Entry executed...");
+} else {
+   context.logError("Could not find schedule entry with name" + SCHEDULER_NAME);
+}
+----
+
+The script triggers the <<fs-mediadeployment,media generation>> schedule, which is also included in the supplied {refproject_github}[reference project].
+The script contains the variable `SCHEDULER_NAME`, which has the name of the schedule as its value.
+If the name changes, it must also be adjusted accordingly here.
+
+// ********************************************* Setup CaaS Blocks Aggregations *********************************************
+[[fs-deployment-aggregations]]
+==== Setup {c} Blocks Aggregations
+By default, _{c}_ stores and delivers the content transferred from {fs} page-based.
+However, the processing and persistence of editorial content in {sp} is done on the basis of CMS blocks, each corresponding to a {fs} section.
+In order to resolve this discrepancy, the data stored in the _Online {c}_ must be prepared accordingly, before importing.
+For this reason, an aggregation must only be added to all collections of the _Online {c}_.
+This adjustment is not necessary for the _Preview {c}_, since the information in the preview is obtained directly from it and no processing takes place in {sp}.
+
+The schedule contains the script action _Setup {c} Blocks Aggregations_ to create the aggregations.
+
+[source,Java]
+.Setup {c} Blocks Aggregations
+----
+#!executable-class
+com.espirit.ecom.contentconnect.spryker.module.caas.BlocksAggregationSetupExecutable
+----
+
+The script executes a PUT request for the configured collections of the _Online {c}_.
+This generates the aggregations that are used to make all CMS blocks contained in the extended collections available for {sp} to import.
+For this, the script requires the list of the relevant collections, which can be passed to it using the optional parameter `caas_collections`.
+
+By default, the parameter has the value `contentpages;categorypages;productpages;technical` and therefore does not need to be configured in the {refproject_github}[reference project].
+To overwrite the default value, the parameter `caas_collections` needs to be added in the script's properties dialog.
+Its value must correspond to a list of all collections, separated by semicolons, for which an aggregation is to be created.
+
+.Configuration parameter
+image::deployparams.png[]
+
+// ********************************************* Trigger Spryker Import *********************************************
+[[fs-deployment-spryker-import]]
+==== Trigger {sp} Import
+In {fs}, the creation and editing of editorial content takes place in the {cc}.
+After release, they are transferred by deployment to the _Online {c}_ and imported from there by {sp} to be integrated into the shop.
+In order to keep the contents always up-to-date in {sp}, the import process must be triggered by the deployment. 
+Therefore, the schedule contains the script action _Trigger {sp} Import_.
+The script activates a import job on {sp} side, which in turn triggers the import and persistence of the contents stored in the _Online {c}_.
+
+[source,Java]
+.Trigger {sp} Import
+----
+#!executable-class
+com.espirit.ecom.contentconnect.spryker.module.trigger.triggerimport.TriggerImportExecutable
+----
+
+[NOTE]
+====
+When using the {sp} B2C Demo Shop, the import may fail when accessing the `access-tokens` endpoint with a `Response Code 500`.
+In this case, the key files `dev_only_private.key` and `dev_only_public.key` within the directory `*data/shop/development/current/config/Zed*` must receive the authorization `600` or `660` respectively.
+====
+
+[NOTE]
+====
+References to categories or products that have been deleted or are inactive in {sp} will result in errors and warnings during import.
+Errors occurring in this context and recorded in the {sp} log are transferred to the {fs} log by the following action.
+====
+
+// ********************************************* Trigger Fetch Spryker Logs *********************************************
+[[fs-deployment-fetch-spryker-logs]]
+==== Trigger Fetch {sp} Logs
+Deleting or deactivating categories or products in {sp} that are referenced in the {fs} project leads to errors and warnings during the import.
+However, by default these are only recorded in the {sp} log.
+To provide all information about a release in one place, the errors and warnings must also be recorded in the {fs} log.
+Therefore, the schedule contains the script action _Trigger Fetch {sp} Logs_.
+It determines all errors and warnings for missing categories and products from the {sp} log and transfers them as warnings to the {fs} log.
+Operational managers are thus given the opportunity to react quickly to the outdated references in the {fs} project.
+
+[source,Java]
+.Trigger Fetch {sp} Logs
+----
+#!executable-class 
+com.espirit.ecom.contentconnect.spryker.module.trigger.triggerfetchlogs.TriggerFetchLogsExecutable
+----
+
+
+
+// ********************************************* Trigger Spryker Cleanup *********************************************
+[[fs-deployment-spryker-cleanup]]
+==== Trigger {sp} Cleanup
+The creation and editing of editorial content takes place in {fs} before it is transferred to the _Online {c}_ via deployment and imported from there by {sp}.
+In order to keep the data in both systems up-to-date, deleted content from the {fs} project must also be removed on the {sp} side.
+Therefore, the schedule contains the script action _Trigger {sp} Cleanup_.
+The script triggers a comparison between the contents stored in the _Online {c}_ and persisted in the {sp} data system.
+In this way, the obsolete data can be determined on the {sp} side and then removed.
+
+[source,Java]
+.Trigger {sp} Cleanup
+----
+#!executable-class 
+com.espirit.ecom.contentconnect.spryker.module.trigger.triggercleanup.TriggerCleanupExecutable
+----
+
+// ********************************************* Send Result Mail *********************************************
+[[fs-deployment-spryker-sendmail]]
+==== Send Result Mail
+In most cases, the deployment of the content created or edited in {fs} is performed via the {cc}.
+However, the {cc} does not inform the editor whether a publication was successful or failed.
+Therefore, the schedule contains the script action _Send Result Mail_.
+In case of an error, this action sends an e-mail with all relevant information to the recipient defined in the `e-mail distribution list` field in the schedule's properties.
+Additionally the e-mail contains the possibility to forward these information to the Technical Support of the {creator}.
+
+[source,Java]
+.Trigger {sp} Cleanup
+----
+#! executable-class
+com.espirit.ecom.contentconnect.spryker.module.schedule.ReviewScheduleResultExecutable
+----

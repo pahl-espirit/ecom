@@ -1,0 +1,181 @@
+[[rp_links]]
+=== Links
+The editorial contents maintained in {fs} can contain the following references, which link them with other contents.
+They are based on various link templates that are already included in the {refproject_github}[reference project].
+
+All link templates exist twice because they differ in the way they are integrated:
+In contrast to the general references, the DOM references can only be used within DOM Editors - according to their name.
+
+Category and product link::
+The _{modulname}_ module provides a report for products and categories in {cc}.
+They serve to display the category and product information coming from {sp}, which can be used for links to category or product detail pages.
++
+Therefore, the reference project contains the link templates {category_link}[`category_link`] and {product_link}[`product_link`] as well as {category_link_dom}[`dom_category_link`] and {product_link_dom}[`dom_product_link`], which correspond to a category or product link.
+They enable category or product detail pages to be referenced and are equivalent to each other.
++
+[NOTE]
+====
+In contrast to a category, a referenced product is identified by its sku and not by the node ID.
+====
+
+Content page link::
+The link templates {content_link}[`content_link`] and {content_link_dom}[`dom_content_link`] contained in the reference project correspond to a content page link.
+This allows referencing <<rp_staticsite,static pages>> and <<rp_contentpage,dynamic content pages>> maintained within the {fs} project.
+Within the reference project, the selection of the link target is therefore restricted to page references in the structure folder `content_pages`.
++
+[NOTE]
+====
+For editors it is not obvious whether a link target is a dynamic content page or a static page.
+However, since static pages do not have a URL by default, links to them would generally not be possible.
+The <<fs-projectsettings,project settings>> therefore provide a way of assigning a URL to them.
+The technical adjustments made in the reference project are described in the following <<rp_staticcontentlinks,subchapter>>.
+====
+
+Magazine article link::
+The reference project contains the link templates {magazine_link}[`magazine_article_link`] and {magazine_link_dom}[`dom_magazine_article_link`], which correspond to a magazine article link.
+Like the content page link, it enables the referencing of editorial content maintained within the {fs} project.
+In contrast to this, the magazine article link refers to <<rp_magazine,magazine articles>> according to its name.
+
+External link::
+Just like the content page link and the magazine article link described above, the {external_link}[external link] enables the referencing of editorial content.
+However, in contrast to them it refers exclusively to external content.
+
+Search link::
+The reference project contains the link templates {search_link}[`search_link`] and {search_link_dom}[`dom_search_link`], which correspond to a search link.
+It enables the linking of a search result page to a defined search term.
+
+All of the link templates for the {dom_links}[DOM references] contain in their output channel a call to the corresponding <<sp_widgets,widget>> which controls the {sp}-side output of the reference.
+This way, the HTML for the reference is generated automatically. 
+A project-specific adaptation of the HTML is not possible.
+
+[source,XML]
+.Widget call within the DOM category reference
+----
+{% widget 'FirstSpiritCategoryLinkWidget' args [$CMS_VALUE(lt_category.values[0].getNodeId)$, "$CMS_VALUE(lt_linkText.convert2)$"] only %}{% endwidget %}
+----
+
+In contrast, the link templates for {general_links}[general references] only contain the definition of two parameters.
+They thus follow the same concept as the page and section templates.
+In this way, only the URL of the reference is generated and the HTML is freely definable on the {sp} side.
+
+[source,XML]
+.Parameter definition within the category reference
+----
+$CMS_SET(set_id)$
+   $CMS_VALUE(lt_category.values[0].getNodeId)$
+$CMS_END_SET$
+$CMS_SET(void, set_link.put("id", set_id.toString()))$
+$CMS_SET(void, set_link.put("type","category"))$
+----
+
+Processing the general references is controlled by the `link.twig` Twig template, which is part of the <<sp_modules,{fs}Preview module>> and determines the corresponding URL based on the reference type.
+
+[source,XML]
+.Twig template link.twig
+----
+{% define data = {link: link} %}
+{%- if data.link.type is defined -%}
+   {%- set type = data.link.type -%}
+   {%- if data.link.id is defined and data.link.id is not empty -%}
+      {%- set id = data.link.id -%}
+      {%- if  type == "cmspage" -%}
+         {%- set url = getCmsPageUrl(id) -%}
+      {%- elseif type == "category" -%}
+         {%- set url = getCategoryPageUrl(id) -%}
+      {%- elseif type == "product" -%}
+         {%- set url = getProductPageUrl(id) -%}
+      {%- endif -%}
+   {%- else -%}
+      {%- if type == "search" -%}
+         {%- set url = path('search') ~ '?q=' ~ data.link.query -%}
+      {%- elseif type == "external" -%}
+         {%- set url = data.link.url -%}
+      {%- elseif type == "static" -%}
+         {%- set url = data.link.url -%}         
+      {%- endif -%}
+   {%- endif -%}
+{%- endif -%}
+
+{%- if url is defined and url is not null -%}
+   {{- url -}
+}{%- endif -%}
+----
+
+The Twig template is called in the individual components that represent the {fs} sections in {sp}:
+
+[source, PHP]
+.Example call for the Twig template link.twig
+----
+ <a href="{% include template('link', 'FirstSpiritPreview') with { link: data.fsBlockData.link } %}">
+----
+
+Alternatively, the Twig functions for determining the general references can also be called directly:
+
+[source,PHP]
+.calls of the Twig functions to determine the general references
+----
+{% set url = getCmsPageUrl(cms_page_id) %}
+{% set url = getProductPageUrl(productId) %}
+{% set url = getCategoryPageUrl(categoryId) %}
+----
+
+[[rp_staticcontentlinks]]
+==== Content page links to static pages
+When creating content page links, editors are not able to see any difference between static and dynamic pages.
+However, since static pages do not have a URL by default, links to them would generally not be possible.
+The <<fs-projectsettings,project settings>> therefore provide a way of assigning a URL to them.
+For this purpose, the project settings contain the FS_CATALOG `ps_staticLinks`, which is filled via the btn:[Static Page Templates Import] button.
+
+[NOTE]
+====
+A future modification of the URLs defined in the project settings requires the execution of both the <<fs-deployment,full generation>> and the <<fs-previewdeployment,preview generation>>.
+====
+
+The button btn:[Static Page Templates Import] calls the executable `ProjectPropertiesStaticPageUrlListExecutable` which determines the content of the {static_pages_github}[template folder `static_pages`].
+For each template contained in this folder it adds an entry to the FS_CATALOG based on the technical {static_pages_section}[section template `static_page_url`].
+Every entry contains a reference to the respective template and a language-dependent field for the relative URL to be defined.
+
+For creating the entries and referencing the templates automatically within these entries, the button has the following parameters, 
+which are predefined within the {refproject_github}[reference project]:
+
+* *staticPageCatalog*: This parameter defines the FS_CATALOG component in the project settings.
+* *staticPageUrlTemplateUid*: This parameter specifies the reference name of the technical section template on which the entries in the FS_CATALOG are created.
+* *staticPageTemplateFolder*: This parameter defines the reference name of the template folder that contains all templates for static pages.
+* *pageTemplateFsReference*: The name of the FS_REFERENCE component from the technical section template is assigned to this parameter for referencing the static page templates automatically.
+
+To enable content page links to static pages, the URLs defined in the project settings must be available in the link templates.
+Therefore, the {project_settings_caas_channel}[output channel] of the project settings contains the following code that stores the URL of a static page template in the variable `set_ps_staticLinks`.
+
+[source, JAVA]
+.output channel of the project settings
+----
+$CMS_SET(set_ps_staticLinks,{:})$
+$CMS_FOR(for_staticLink,ps_staticLinks.filter(x->!x.item.st_pageTemplate.isEmpty))$
+   $CMS_SET(void, set_ps_staticLinks
+      .put(
+         for_staticLink.item.st_pageTemplate.get.uid,
+         for_staticLink.item.st_url.convert2
+      )
+   )$
+$CMS_END_FOR$
+$CMS_SET(set_ps_contentPageList,["contentpage"])$
+----
+
+Within the reference project the variable is queried in the {content_link_caas_channel}[output channel] of the content page link.
+This way editors do not have to distinguish between static and dynamic content pages when selecting a link target.
+
+[source,JAVA]
+.Code snippet of the content page link
+----
+$CMS_SET(set_pageUid,lt_pageRef.get().page.template.uid)$
+$CMS_IF(set_pageUid == "contentpage")$
+[...]
+$CMS_ELSIF(!set_ps_staticLinks.isEmpty)$
+   $CMS_IF(set_ps_staticLinks.containsKey(set_pageUid) && !set_ps_staticLinks.get(set_pageUid).isEmpty)$
+      $CMS_SET(void, set_link.put("url", set_ps_staticLinks.get(set_pageUid)))$
+      $CMS_SET(void, set_link.put("type","static"))$
+      [...]
+   $CMS_END_IF$
+   [...]
+$CMS_END_IF$
+----

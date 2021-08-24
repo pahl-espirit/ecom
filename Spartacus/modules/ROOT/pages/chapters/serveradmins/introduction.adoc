@@ -1,0 +1,81 @@
+== Introduction
+Customers' expectations of modern e-commerce shop systems are becoming increasingly diverse:
+In addition to the pure display of product catalogs, they must provide customers with unique and personalized shopping experiences.
+Thereby, customers want to be addressed via all channels and devices used by them.
+The number of touchpoints used is therefore unlimited.
+
+The _{modulname} (Headless) for SAP {ccloud}_ integration links the Digital Experience Platform {fs} with the e-commerce shop system SAP {ccloud} in combination
+with the {storefront}[{sp} Storefront].
+It thus creates a powerful overall system that combines the functional advantages of these systems and enables the delivery of modern and personalized content.
+
+This document is intended for server administrators and therefore only describes the installation and configuration of the module as well as the import of the reference project on the {server}.
+All steps to be performed in the project and the functionalities provided with the integration are described in the _{spartacusdocen}_.
+
+[NOTE]
+====
+If the expression "{ccloud}" is used in the remainder of this documentation, this refers to SAP {ccloud} in all cases. +
+This also applies to the short form "{modulname}", which within this documentation always refers to the _{modulname} (Headless) for SAP {ccloud}_ integration.
+
+Furthermore, the entire document is geared towards connecting to the {storefront}[{sp} Storefront].
+Mention of the Storefront refers to the {sp} Storefront in all cases.
+====
+
+// *********************** Funktionsumfang *********************** //
+=== Range of functions
+_{modulname}_ allows to:
+
+// * Extension of the shop navigation
+* Access to product and category information
+* Creation of new editorial content
+* Display shop elements and editorial content in the {fs} preview simultaneously
+* Delivery of content to any touchpoints
+
+The corresponding functions are made available when the module is installed and configured within the WYSIWYG client.
+
+Familiar {fs} tools are used to maintain the content, meaning that editors who are already familiar with {fs} do not require any additional knowledge - especially not about the e-commerce shop system.
+The content is made available to the Storefront using the {c} and is delivered by the Storefront in combination with the content from the {ccloud}.
+
+This means that within the newly created overall system there is no difference for the delivery of editorial content.
+It is still carried out by the storefront.
+Even if the {fs} server is maintained, this affects neither the Storefront nor the {ccloud}.
+
+
+// *********************** Architektur *********************** //
+=== Architecture
+By default, the SAP shop architecture consists of the {ccloud} and the {storefront}[{sp} Storefront].
+While, in this system, the {ccloud} provides all shop functionalities and persists all shop contents, the {sp} Storefront delivers these contents.
+
+With the _{modulname} (Headless) for SAP {ccloud}_ solution, {fs} and the {caasproden}[{c}] integrate into this architecture and extend the shop functionalities of the {ccloud}.
+The integration thus creates an overall system that combines the functional strengths of the individual systems.
+Within this overall system {fs} and the {ccloud} represent the backend, while the {c} forms the middleware and the storefront is the front end.
+
+The following graphic shows the high-level architecture of this overall system:
+
+.High-level architecture
+image::images/sp_architecture_simple.png[]
+
+Within the newly created overall system, the Storefront continues to deliver the content, which it by default obtains from the {ccloud}.
+In addition, it queries the contents of the respective {c} instance and links them with those of the {ccloud}.
+For this purpose it is extended by the `fs-spartacus-bridge` library.
+
+In contrast to the delivery of the contents, their creation and maintenance shifts from the {ccloud} to {fs}.
+With the {wc}, {fs} provides an intuitive WYSIWYG client for this purpose.
+The so-called {tppdocen}[_{ocm}_] (OCM) is integrated into this client, which allows the preview and editing of external content in the {wc} (see figure <<img_architecture2>>).
+
+By embedding the Staged Storefront in the {ocm}, the editors are provided with a combined preview of the contents, which in this case originate from the preview {c} and the {ccloud}.
+This way, the editors get the possibility to edit already existing shop pages in the {wc}.
+For this purpose, a variety of different components, such as shoppable videos, are available for them.
+
+Product and category information is provided via a report in the {wc}.
+This report accesses the Product Catalog via the {ccloud}'s `CMS WebServices` interface and thus determines the necessary data.
+
+The transfer of the created or modified content to the online {c} is done with each release.
+The {c} persists the content in JSON format in the form of content fragments and makes them available to the Storefront, which integrates them into the shop together with the {ccloud} contents.
+In order to display content originating from the reference project, the Storefront must include the `fs-spartacus-view-components` library in addition to the bridge.
+
+The overall system of {fs}, {sp} and the {ccloud} thus has an architecture in which the editorial backend of {fs} is clearly separated from the Storefront.
+A maintenance of {fs} affects neither the Storefront nor the {ccloud}.
+
+[[img_architecture2]]
+.Low-level architecture
+image::images/sp_architecture.png[]

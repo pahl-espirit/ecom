@@ -1,0 +1,77 @@
+[[fs_pcomp]]
+=== Configuration of the project component
+A project-specific configuration is necessary for the use of the _{modulname}_ module.
+This is done via the project component, which is already added to the supplied {refproject_github}[reference project].
+
+[IMPORTANT]
+====
+To use the _{modulname}_ module, the _{caas}_ module must also be configured.
+The necessary steps are described in the _{caasdocen}_.
+
+For the media usage, the generation of media into the _{c}_ has been defined in the _{c}_ project component.
+This configuration is explicitly *not* to be used in productive operation.
+For productive operation, the media usage must be converted to the use of a CDN.
+====
+
+To configure the project component, open the `*{manager}*` and select `*menu:Project properties[Project components]*`.
+
+.Server properties - Project components
+image::projectcomponents.png[]
+
+The main panel displays a list of all existing project components.
+Select `{modulname} for {fs} {os} Project Configuration` and open the corresponding configuration dialog via btn:[Configure].
+
+The dialog is divided into the tabs `*General*`, `*Preview*`, `*Publication*`, and `*YouTube*`:
+
+[underline]#*General*#
+
+Within the tab `*General*`, the `Storefront Base URL` and the `Glue-API Base URL` have to be specified.
+They have to be assigned to the {fs} server to connect to {sp} and retrieve data.
+
+.Project component - General
+image::pcomp_general.png[]
+
+[underline]#*Preview*#
+
+Within the `*Preview*` tab, the login path is required first.
+The corresponding field contains the default value `/firstspirit_login_check`, which can be adjusted if necessary.
+
+Furthermore, the login data of a technical user must be entered in this tab.
+This must correspond to the <<sp_customer,Customer>> defined during the steps to be performed on the {sp} side.
+In {sp}, it is used to query the storefront, which is included in the {cc} using the _{ocm}_.
+
+.Project component - Preview
+image::pcomp_preview.png[]
+
+[underline]#*Publication*#
+
+The `*Publication*` tab contains a list of all groups and full deployment schedules available in the project.
+It allows the selected deployment schedule to be provided in the `*Actions*` menu in the {cc}s for the groups selected in the tab.
+The `*Actions*` menu contains the `*Publication*` menu item for executing the schedule.
+For groups that are not allowed to execute the schedule, the entry is visible but disabled.
+
+Within the supplied reference project, the ChiefEditors can be enabled to execute the <<fs-deployment,full deployment>> in this way, for example.
+
+Furthermore, the <<fs-wf-adaptions,release>> and the <<fs-wf-adaptions,delete workflow>> use the selected schedule 
+if the publication of the entire project should be triggered additionally to the release or deletion of a page.
+
+[NOTE]
+====
+Server and project administrators are allowed to execute the full deployment by default, regardless of the configuration within the tab.
+====
+
+.Project component - Publication
+image::pcomp_deployment.png[]
+
+[underline]#*YouTube*#
+
+The reference project provided contains a <<rp_section,Shoppable video paragraph>>.
+It allows to display and reference products at defined times in a YouTube video.
+The usage of the paragraph requires a https://developers.google.com/youtube/v3/getting-started#before-you-start[`Google API Key`], which has to be entered here.
+
+In addition, one or more `Channel Ids` can be specified, separated by commas.
+As soon as the field contains an Id, the video selection will show a dropdown.
+This allows to reference a YouTube video from a specific channel.
+
+.{p_comp} - YouTube
+image::pcomp_youtube.png[]

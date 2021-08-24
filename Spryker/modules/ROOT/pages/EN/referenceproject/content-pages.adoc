@@ -1,0 +1,216 @@
+[[rp_contentpage]]
+=== Creation of dynamic content pages
+In addition to the extension of existing <<rp_staticsite,static pages>> or <<rp_categorypages,category pages>>, the _{modulname}_ module allows the creation of dynamic content pages.
+These correspond, for example, to the imprint, the data security explanation or the general terms and conditions.
+Just like the other pages, the dynamic content pages can also be displayed in {cc} using the _{ocm}_ and enriched with editorial content. 
+However, since the dynamic pages are newly created and not only extended, they are initially empty, unlike the other pages.
+
+To create the dynamic content pages, it is also necessary to fill the output channel of the <<rp_dcp_pagetemp,page template>> within the {fs} project.
+In addition, the existence of the <<sp_twigtemplates,Twig template `fs-content-page.twig`>> is assumed in {sp}.
+The template is part of the zip file `b2c-demo-shop-extensions-<VERSION>.zip` included in the delivery.
+
+The section templates contained in the reference project are allowed for all pages.
+For this reason, no additional extensions are required that go beyond the requirements already described for the <<rp_section,Shoppable Video section>>.
+
+// ********************************************* Seitenvorlage *********************************************
+[[rp_dcp_pagetemp]]
+==== Page template
+Just like <<rp_staticsite,static pages>> and <<rp_categorypages,category pages>>, the maintenance of dynamic content pages in the {fs} project is based on a page reference.
+However, in contrast to the other pages that already exist in the project, dynamic content pages are created using the familiar editing process.
+For this reason, they are initially empty.
+
+The creation of the page reference in the {cc} triggers an event of the _{ocm}_, which triggers the creation of the corresponding CMS page in {sp}.
+This is necessary for displaying the CMS page in the preview.
+
+[IMPORTANT]
+====
+New dynamic content pages must be created in the _Content Pages_ structure folder.
+This ensures their storage in the corresponding _{c}_ collection and thereby their automatic creation in {sp}.
+====
+
+[NOTE]
+====
+Under certain circumstances it is possible that the {fs} project contains a dynamic content page for which there is no CMS page on the {sp} side.
+In this case, the first time the content page is called in the {cc}, the _{ocm}_ event is also triggered, which triggers the creation of the corresponding CMS page in {sp}.
+====
+
+The reference project contains the page template `contentpage`.
+It is an example for dynamic content pages and maps the <<sp_twigtemplates,Twig template `fs-content-page.twig`>>, which has to be created on the {sp} side.
+
+Within the {contentpage_caas_channel}[output channel] of the page template, various general information is first defined and stored in the JSON object of the _{c}_ item to be generated:
+The `previewId` serves to identify the page reference and allows its decoration in the {cc} as well as its mapping to the {sp} Twig template.
+The automatically determined name and path of this template are specified using the fields `template_name` and `template_path`.
+The page reference is identified using the <<sp_basetemp, JavaScript of the _{ocm}_>>.
+
+[TIP]
+====
+In addition to the name of the Twig template, the ID of the corresponding CMS page is also determined automatically.
+It is stored in a hidden input component of the {fs} page template.
+Since the ID is only required for the preview and is read directly from the page form, it is not required within the _{c}_ item.
+====
+
+In addition, the `pagetype` parameter is used to define the page type.
+In the case of dynamic content pages, the field must have the value `cmspage`.
+
+The `is_active` and `store_names` fields indicate that the Twig template represented by the page is active on the {sp} side and visible in the store selected in the <<fs-projectsettings,Project settings>>.
+The `is_searchable` field can also be used to configure whether the page can be searched by its name in {sp}.
+In contrast to the `previewId`, which only serves for the preview, the unique `identifier` also allows the referencing of the _{c}_ item on {sp} side.
+
+[source, XML]
+.Definition of general information in the output channel of the page template
+----
+$CMS_SET(json, {:})$
+$CMS_SET(previewId, previewId(element:#global.node))$
+$CMS_SET(void, json.put("previewId", "" + previewId))$
+$CMS_SET(void, json.put("template_name", pt_cmsPageTemplateName))$
+$CMS_SET(void, json.put("template_path", "@Cms/templates/fs-content-page/fs-content-page.twig"))$
+$CMS_SET(void, json.put("pagetype", "cmspage"))$
+$CMS_SET(void, json.put("is_active", "1"))$
+$CMS_SET(void, json.put("store_names", [ps_activeStore]))$
+$CMS_SET(void, json.put("is_searchable", "1"))$
+$CMS_SET(void, json.put("identifier", #global.node.uid))$
+----
+
+In addition to the general information, the `localizedAttributes` array is used to pass specific information to the JSON object, which {sp} requires for each content page.
+They are used to define various metadata, a page name, and the URL at which the page will be accessible in {sp}.
+While the various metadata can optionally be entered by the editor in the form of the page, the URL is a language-dependent mandatory field.
+It must have the structure `/language abbreviation/subpath`, with the language abbreviation automatically prefixed to the URL during generation.
+The importer expects this information in the context of the current language. 
+For this reason, the corresponding language abbreviation, which is passed to each attribute, is determined. 
+
+[source, XML]
+.Definition of specific information
+----
+$CMS_SET(locale, #global.language.getLocale())$
+$CMS_SET(localeAbbr, locale.getLanguage() + "_" + locale.getCountry())$
+
+$CMS_SET(attributes, {:})$
+$CMS_IF(pt_url != null && !pt_url.isEmpty())$
+   $CMS_SET(url, "/" + locale.getLanguage() + if(!pt_url.startsWith("/"), "/") + pt_url.convert2)$
+   $CMS_SET(void, attributes.put("url", {localeAbbr: url}))$
+$CMS_ELSE$
+   $CMS_SET(void,#global.logError(
+      "Missing url for contentpage " + #global.node.uid + ". Contentpages without url can't create and generate."))$
+   $CMS_SET(#global.stopGenerate,true)$
+$CMS_END_IF$
+$CMS_SET(pageName, #global.page.getDisplayName(#global.language))$
+$CMS_SET(void, attributes.put("name", {localeAbbr: if(pageName.toString() != null, pageName, "")}))$
+$CMS_SET(void, attributes.put("meta_title", {localeAbbr: if(!pt_metaTitle.isEmpty, pt_metaTitle.convert2, "")}))$
+$CMS_SET(void, attributes.put("meta_description", {localeAbbr: if(!pt_metaDescription.isEmpty, pt_metaDescription.convert2, "")}))$
+$CMS_SET(void, attributes.put("meta_keywords", {localeAbbr: if(!pt_metaKeywords.isEmpty, pt_metaKeywords.convert2, "")}))$
+$CMS_SET(void, json.put("localizedAttributes", attributes))$
+----
+
+The page template for dynamic content pages contains the two content areas `content_top` and `content_body`.
+They enable the creation of editorial content, for which different section templates are available in the reference project.
+Their contents are added one after the other to the JSON object `json` created in the template.
+
+[source, XML]
+.Determination of editorial content
+----
+$CMS_SET(blocks, [])$
+$CMS_VALUE(#global.page.body("content_top"))$
+$CMS_SET(contentTopBlocks, [])$
+$CMS_SET(void, contentTopBlocks.addAll(blocks))$
+
+$CMS_SET(blocks, [])$
+$CMS_VALUE(#global.page.body("content_body"))$
+$CMS_SET(contentBodyBlocks, [])$
+$CMS_SET(void, contentBodyBlocks.addAll(blocks))$
+
+$CMS_SET(resultingBlocks, [])$
+$CMS_SET(void, resultingBlocks.addAll(contentTopBlocks))$
+$CMS_SET(void, resultingBlocks.addAll(contentBodyBlocks))$
+$CMS_SET(void, json.put("blocks", resultingBlocks))$
+----
+
+Unlike <<rp_staticsite,static pages>> and <<rp_categorypages,category pages>>, dynamic content pages have so-called placeholders.
+These correspond to the content areas of the {fs} page template and contain only references to the CMS blocks assigned to them.
+After the editorial content has been entered, these references are created for each content area.
+
+[NOTE]
+====
+The placeholders must also be created in the case of empty content pages.
+This is especially necessary for the initial creation of the pages.
+====
+
+[source, XML]
+.Creation of the block references
+----
+$CMS_SET(placeholder, {:})$
+$CMS_SET(contentTopPlaceholder, "")$
+
+$CMS_IF(!contentTopBlocks.isEmpty())$
+   $CMS_FOR(contentTopBlock, contentTopBlocks)$
+      $CMS_SET(contentTopPlaceholder, contentTopPlaceholder + "{{ fsSpyCmsBlock({name: '" + contentTopBlock.get("block_name") + "'}) }}\n")$
+   $CMS_END_FOR$
+$CMS_END_IF$
+
+$CMS_SET(contentBodyPlaceholder, "")$
+$CMS_IF(!contentBodyBlocks.isEmpty())$
+   $CMS_FOR(contentBodyBlock, contentBodyBlocks)$
+      $CMS_SET(contentBodyPlaceholder, contentBodyPlaceholder + "{{ fsSpyCmsBlock({name: '" + contentBodyBlock.get("block_name") + "'}) }}\n")$
+   $CMS_END_FOR$
+$CMS_END_IF$
+
+$-- Placeholders values have to exist in Spryker for synchronization purposes, therefore allowing even empty placeholder values for online CaaS --$
+$CMS_IF(!contentTopPlaceholder.isEmpty() || #global.isRelease())$
+   $CMS_SET(void, placeholder.put("content_top", {localeAbbr: contentTopPlaceholder}))$
+$CMS_END_IF$
+$CMS_IF(!contentBodyPlaceholder.isEmpty() || #global.isRelease())$
+   $CMS_SET(void, placeholder.put("content_body", {localeAbbr: contentBodyPlaceholder}))$
+$CMS_END_IF$
+
+$CMS_SET(void, json.put("placeholder", placeholder))$
+$CMS_VALUE(json.toJSON)$
+----
+
+
+// ********************************************* Twig-Template *********************************************
+[[rp_dcp_twigtemp]]
+==== Twig template
+In {sp}, the <<sp_twigtemplates,Twig template `fs-content-page.twig`>> represents a dynamic content page.
+Unlike <<rp_staticsite,static pages>> and <<rp_categorypages,category pages>>, dynamic content pages have placeholders.
+To make the placeholders editable in {cc}, it is necessary to use the Twig function `fsSpyCms` to include them.
+
+Each placeholder represents a content area of the corresponding <<rp_dcp_pagetemp,{fs} page template>>.
+For this reason, the name of the placeholder and the name of the content area must be identical.
+Each of the content areas can contain any number of <<rp_section,sections>>, for which a Twig template must also exist in {sp}.
+
+The {contentpage_caas_channel}[{fs} page template `contentpage`] contained in the reference project is an example for dynamic content pages.
+It has the content areas `content_top` and `content_body` and maps the Twig template `fs-content-page.twig`.
+
+Within the Twig template, specific metadata and the page title are first defined.
+Then the output of the two placeholders `content_top` and `content_body` is handled within the blocks `title` and `content`.
+They reference the CMS blocks assigned to them, which in turn control the output of the editorial content.
+
+The following code example shows the content of the template.
+
+[source,PHP]
+.Twig template fs-content-page.twig
+----
+{% extends template('page-layout-main') %}
+
+{% define data = {
+   title: _view.pageTitle | default('global.spryker.shop' | trans),
+   metaTitle: _view.pageTitle | default('global.spryker.shop' | trans),
+   metaDescription: _view.pageDescription | default(''),
+   metaKeywords: _view.pageKeywords | default('')
+} %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block title %}
+   <!-- CMS_PLACEHOLDER : "content-top" -->
+   <div class="cms-page__title">
+      {{ fsSpyCms('content_top') | raw }}
+   </div>
+{% endblock %}
+
+{% block content %}
+   <!-- CMS_PLACEHOLDER : "content-body" -->
+   <div class="cms-page__content">
+      {{ fsSpyCms('content_body') | raw }}
+   </div>
+{% endblock %}
+----

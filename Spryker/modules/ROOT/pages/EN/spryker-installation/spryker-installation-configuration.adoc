@@ -1,0 +1,85 @@
+[[sp_configuration]]
+==== Extension of the configuration
+In {fs}, the creation and editing of editorial content takes place in {cc}.
+The storefront is embedded in it using the _{ocm}_.
+
+To enable the display of the shop contents from {sp} in {cc}, an extension of the environment-specific configuration is necessary.
+To do this, a token must be defined in the https://documentation.spryker.com/docs/configuration-management[file `config_default-[environment\].php`] in the directory `*config/Shared*` as well as the host and port of the {fs} start page.
+Furthermore, the operation of _{c}_ requires the specification of some parameters.
+These parameters are necessary both for production operation and for the use of the _{c}_ in the preview.
+
+// vorletzten Zeilen Preview Configurations
+// $config[FirstSpiritPreviewConstants::FIRSTSPIRIT_PREVIEW_CAAS_TECHNICAL_PAGE_COLLECTION] = '<CAAS COLLECTION>';
+// $config[FirstSpiritPreviewConstants::FIRSTSPIRIT_PREVIEW_CAAS_NAVIGATION_DOCUMENT] = '<NAVIGATION DOCUMENT>';
+
+[source,PHP]
+.Extension of the configuration
+----
+// ----------- FirstSpirit Preview Configurations
+$config[FirstSpiritPreviewConstants::FIRSTSPIRIT_PREVIEW_AUTHENTICATION_INIT_TOKEN] = '<ADD TOKEN>';
+$config[FirstSpiritPreviewConstants::FIRSTSPIRIT_PREVIEW_WEB_HOST] = '<ADD FS PREVIEW HOST>';
+$config[FirstSpiritPreviewConstants::FIRSTSPIRIT_PREVIEW_CAAS_CONTENT_PAGE_COLLECTION] = '<CAAS COLLECTION>';
+$config[FirstSpiritPreviewConstants::FIRSTSPIRIT_PREVIEW_CAAS_CATEGORY_PAGE_COLLECTION] = '<CAAS COLLECTION>';
+$config[FirstSpiritPreviewConstants::FIRSTSPIRIT_PREVIEW_CAAS_PRODUCT_PAGE_COLLECTION] = '<CAAS COLLECTION>';
+$config[FirstSpiritPreviewConstants::FIRSTSPIRIT_PREVIEW_DISPLAY_BLOCK_RENDER_ERRORS] = true;
+
+// ----------- FirstSpirit Data Import Configurations
+$config[FirstSpiritDataImportConstants::FIRSTSPIRIT_DATA_IMPORT_BLOCK_DATA_CAAS_PATH] = '/_aggrs/blocks';
+$config[FirstSpiritDataImportConstants::FIRSTSPIRIT_CAAS_REQUEST_PAGESIZE] = <VALUE>;
+
+// ----------- FirstSpirit CaaS Configurations
+$config[FirstSpiritCaaSConstants::FIRSTSPIRIT_CAAS_HOSTNAME_PREVIEW] = '<ADD CAAS HOST>';
+$config[FirstSpiritCaaSConstants::FIRSTSPIRIT_CAAS_PORT_PREVIEW] = '<ADD CAAS PORT>';
+$config[FirstSpiritCaaSConstants::FIRSTSPIRIT_CAAS_SCHEME_PREVIEW] = '<ADD CAAS SCHEME>';
+$config[FirstSpiritCaaSConstants::FIRSTSPIRIT_CAAS_APIKEY_PREVIEW] = '<ADD APIKEY>';
+$config[FirstSpiritCaaSConstants::FIRSTSPIRIT_CAAS_DATABASE_PREVIEW] = '<ADD CAAS DATABASE>';
+
+$config[FirstSpiritCaaSConstants::FIRSTSPIRIT_CAAS_HOSTNAME_ONLINE] = '<ADD CAAS HOST>';
+$config[FirstSpiritCaaSConstants::FIRSTSPIRIT_CAAS_PORT_ONLINE] = '<ADD CAAS PORT>';
+$config[FirstSpiritCaaSConstants::FIRSTSPIRIT_CAAS_SCHEME_ONLINE] = '<ADD CAAS SCHEME>';
+$config[FirstSpiritCaaSConstants::FIRSTSPIRIT_CAAS_APIKEY_ONLINE] = '<ADD APIKEY>';
+$config[FirstSpiritCaaSConstants::FIRSTSPIRIT_CAAS_DATABASE_ONLINE] = '<ADD CAAS DATABASE>';
+----
+
+{fs} Preview Configurations::
+The token is used for authentication and must be specified in the {cc} settings as a query parameter of the <<fs_previewurl,external preview URL>> during the configuration in {fs}.
+It can be defined arbitrarily.
++
+Specifying the fully qualified host of the {fs} home page (e.g. `\http://localhost:8000`) is a requirement of the <<sp_plugin,HeadersSecurityExtensionPlugins>> to be installed.
+It uses the information to enable previewing in {cc}.
++
+The mentions of the _{c}_ collections for content, category and product pages enable access to the editorial content stored in the _Preview {c}_ and its display in the {cc}.
++
+// The configuration of the _{c}_ collection for technical pages as well as the document for navigations are necessary for the maintenance and extension of the navigations contained in the shop with {fs}.
+// Since both parameters have a default value (`technical` or `navigations`), their configuration is optional and only necessary if there are differences.
++
+The error parameter enables the display of error outputs in the page.
+Using the value `true` therefore only makes sense for Dev and QA instances.
+
+{fs} Data Import Configurations::
+The path is used to query and persist the block data stored in the _Online {c}_.
+It is required by the <<sp-importcommand,`FsDataImportConsole` command>>, which triggers the importer in the context of a <<fs-deployment,{fs} deployment>>.
++
+With the help of the pagesize the number of documents that the _{c}_ returns on a request can be defined.
+The parameter is optional and may have a value from `1` to `100`.
+By default, the maximum value of `100` is defined for it.
+
+{fs} {c} Configurations::
+The _{c}_ host, port, and scheme to use (`http` or `https`) allow {sp} to connect to the _{c}_.
+Access to the data stored in it requires a valid {key} that needs read access to the corresponding project.
+The name of the project stored in _{c}_ must be specified in the configuration file as the value of the database parameter.
++
+[NOTE]
+====
+For more information on using the _{c}_, see the _{caasdocen}_.
+====
+
+To ensure that the used classes `{fs}PreviewConstants`, `{fs}DataImportConstants` and `{fs}{c}Constants` can be found, they have to be included in the configuration file via use statements:
+
+[source,PHP]
+.Integration of the classes
+----
+use ESpirit\Shared\FirstSpiritPreview\FirstSpiritPreviewConstants;
+use ESpirit\Shared\FirstSpiritDataImport\FirstSpiritDataImportConstants;
+use ESpirit\Shared\FirstSpiritCaaS\FirstSpiritCaaSConstants;
+----

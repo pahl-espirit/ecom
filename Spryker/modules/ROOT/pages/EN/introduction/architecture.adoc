@@ -1,0 +1,29 @@
+=== Architecture
+The connection of {fs} and {sp} is realized by an architecture made up of a range of components (see figure <<architecture>>).
+
+These components are:
+
+* The modules installed on the {fs} server:
+** _{modulname}_
+** _{ocm}_
+** _{caas}_
+* {sp} Instance
+
+[[architecture]]
+.Architecture
+image::architecture.png[]
+
+The individual components always interact according to the following schema:
+
+. In {fs}, the creation and editing of editorial content takes place in {cc}.
+   With the help of the _{ocm}_, the storefront is embedded in it.
+. The storefront in turn accesses the _Preview {c}_ and determines the current {fs} content from it.
+   It also integrates the JavaScript required for _{ocm}_, which enables the content in {cc} to be edited and highlighted.
+. The transfer of the editorial content into the _Preview {c}_ takes place automatically with each save action.
+. The filling of the _Online {c}_ with the released content is triggered by a deployment.
+   The _Online {c}_ makes the content available to the importer, who transfers it to {sp} and persists it there.
+
+{sp} thus represents the main component of this architecture. 
+In addition to providing all shop functionality, it imports the content created or maintained in {fs} from the _Online {c}_ and integrates it into the shop.
+There is only a loose link between {fs} and {sp}.
+They primarily work in parallel with one another.

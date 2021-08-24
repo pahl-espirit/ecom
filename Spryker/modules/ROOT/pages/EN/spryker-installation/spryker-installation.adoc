@@ -1,0 +1,50 @@
+== {sp} - Installation and configuration
+{fs} is used to create and maintain editorial data that is transferred to and persisted by the _{c}_.
+To integrate the data, {sp} needs access to the _{c}_.
+This is provided by the {sp} modules `firstspirit-preview` and `firstspirit-caas`, which require an installation and configuration in {sp}.
+The `firstspirit-preview` module enables the storefront to be displayed in {cc}.
+The contents are retrieved from the _{c}_ using the `firstspirit-caas` module.
+
+The following chapters describe all steps required for installation and configuration as well as additional extensions in {sp}.
+
+// Spryker-Module
+include::spryker-installation-modules.adoc[]
+
+// Installation der Module
+include::spryker-installation-install-modules.adoc[]
+
+// Twig-Templates für Use Cases
+include::spryker-installation-twigtemplates.adoc[]
+
+// Import der Slots
+include::spryker-installation-slotimport.adoc[]
+
+// Konfiguration
+include::spryker-installation-configuration.adoc[]
+
+// Erweiterung des Basis-Templates
+include::spryker-installation-pageblank.adoc[]
+
+// Einbindung der Plugins
+include::spryker-installation-plugins.adoc[]
+
+// Registrierung der Widgets
+include::spryker-installation-widgets.adoc[]
+
+// Controller
+include::spryker-installation-controller.adoc[]
+
+// Aktivierung der Navigation
+include::spryker-installation-navigation.adoc[]
+
+// QueryContainer
+include::spryker-installation-querycontainer.adoc[]
+
+// Erzeugung der techn. User
+include::spryker-installation-user.adoc[]
+
+// FsDataImportConsole-Befehl
+include::spryker-installation-importcommand.adoc[]
+
+// Synchronisation
+include::spryker-installation-synchronization.adoc[]

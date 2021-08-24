@@ -1,0 +1,15 @@
+[[fs_previewurl]]
+=== Definition of the external preview URL
+By using the _{ocm}_, the {cc} displays external content from {sp} to which the _{ocm}_ needs access.
+The preview URL of the {sp} storefront must therefore be specified in the {cc} properties.
+Since the specification is always project-specific, there is no default configuration for it within the reference project.
+
+Open the `*menu:Project properties[{cc}]*` area within the `*{manager}*` and enter the URL of the storefront with the following syntax in the `External preview URL` field:
+
+`https://[STOREFRONT_HOST_DOMAIN]/en/?firstSpiritPreview=[PREVIEW_INIT_TOKEN]`
+
+The token to be specified for the `firstSpiritPreview` query parameter must match the <<sp_configuration,authentication token>> defined during the configuration on {sp} side.
+It is stored in the https://documentation.spryker.com/docs/configuration-management[file `config_default-[environment\].php`] in the directory `*config/Shared*`.
+
+.External Preview URL
+image::previewurl.png[]

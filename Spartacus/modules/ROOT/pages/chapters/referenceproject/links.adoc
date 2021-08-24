@@ -1,0 +1,22 @@
+[[rp_links]]
+=== Links
+The editorial contents maintained in {fs} can contain the following references, which link them with other contents.
+They are based on various link templates that are already included in the reference project.
+
+Category and product links::
+The _{modulname}_ module provides a report for products and categories in the {wc}.
+They serve to display the category and product information coming from {sp}, which can be used for links to category or product detail pages.
++
+Therefore, the reference project contains the link templates `category_link` and `product_link`, which correspond to a category or product link.
+They enable category or product detail pages to be referenced and are equivalent to each other.
+
+Search link::
+The reference project contains the link template `search_link`.
+It enables the linking of a search result page to a defined search term.
+
+Content link::
+The reference project provides the link template `content_link`.
+It allows the linking of pages that are maintained within the reference project.
+
+The front-end processing of the links is done using the `SemanticPathService`.
+It generates the required URLs based on the _{c}_ data passed to it.

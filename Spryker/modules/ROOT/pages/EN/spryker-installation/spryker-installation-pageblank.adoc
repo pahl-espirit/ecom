@@ -1,0 +1,28 @@
+[[sp_basetemp]]
+==== Extension of the basic template
+The _{ocm}_ enables the display and editing of external content in {cc}, for which it requires some preview-specific data attributes.
+In {sp}, it also requires a preview-specific JavaScript file, which is included by the {fs}Preview module.
+
+The JavaScript file must be added to the Twig template, which is responsible for the basic layout of all shop pages.
+By default this is the `page-blank.twig` template, which is stored under the path `*src/Pyz/Yves/ShopUi/Theme/default/templates/page-blank*`.
+In the same template, the data attributes must also be determined by the Twig function `fsIncludeDataAttributes`.
+
+The Twig template is adapted by calling the Twig functions `fsIncludeDataAttributes` and `fsIncludeOcmScript` and by extending the template data.
+The Twig function `fsIncludeOcmScript` can be passed the URL to a local copy of the JavaScript file as an optional parameter.
+By default, it retrieves the file from the https://unpkg.com/fs-spryker-content-editing[CDN].
+
+[source,PHP]
+.Adaptation of the Twig template
+----
+{% block template %}
+   {% set isNewFrontendBuildSupported = true %}
+   <body [...] {{ fsIncludeDataAttributes() }}>
+   {{ parent() }}
+{% endblock %}
+
+{% block footerScripts %}
+   {% include molecule('check-touch') only %}
+   {{ fsIncludeOcmScript() }}
+   {{ parent() }}
+{% endblock %}
+----

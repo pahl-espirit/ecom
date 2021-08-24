@@ -1,0 +1,17 @@
+=== Range of functions
+
+_{modulname}_ enables editors to do the following:
+
+* Creating native shop content with {fs}
+* Access to product and category information
+* Display shop elements and editorial content in the {fs} preview simultaneously
+* Transfer of content into the {sp} {os}
+
+The corresponding functions are made available when the module is installed and configured in {cc}.
+
+Familiar {fs} tools are used to maintain the content, meaning that editors who are already familiar with {fs} do not require any additional knowledge.
+The content is made available to {sp} as part of a deployment so that it can be imported.
+{sp} then integrates the information into the shop.
+
+Consequently there is no difference for {sp} in the delivering of editorial contents to the live state.
+Even if the {fs} server is shut down due to maintenance work, for example, this does not affect {sp}.

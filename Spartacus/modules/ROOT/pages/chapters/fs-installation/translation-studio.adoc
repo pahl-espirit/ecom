@@ -1,0 +1,15 @@
+[[install_translation_studio]]
+=== {ts}
+Translation of editorial content is often done in cooperation with external translation agencies or with the help of translation services.
+The integration therefore supports {tsdocwhitepaperen}[_{ts}_], which allows the export of content to be translated into a target system and to reimport translations into the {fs} project.
+By default, the _{ts}_ module is installed within the cloud environment of the {creator}, so its functionalities can be activated on demand by performing a few steps.
+
+In addition to the module installation, the use of _{ts}_ requires the installation of the _{ts}_ application as well as the web and project component.
+Furthermore, various actions within the {fs} project are needed.
+Both the application setup and all further steps to be performed are described in the {tsdocinstallen}[_{ts} Installation Manual_].
+
+[NOTE]
+====
+The installation of the project component replaces the button of the translation function provided by {fs} in the {wc}.
+This button only has functionality if all other configuration steps have been completed successfully.
+====

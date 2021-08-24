@@ -1,0 +1,150 @@
+[[fs_installation_pcomp]]
+=== Configuration of the project component
+A project-specific configuration is required in order to use the _{modulname}_ module.
+It is set up using the project component, which is already added to the reference project supplied.
+
+[IMPORTANT]
+====
+To use the _{modulname}_ module, the _{ccon}_ module must also be configured.
+The necessary steps are described in the _{ccondocen}_.
+====
+
+[NOTE]
+====
+The reference project also includes the project component of the _{cxt}_.
+This contains a predefined configuration, the modification of which can lead to a change in the behavior of the {wc}.
+An adjustment of the configuration is therefore only to be made after prior consultation with the {techsupport}.
+====
+
+To perform configuration, open the `*{manager}*` and select `*menu:Project properties[Project components]*`.
+
+[[projectComponents]]
+.Project properties - Project components
+image::images/projectcomponents.png[Project properties - Project components]
+
+A list of all existing project components is displayed in the main panel.
+Select the entry `{modulname} for SAP {ccloud} Project Configuration` and open the corresponding configuration dialog via btn:[Configure].
+
+The dialog is organized in five tabs, of which currently only the fields of the tabs `*General*`, `*Product DAP*` and `*Category DAP*` are to be considered.
+The following subchapters explain them in detail.
+The tabs `*Preview*` and `*Content*` currently do not have any functionality.
+
+// Der Dialog gliedert sich in fünf Tabs, die in den nachfolgenden Unterkapiteln einzeln erläutert werden.
+
+
+// ********************************************* Allgemein *********************************************
+[[fs_installation_pcomp_general]]
+==== General
+The configuration dialog of the project component first contains the tab `*General*`.
+The information to be defined in it must be known to the {server} for a connection to the {ccloud}.
+
+.Project component - General
+image::images/config-general.png[]
+
+URI::
+Within the tab `*General*` the URI of the {ccloud} instance has to be entered first.
+It enables the {server} to establish a connection to the {ccloud}.
+
+Connection timeout/Connection retries::
+Using the two fields `Connection timeout` and `Connection retries` the time span (in seconds) and the number of attempts can be defined, 
+which the {server} uses to establish a connection to the {ccloud}.
+
+[NOTE]
+====
+The {server} requires <<cc_installation_oauth,OAuth authentication>> to retrieve information from the {ccloud}.
+The required authentication data must be entered in the following fields of the `*General*` tab.
+The other tabs enable the overwriting of this information and therefore have the same fields.
+The overwriting is done by activating the checkbox `Override general OAuth settings` in one of the other tabs.
+====
+
+[[pcomp_oauth]]
+Auth Server URI::
+To connect to the {ccloud}, the {server} requires the specification of the default endpoint for OAuth authentication.
+The URI of this endpoint must be entered relatively to the URI of the {ccloud} instance.
+
+Username/Password::
+The access data with which the authentication is carried out must be entered in the fields `Username` and `Password`.
+Usually this is the data of a technical {ccloud} account.
+
+OAuth Client ID::
+This field is used to enter the default client ID used for authentication.
+It is created during the configuration of the <<cc_installation_oauth,OAuth Client>> and defines the access rights of the technical account.
+
+OAuth Client Secret::
+In addition to the `Client ID`, the specification of the associated `Client Secret` is expected at this point.
+
+OAuth Grant Type::
+In addition to the `Client ID` and `Client Secret`, OAuth authentication requires a `Grant Type`.
+Therefore the combo box offers two options: `password` and `client credentials`.
+
+Test OAuth settings::
+By clicking on this button the connection to the {ccloud} can be tested.
+If overriding the OAuth authentication was activated in one of the other tabs, the settings stored in it will be taken into account.
+
+// ********************************************* Produkt DAP *********************************************
+[[fs_installation_pcomp_product_dap]]
+==== Product DAP
+In addition to the tab <<fs_installation_pcomp_general,`*General*`>>, the configuration dialog of the project component has the tabs `*Product DAP*` and <<fs_installation_pcomp_category_dap,`*Category DAP*`>>.
+They are used to configure the reports in the {wc}, which require various information.
+
+.Project component - Product DAP
+image::images/config-product-dap.png[]
+
+Collection::
+The product report in the {wc} lists the products originating from the {ccloud} and enables editors to use these products.
+The products can be queried via a REST endpoint, which must be known by the {wc}.
+It therefore has to be specified in this field.
+
+PDP URL::
+The relative URL of a product detail page must be entered in this field.
+As a placeholder for the product code the expression `\{code}` can be used.
+The default value is `p/\{code}`.
+
+Header/Extract/Icon/Thumbnail::
+By default, https://docs.e-spirit.com/odfs/template-develo/snippets/index.html[search results in the product report] show the product name in the header, the catalogue ID in the extract, and a thumbnail.
+The fields `Header`, `Extract`, `Icon`, and `Thumbnail` allow the configuration of this information.
+For this purpose the following placeholders are available in addition to simple text entries:
+
+* `$\{catalogId}`
+* `$\{catalogVersion}`
+* `$\{code}`
+* `$\{description}`
+* `$\{name}`
+* `$\{thumbnailMediaUrl}`
+
+{blank}::
+The entries in the fields replace the standard information in the search results of the product report.
+Textual entries are adopted unchanged.
+If the fields remain empty, the search results display the standard information.
+
+Override general OAuth settings::
+The fields for OAuth authentication enable the overwriting of the entries in the tab `*General*`.
+The overwriting is done by activating the checkbox `Override general OAuth settings`.
+Otherwise, the entries from the `*General*` tab will be used for authentication.
+
+
+// ********************************************* Kategorie DAP *********************************************
+[[fs_installation_pcomp_category_dap]]
+==== Category DAP
+The tab `*Category DAP*` is equivalent to the tab <<fs_installation_pcomp_product_dap,`*Product DAP*`>> and is used to configure the category report in the {wc}.
+
+.Project component - Category DAP
+image::images/config-category-dap.png[]
+
+Catalog::
+The category report in the {wc} contains the categories from the {ccloud} and makes them available to the editors.
+For this purpose, the corresponding catalog ID must be entered here.
+
+Catalog Version::
+The categories provided in the {wc} originate from a product catalog.
+Therefore, in addition to the catalog ID, the version of the product catalog from which the categories are obtained must also be specified.
+
+CDP URL::
+The relative URL of a category detail page must be entered in this field.
+As a placeholder for the category code the expression `\{code}` can be used.
+The default value is `c/\{code}`.
+
+Override general OAuth settings::
+The fields for OAuth authentication enable the overwriting of the entries in the tab `*General*`.
+The overwriting is done by activating the checkbox `Override general OAuth settings`.
+Otherwise, the entries from the `*General*` tab will be used for authentication.

@@ -1,0 +1,19 @@
+[[sp_installation_dummy_page]]
+=== Creation of a dummy page
+For the maintenance of editorial content, the integration distinguishes between <<concept_pagestypes,Shop and {fsdp}s>>.
+{fsdp}s can either use their own layout defined in the Storefront or the layout of a {sdp}.
+
+In the second case, a dummy page must exist in the {ccloud}, which is empty except for the desired layout.
+This means that it has, for example, a general header and footer, but does not contain any other content.
+
+A dummy page can be created using an ImpEx script.
+The script shown in the following code block generates the dummy page for the {fsdp}s included in the reference project.
+It is based on the `LandingPage2Template` and contains only a header and a footer.
+The existence of the dummy page is mandatory for using the {fsdp}s.
+
+[NOTE]
+====
+Further information on how to create new pages in {sp} is included in the {sapblog}[SAP blog].
+====
+
+include::../../../../includes/dummy-page-impex.adoc[]

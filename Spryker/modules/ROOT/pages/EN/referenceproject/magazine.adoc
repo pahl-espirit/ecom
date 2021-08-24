@@ -1,0 +1,458 @@
+[[rp_magazine]]
+=== Creation of a magazine
+Based on the previously described <<rp_contentpage,dynamic content pages>>, the _{modulname}_ module allows the creation of a magazine.
+This consists of any number of magazine articles and an overview page.
+Both the magazine articles and the overview page can be maintained in the {cc} just like the other pages.
+In contrast to them, the magazine articles do not represent different pages, but individual data sets.
+Within the {refproject_github}[reference project] the {magazine_articles}[data source _Magazine Articles_] exists for their editorial creation and maintenance.
+For the output of the magazine articles, the corresponding {magazine_articles_scheme}[table template] is referenced in a dynamic content page.
+The data for the overview page is referenced via ContentSelects in a {magazine_overview}[section template], which is also integrated in a dynamic content page.
+
+The creation of a new magazine article in {cc} triggers an event of the _{ocm}_, which triggers the creation of the corresponding CMS page in {sp}.
+This is necessary for displaying the CMS page in the preview.
+
+For the creation of the magazine articles, it is necessary to fill the output channel of the corresponding page and table template.
+The overview page requires the filling of the output channel of the corresponding section template.
+Furthermore, the Twig templates <<rp_m_twigtemplates,`fs-magazine-intro.twig`, `fs-magazine-overview.twig`, `fs-magazine-teaser.twig`>> and <<rp_dcp_twigtemp,`fs-content-page.twig`>> are required in {sp}.
+The templates are part of the <<sp_twigtemplates,{sp} module `firstspirit-reference-components`>> included in the delivery.
+
+The other section templates contained in the reference project for maintaining editorial content are permitted for all pages.
+For this reason, they do not require any additional extensions that go beyond the requirements already described for the <<rp_section,Shoppable Video section>>.
+
+// ********************************************* Seitenvorlage *********************************************
+[[rp_m_pagetemplate]]
+==== Page template
+Both the magazine articles and the overview page are based on <<rp_contentpage,dynamic content pages>>.
+Since they differ in their structure, the magazine articles need their own page template in contrast to the overview page.
+In the reference project this corresponds to the page template `magazine_detail_page` and is a copy of a <<rp_dcp_pagetemp,`contentpage`>>.
+However, in comparison to the `contentpage`, the `magazine_detail_page` has only one content area, which only allows the integration of the <<rp_m_tabletemplate,table template>> of the magazine articles.
+
+The following code fragment shows the {magazine_page_caas_channel}[output channel] of the page template `magazine_detail_page`: 
+
+[source,JSON]
+.Output channel of the page template magazine_detail_page
+----
+$CMS_SET(json, {:})$
+$CMS_IF(#global.pageParams.data.size > 0)$
+   $CMS_SET(previewId, previewId(element:#global.node))$
+   $CMS_SET(void, json.put("previewId", "" + previewId))$
+   $CMS_SET(void, json.put("template_name", pt_cmsPageTemplateName))$
+   $CMS_SET(void, json.put("template_path", "@Cms/templates/fs-content-page/fs-content-page.twig"))$
+   $CMS_SET(void, json.put("pagetype", "cmspage"))$
+   $CMS_SET(void, json.put("is_active", "1"))$
+   $CMS_SET(void, json.put("store_names", [ps_activeStore]))$
+   $CMS_SET(void, json.put("is_searchable", "1"))$
+
+   $CMS_IF(#global.dataset.formData.tt_page_identifier != null && !#global.dataset.formData.tt_page_identifier.isEmpty())$
+      $CMS_SET(void, json.put("identifier", #global.dataset.formData.tt_page_identifier))$
+   $CMS_ELSE$
+      $CMS_SET(void, #global.logError(
+         "Missing page identifier for magazine detail page with entity id '" + #row.id + "'. Magazine detail pages without a page identifier can't be generated."))$
+      $CMS_SET(#global.stopGenerate, true)$
+   $CMS_END_IF$
+
+   $CMS_SET(locale, #global.language.getLocale())$
+   $CMS_SET(localeAbbr, locale.getLanguage() + "_" + locale.getCountry())$
+
+   $CMS_SET(attributes, {:})$
+   $CMS_SET(set_entityUrl, #global.dataset.formData.tt_url.convert2)$
+   $CMS_IF(set_entityUrl != null && !set_entityUrl.isEmpty())$
+      $CMS_SET(url, "/" + locale.getLanguage() + if(!set_entityUrl.startsWith("/"), "/") + set_entityUrl)$
+      $CMS_SET(void, attributes.put("url", {localeAbbr: url}))$
+   $CMS_ELSE$
+      $CMS_SET(void,#global.logError(
+         "Missing url for contentpage " + #global.node.uid + "_" + global.dataset.entity.fs_id + ". Contentpages without url can't create and generate."))$
+      $CMS_SET(#global.stopGenerate,true)$
+   $CMS_END_IF$
+
+   $CMS_SET(pageName, #global.dataset.formData.tt_title.convert2)$
+   $CMS_SET(void, attributes.put("name", {localeAbbr: if(pageName.toString() != null, pageName, "")}))$
+   $CMS_SET(void, attributes.put("meta_title", {localeAbbr: ""}))$
+   $CMS_SET(void, attributes.put("meta_description", {localeAbbr: ""}))$
+   $CMS_SET(void, attributes.put("meta_keywords", {localeAbbr: ""}))$
+   $CMS_SET(void, json.put("localizedAttributes", attributes))$
+
+   $CMS_VALUE(#global.page.body("container"))$
+$CMS_END_IF$
+
+$CMS_VALUE(json.toJSON)$
+----
+
+The {magazine_page_caas_channel}[output channel] of the magazine articles is almost identical to the output channel of {contentpage_caas_channel}[dynamic content pages].
+It differs only in the definitions of the identifier, some attributes and the number of content areas.
+
+The identifier allows the referencing of the _{c}_ item on {sp} side and must therefore be unique.
+However, if it were specified within the output channel, all magazine articles would have the same identifier.
+Due to this it is stored in the form of the corresponding data set.
+
+In contrast to <<rp_dcp_pagetemp,dynamic content pages>>, the URL is not specified in the page form, but, like the identifier, within the data set.
+For this reason, it is determined at this point from the input component of the data set.
+For the page name, the title defined for the magazine article is used.
+This ensures that each magazine article has a unique page name.
+
+The enclosing If query prevents generation errors in case of an empty data source.
+
+In contrast to dynamic content pages, the editorial content and the block references for the magazine articles are not determined within the page template, 
+but in the {magazine_articles_scheme}[output channel] of the associated <<rp_m_tabletemplate,table template>>.
+This represents the only permissible content for the `container` content area.
+
+The overview page corresponds to a dynamic content page.
+It includes the data required for it using a <<rp_m_section,section template>> and also allows the addition of further sections. 
+For this reason, it does not need its own page template.
+
+// ********************************************* Tabellenvorlage *********************************************
+[[rp_m_tabletemplate]]
+==== Table template
+In contrast to the other pages, the magazine articles represent individual data sets, which are integrated into a <<rp_m_pagetemplate,content page>> via content projection.
+Their maintenance and processing is therefore based on a table template that provides the corresponding form and forms the basis for the corresponding data source.
+
+The {magazine_articles_scheme}[table template `magazine_articles`] contained in the reference project consists of two thematic content blocks: +
+The first block maps the Twig template `fs-magazine-intro.twig` in {sp} and consists of superordinate intro data, such as a title and various teaser information.
+For their determination, the {format_magazine_block_render}[render template `magazine_intro_block_render_template`] is referenced within the output channel of the table template, the result of which is stored in the array `contentTopBlocks`.
+The output channel of this render template is almost identical to the output channel of the <<rp_section,Shoppable Video section>> and differs only in the evaluation of the available input components. +
+The second block corresponds to the various sections of the magazine page, which respectively represent the Twig templates belonging to them in {sp}.
+The sections are combined in a FS_CATALOG, which is stored in the output channel of the table template in the `contentBodyBlocks` array.
+
+Both arrays are successively added to the JSON object `json` created in the <<rp_m_pagetemplate,page template>>.
+
+[source,JSON]
+.Determination of editorial content
+----
+$CMS_SET(blocks, [])$
+
+$CMS_RENDER(template: "magazine_intro_block_render_template")$
+$CMS_SET(contentTopBlocks, [])$
+$CMS_SET(void, contentTopBlocks.addAll(blocks))$
+
+$CMS_SET(blocks, [])$
+$CMS_VALUE(tt_sections)$
+$CMS_SET(contentBodyBlocks, [])$
+$CMS_SET(void, contentBodyBlocks.addAll(blocks))$
+
+$CMS_SET(resultingBlocks, [])$
+$CMS_SET(void, resultingBlocks.addAll(contentTopBlocks))$
+$CMS_SET(void, resultingBlocks.addAll(contentBodyBlocks))$
+$CMS_SET(void, json.put("blocks", resultingBlocks))$
+----
+
+Since the magazine articles are based on <<rp_dcp_pagetemp,dynamic content pages>>, they also have so-called placeholders.
+The output channels of the {magazine_page_caas_channel}[magazine articles] and the {contentpage_caas_channel}[content pages] are therefore almost identical from this point on.
+They differ only in the output of the placeholder for the body area and in the specification of the `previewId`.
+In contrast to the content pages, the body area must also exist in the preview for the magazine articles in order to avoid the prohibited addition of further sections.
+The `previewId` specified in this step overwrites the ID of the parent page, which references all magazine articles.
+This is necessary because the `previewId` of the page is identical for all magazine articles, while the article IDs are unique.
+
+[source,JSON]
+.Creation of the block references
+----
+$CMS_SET(placeholder, {:})$
+$CMS_SET(contentTopPlaceholder, "")$
+
+$CMS_IF(!contentTopBlocks.isEmpty())$
+   $CMS_FOR(contentTopBlock, contentTopBlocks)$
+      $CMS_SET(contentTopPlaceholder, contentTopPlaceholder + "{{ fsSpyCmsBlock({name: '" + contentTopBlock.get("block_name") + "'}) }}\n")$
+   $CMS_END_FOR$
+$CMS_END_IF$
+
+$CMS_SET(contentBodyPlaceholder, "")$
+$CMS_IF(!contentBodyBlocks.isEmpty())$
+   $CMS_FOR(contentBodyBlock, contentBodyBlocks)$
+      CMS_SET(contentBodyPlaceholder, contentBodyPlaceholder + "{{ fsSpyCmsBlock({name: '" + contentBodyBlock.get("block_name") + "'}, isContentEditable = false) }}\n")$
+   $CMS_END_FOR$
+$CMS_END_IF$
+
+$-- Placeholders values have to exist in Spryker for synchronization purposes, therefore allowing even empty placeholder values for online CaaS --$
+$CMS_IF(!contentTopPlaceholder.isEmpty() || #global.isRelease())$
+   $CMS_SET(void, placeholder.put("content_top", {localeAbbr: contentTopPlaceholder}))$
+$CMS_END_IF$
+$CMS_SET(void, placeholder.put("content_body", {localeAbbr: contentBodyPlaceholder}))$
+
+$CMS_SET(void, json.put("placeholder", placeholder))$
+$CMS_SET(void, json.put("previewId", "" + previewId()))$
+----
+
+// ********************************************* Absatz *********************************************
+[[rp_m_section]]
+==== Section template
+In addition to the magazine articles, there is an overview page on which the articles are listed in the form of teasers sorted by date in ascending or descending order.
+In contrast to magazine articles, the editorial content is not rendered via a content projection, but via two ContentSelects.
+The reference project therefore contains the {magazine_overview}[section template `magazine_overview`], which can only be used in <<rp_contentpage, dynamic content pages>>.
+
+[NOTE]
+====
+Editing, deleting or creating a magazine article does not update the overview page *in the preview* by default.
+Within the reference project, the section template `magazine_overview` therefore contains the hidden FS_REFERENCE input component `st_dataSource`.
+The {magazine_articles}[data source `magazine_articles`], which contains all magazine articles, is entered as the default value in this component.
+With the help of this specification, a service running in the background recognizes the dependency between the corresponding magazine article and the overview page and triggers its update in the preview.
+====
+
+[IMPORTANT]
+====
+Publishing a magazine article always includes the publication of the overview page.
+This ensures that the overview page is always up-to-date and contains all published magazine articles in the live status at any time.
+====
+
+The {magazine_overview_caas_channel}[output channel] of the section template contains the ContentSelects in the first place.
+These query all data sets of the data source `magazine` and stores them in different order in the variables `fr_st_teasers_descending` or `fr_st_teasers_ascending`.
+
+[source,JSON]
+.ContentSelects in the output channel of the section
+----
+<CMS_HEADER>
+   <CMS_FUNCTION name="contentSelect" resultname="fr_st_teasers_descending">
+      <CMS_PARAM name="schema" value="magazine" />
+      <QUERY entityType="magazine_articles">
+         <ORDERCRITERIA attribute="date" descending="1" />
+      </QUERY>
+   </CMS_FUNCTION>
+   
+   <CMS_FUNCTION name="contentSelect" resultname="fr_st_teasers_ascending">
+      <CMS_PARAM name="schema" value="magazine" />
+      <QUERY entityType="magazine_articles">
+         <ORDERCRITERIA attribute="date" descending="0" />
+      </QUERY>
+   </CMS_FUNCTION>
+</CMS_HEADER>
+----
+
+The next step is to define various information, which is also contained in all other sections of the reference project.
+At this point, the output channel is therefore identical to that of the {video_caas_channel}[Shoppable Video section].
+
+[source,JSON]
+.Definition of various information in the output channel of the section
+----
+$CMS_SET(block,{:})$
+
+$-- Defining general block data --$
+$CMS_SET(void, block.put("previewId", "" + previewId()))$
+$CMS_SET(void, block.put("active", "1"))$
+$CMS_SET(void, block.put("store_names",[ps_activeStore]))$
+$CMS_SET(void, block.put("template_name", "fs_molecule_block"))$
+$CMS_SET(void, block.put("template_path", "@CmsBlock/template/fs_molecule_block.twig"))$
+
+$CMS_SET(set_pageType, json.get("pagetype"))$
+
+$-- Add block name attribute to block object (page type dependent) --$
+$CMS_RENDER(template: "block_name_render", rt_pageType: set_pageType, rt_blockObject: block)$
+
+$-- Add additional block attributes to block object (page type dependent) --$
+$CMS_RENDER(template: "additional_block_attributes_render", rt_pageType: set_pageType, rt_blockObject: block)$
+
+$-- Add block key attribute to block object (page type dependent) --$
+$CMS_RENDER(template: "block_key_render", rt_pageType: set_pageType, rt_blockObject: block)$
+
+$-- Defining placeholder data of the block --$
+$CMS_SET(placeholders,{:})$
+$CMS_SET(void, block.put("placeholder",placeholders))$
+----
+
+Subsequently, the teaser information is determined in two steps. 
+They consist of a title, an image, a text and a reference and are stored in the `teaser` array for each data set.
+
+[NOTE]
+====
+If for a teaser no title is specified or no image is selected, the title and image of the corresponding magazine article will be used for the display on the magazine overview page.
+If the fields are maintained in both places, the overview page always shows the contents of the teaser.
+====
+
+The first step only considers the information of the Featured Articles, which can be defined in the form of the overview page.
+The second step is based on the result set of the corresponding ContentSelect and thus includes all magazine articles.
+In both cases, the {format_magazine_teaser_render}[render template `magazine_teaser_render`] is referenced, whose output channel only contains the evaluation of the input components available for the teasers.
+The information determined in the two steps is stored in the arrays `featuredTeasers` and `teasers`.
+
+[source,JSON]
+.Determination of the teaser data in the output channel of the section
+----
+$CMS_SET(featuredTeasers, [])$
+$CMS_FOR(for_featuredArticle, st_featuredArticles.values)$
+   $CMS_SET(teaser,{:})$
+   $CMS_RENDER(template: "magazine_teaser_render", rt_entity: for_featuredArticle.entity, rt_teaser: teaser)$
+   $CMS_SET(void, featuredTeasers.add(teaser))$
+$CMS_END_FOR$
+
+$CMS_SET(teasers, [])$
+$CMS_FOR(for_teaser, #global.context.getVariableValue("fr_st_teasers_"+st_sortingOrder.key))$
+   $CMS_SET(teaser,{:})$
+   $CMS_RENDER(template: "magazine_teaser_render", rt_entity: for_teaser, rt_teaser: teaser)$
+   $CMS_SET(void, teasers.add(teaser))$
+$CMS_END_FOR$
+----
+
+The `data` array contains the editorial content. 
+The previously determined teaser data is added to it.
+In {sp}, the section is represented by the molecule `fs-magazine-overview`, whose name is also contained in the `data` array.
+
+The importer expects the information in the context of the current language.
+For this reason, the corresponding language abbreviation to which the array `data` is assigned is determined.
+
+In the preview, the contents of the section are output directly.
+Otherwise, the last step adds the section to the `blocks` array defined in the page template, which contains all sections of a page and integrates them into the _{c}_ item to be generated.
+Since the overview page is based on a <<rp_contentpage,dynamic content page>>, the corresponding page template is the <<rp_dcp_pagetemp,`contentpage`>>.
+
+[source,JSON]
+.Processing of editorial content in the output channel of the sectionsection.
+----
+$CMS_SET(data, {:})$
+$CMS_SET(void, data.put("moleculename", "fs-magazine-overview"))$
+$CMS_SET(void, data.put("featuredTeasers", featuredTeasers))$
+$CMS_SET(void, data.put("teasers", teasers))$
+
+$CMS_SET(locale, #global.language.getLocale())$
+$CMS_SET(localeAbbr, locale.getLanguage() + "_" + locale.getCountry())$
+$CMS_SET(localizedData, {:})$
+$CMS_SET(void, localizedData.put(localeAbbr, data))$
+$CMS_SET(void, block.put("data", localizedData))$
+
+$CMS_IF(#global.is("WEBEDIT") && !isSet(caas_preview_generation))$
+   $CMS_VALUE(block.toJSON)$
+$CMS_ELSE$
+   $CMS_SET(void, blocks.add(block))$
+$CMS_END_IF$
+----
+
+// ********************************************* Twig-Templates *********************************************
+[[rp_m_twigtemplates]]
+==== Twig Templates
+Both the magazine articles and the overview page are based on <<rp_contentpage,dynamic content pages>> and are therefore represented by the Twig template <<rp_dcp_twigtemp,`fs-content-page.twig`>> on {sp} side.
+This contains the placeholders `content_top` and `content_body`, which reference the CMS blocks assigned to them.
+In this way, the molecule `fs-magazine-intro.twig` is called for the intro data of the magazine articles and the molecule `fs-magazine-overview.twig` for the teaser information of the overview page.
+The molecule `fs-magazine-overview.twig` in turn references the molecule `fs-magazine-teaser.twig`, which provides the teaser information of a single magazine article.
+All three molecules control the output of the editorial content.
+
+The output of the remaining sections of the magazine articles takes place via the Twig Templates belonging to them.
+Both the templates of these sections as well as the molecules for the magazine articles and the overview page are part of the <<sp_twigtemplates,{sp} module `firstspirit-reference-components`>> included in the delivery.
+
+As with the molecules of the <<rp_twigtemplates,Shoppable Video section>> and the <<rp_cp_twigtemp,Banner>>, the names of the molecules are defined within the three Twig Templates for the magazine articles and the overview page and then the fsBlockData object is created.
+It provides access to the structured data defined in the output channel of the <<rp_m_tabletemplate,{fs} table template>>. 
+The fsBlockData object and the JSON object created in {fs} thus each have the same structure.
+
+The block `body` describes the output of the editorial contents in the molecules.
+In the template for the magazine articles, these correspond to their intro data, which consist of a title, a sub-title, and a banner.
+The template for the overview page contains the teaser data of the magazine articles, which consist of an image, a title, a text and a reference.
+The teaser data is provided using the molecule for the teasers.
+
+The following code examples show the contents of the molecules.
+
+[source,PHP]
+.Twig template fs-magazine-intro.twig
+----
+{% extends model('component') %}
+
+{% define config = {
+    name: 'fs-magazine-intro'
+} %}
+
+{% define data = {
+    fsBlockData: [],
+} %}
+
+{% block body %}
+   <article class="magazine">
+      <header>
+         <h1>{{ data.fsBlockData.title }}</h1>
+         {% if data.fsBlockData.subtitle is defined %}
+            <h2>{{ data.fsBlockData.subtitle }}</h2>
+         {% endif %}
+         {% if data.fsBlockData.banner.imageUrl is defined %}
+            <figure class="picture picture-responsive">
+               <img class="img-fluid" src="{{ data.fsBlockData.banner.imageUrl | raw }}"
+                  {% if  data.fsBlockData.banner.previewId is defined %}
+                     data-preview-id="{{ data.fsBlockData.banner.previewId }}"
+                  {% endif %}
+                  data-tpp-context-image-resolution="MAGAZINE_ARTICLE_BANNER">
+            </figure>
+         {% endif %}
+      </header>
+   </article>
+{% endblock %}
+----
+
+[source,PHP]
+.Twig template fs-magazine-overview.twig
+----
+{% extends model('component') %}
+
+{% define config = {
+    name: 'fs-magazine-overview'
+} %}
+
+{% define data = {
+    fsBlockData: [],
+} %}
+
+{% block body %}
+   {% if isFsPreview() %}
+      <div style="padding-top: 24px;"></div>
+   {% endif %}
+   {% if data.fsBlockData.featuredTeasers is not empty %}
+      <h2 style="text-align: left;">Featured</h2>
+   {% endif %}
+   
+   <div class="featured-magazine-teasers">
+      {% for teaser in data.fsBlockData.featuredTeasers %}
+         {% include molecule('fs-magazine-teaser', 'FirstSpiritReferenceComponents') with {
+            data: {
+               fsBlockData: teaser
+            }
+         } only %}
+      {% endfor %}
+   </div>
+   
+   {% if data.fsBlockData.featuredTeasers is not empty %}
+      <hr class="magazine-featured-divider">
+   {% endif %}
+   
+   <div class="magazine-teasers">
+      {% for teaser in data.fsBlockData.teasers %}
+         {% include molecule('fs-magazine-teaser', 'FirstSpiritReferenceComponents') with {
+            data: {
+               fsBlockData: teaser
+            }
+         } only %}
+      {% endfor %}
+   </div>
+{% endblock %}
+----
+
+[source,PHP]
+.Twig template fs-magazine-teaser.twig
+----
+{% extends model('component') %}
+
+{% define config = {
+   name: 'fs-magazine-teaser'
+} %}
+
+{% define data = {
+   fsBlockData: [],
+} %}
+
+{% block body %}
+   <article class="magazine-teaser"
+      {% if data.fsBlockData.previewId is defined %}
+         data-preview-id="{{ data.fsBlockData.previewId }}"
+      {% endif %}>
+      {% set cmsPageUrl = getCmsPageUrl(data.fsBlockData.page_identifier) %}
+
+      {% if cmsPageUrl is not null %}
+         <a href="{{ cmsPageUrl }}">
+      {% endif %}
+      
+         {% if data.fsBlockData.picture.imageUrl is defined %}
+            <figure class="picture picture-responsive">
+               <img src="{{ data.fsBlockData.picture.imageUrl }}"
+                  {% if  data.fsBlockData.picture.previewId is defined %}
+                     data-preview-id="{{ data.fsBlockData.picture.previewId }}"
+                  {% endif %}
+                  data-tpp-context-image-resolution="CONTENT_IMAGE">
+            </figure>
+         {% endif %}
+         <h3>{{ data.fsBlockData.title | raw }}</h3>
+         <p>{{ data.fsBlockData.text | raw }}</p>
+      
+      {% if cmsPageUrl is not null %}
+         </a>
+      {% endif %}
+   </article>
+{% endblock %}
+----

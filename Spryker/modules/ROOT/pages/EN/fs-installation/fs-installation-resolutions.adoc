@@ -1,0 +1,10 @@
+=== Resolutions
+The {refproject_github}[reference project _{refproject}_] has different sections, which can be used to include images on the various pages.
+The editor should be able to cut the images to a certain detail.
+This functionality is activated by specifying a resolution.
+
+For the reference project the resolutions `CONTENT_IMAGE`, `BANNER_IMAGE` and `MAGAZINE_ARTICLE_BANNER` are required.
+They are already created within the `*{manager}s*` in the `*menu:Project properties[Resolutions]*` area and specified at the corresponding places.
+
+.Resolutions
+image::resolutions.png[]

@@ -1,0 +1,238 @@
+[[rp_categorypages]]
+=== Extension of existing category pages 
+Just like the <<rp_staticsite,static pages>> described above, category pages that already exist on the {sp} side can also be displayed in {cc} using the _{ocm}_ and enriched with editorial content.
+This also requires the filling of the output channel of the page and section template within the {fs} project as well as a adaptation of the corresponding Twig templates in {sp}.
+
+[NOTE]
+====
+If there are references to categories or products within the {fs} project which have been deleted or are inactive in {sp}, so-called orphaned pages occur.
+These can be removed from the project via the <<uc_orphanedpages,report `*Lost and Found*`>>.
+====
+
+// ********************************************* Seitenvorlage *********************************************
+[[rp_cp_pagetemp]]
+==== Page template
+Just like <<rp_pagetemp,static pages>>, the extension of a category page in the {fs} project is based on a page reference.
+It and its associated page are also automatically created in the background and invisible to the editor.
+
+The reference project contains the page template `categorypage`, which is an example of a category page and maps the Twig template `catalog-with-cms-slot.twig`.
+The following code fragment shows the {categorypage_caas_channel}[output channel] of this page template:
+
+[source,XML]
+.Output channel of the page template categorypage
+----
+$CMS_TRIM(level:1)$
+   $CMS_SET(json, {:})$
+   $CMS_SET(previewId, previewId(element:#global.node))$
+   $CMS_SET(void, json.put("previewId", "" + previewId))$
+   $CMS_SET(void, json.put("pageRevisionId", #global.page.revision.id))$  
+   $CMS_SET(void, json.put("pagetype", "category"))$
+   $CMS_SET(blocks, [])$
+   
+   $CMS_VALUE(#global.page.body("banner"))$
+   $CMS_VALUE(#global.page.body("top"))$
+   $CMS_VALUE(#global.page.body("bottom"))$
+   $CMS_SET(void, json.put("blocks", blocks))$
+   
+   $CMS_VALUE(json.toJSON)$
+$CMS_END_TRIM$
+----
+
+The {categorypage_caas_channel}[output channel] of the category page is almost identical to that of the {homepage_caas_channel}[homepage], which corresponds to a <<rp_pagetemp,static page>>.
+It differs only in the page type, the revision id and in the number of content areas.
+The page type is used to determine the block name and must have the value `category` at this point.
+The block name is determined depending on the page type using the {format_block_render}[render template `block_name_render`], which is referenced in the output channel of the respective <<rp_section,section>>.
+The content areas of the page template correspond to the CMS block positions defined on the {sp} side. 
+They must therefore be named identically.
+
+// ********************************************* Absatzvorlage *********************************************
+[[rp_cp_sectiontemp]]
+==== Section template 
+In addition to the already described <<rp_section,Shoppable Video section>> and the Text-Image section, the {carousel_github}[section template `carousel_section`] is available for adding editorial content to category pages.
+The carousel section in turn embeds one or more {banner_github}[banners].
+
+The banner allows the selection of an image that can be cut to size as well as the definition of a link, a title and a subtitle.
+For both the heading and the subtitle, a text color can be selected.
+Unlike the other sections, which can be used only on subcategory pages, the banner can be embedded on all category pages.
+
+The banner corresponds to the {sp} molecule `fs-banner.twig`, whose output is also controlled by the generic Twig template `fs_molecule_block.twig`.
+This corresponds to a generic template that regulates the output of all molecules.
+
+The {banner_caas_channel}[output channel] of the banner is almost identical to that of the {video_caas_channel}[Shoppable Video section] and only differs in the evaluation of the available input components.
+For this reason, no additional extensions are required that go beyond the requirements already described for the Shoppable Video section.
+
+// ********************************************* Twig-Templates *********************************************
+[[rp_cp_twigtemp]]
+==== Twig Templates
+The {categorypage_caas_channel}[{fs} page template `categorypage`] contained in the reference project is an example of a category page.
+It has the content areas `banner`, `top` and `bottom` and maps the Twig template `catalog-with-cms-slot.twig`.
+This is stored in {sp} under the path `*src/Pyz/Yves/CatalogPage/Theme/default/views/catalog-with-cms-slot*` 
+and extends the parent template `page-layout-catalog.twig`, which defines the base layout of all category pages.
+
+[NOTE]
+====
+To make category pages editable in {cc}, the CMS blocks within both templates must be integrated using the Twig function `fsSpyCmsBlock`.
+
+Unlike the CMS block `banner`, which is available on all category pages, the CMS blocks `top` and `bottom` can only be used on subcategory pages.
+If they should also be available on all category pages, the template `Catalog + CMS Slot` must be selected for them in {sp}.
+====
+
+The following code example shows the Twig template `catalog-with-cms-slot.twig` including the adjustments necessary for editing in {fs}.
+Since only for the positions `top` and `bottom` content areas exist in the {fs} page template, the integration of the CMS blocks takes place exclusively in these two cases via the Twig function `fsSpyCmsBlock`.
+
+[source,PHP]
+.Adaptation of the Twig template catalog-with-cms-slot.twig
+----
+{% extends template('page-layout-catalog', 'CatalogPage') %}
+
+[...]
+
+{% block catalogContent %}
+   {% if data.categoryId %}
+      <div class="catalog-cms-block catalog-cms-block--top">
+         {{ fsSpyCmsBlock({category: data.categoryId, position: 'top'}) }}
+         {% cms_slot 'slt-4' required ['idCategory'] with {
+            idCategory: data.categoryId,
+         } %}
+      </div>
+   {% endif %}
+   
+   {{ parent() }}
+   
+   {% if data.categoryId %}
+      <div class="catalog-cms-block catalog-cms-block--bottom">
+         {{ fsSpyCmsBlock({category: data.categoryId, position: 'bottom'}) }}
+         {% cms_slot 'slt-6' required ['idCategory'] with {
+            idCategory: data.categoryId,
+         } %}
+      </div>
+   {% endif %}
+{% endblock %}
+----
+
+Each CMS block corresponds to a {fs} section placed at a specific position on the category page.
+The use of positions in category pages is enabled {sp} sided by the `CMS Block Category Connector` feature, which is already configured within the demo shop.
+The feature provides by default the positions `top`, `middle` and `bottom`.
+In {fs}, the positions are represented by the content areas of the corresponding page template.
+For this reason, the names of the content areas and the names of the positions defined for category pages must be identical.
+
+For the integration of the <<rp_cp_sectiontemp,banner>> the feature must be additionally extended by the position `banner`.
+For this the file `cms_block_category_position.csv` within the directory `*data/import*` has to be adapted accordingly.
+The transfer of the new position is then done via the following command, which has to be executed in the {sp} project directory.
+
+.Update command
+----
+console data:import:cms-block-category-position
+----
+
+[NOTE]
+====
+A more detailed description of the configuration of positions for category pages can be found in the chapter
+https://documentation.spryker.com/docs/enabling-category-cms-block#usage-for-demoshop[Usage for Demoshop] of the _{sp} documentation_.
+====
+
+Furthermore, the CMS block `banner` has to be added to the superior Twig template `page-layout-catalog.twig`, which is stored in the directory `*src/Pyz/Yves/CatalogPage/Theme/default/templates/page-layout-catalog*`.
+Therefore, the existing `block title` section within the template must be replaced by the following code.
+
+[source,PHP]
+.Integration of the banner
+----
+{% block title %}
+   {{ fsSpyCmsBlock({category:data.category.id_category, position: 'banner'}) }}
+{% endblock %}
+----
+
+In {sp}, the banner corresponds to the molecule `fs-banner`.
+The following code fragment shows the content of the molecule in a highly abbreviated form:
+
+[source,PHP]
+.Molecule fs-banner
+----
+{% extends model('component') %}
+
+{% define config = {
+   name: 'fs-banner',
+   tag: 'fs-banner'
+} %}
+
+{% define data = {
+   fsBlockData: []
+} %}
+
+{% block body %}
+   {% set url -%}
+      {%- if data.fsBlockData.link is defined and data.fsBlockData.link is not empty -%}
+         {%- include template('link', 'FirstSpiritPreview') with { link: data.fsBlockData.link } -%}
+      {%- endif -%}
+   {%- endset %}
+   <figure class="fs-banner"
+      {% if data.fsBlockData.variantEditorName is defined %}
+         data-variant-editor-name="{{ data.fsBlockData.variantEditorName }}"
+      {% endif %}
+      {% if data.fsBlockData.variant is defined and data.fsBlockData.variant is not empty %}
+         data-variant="{{data.fsBlockData.variant}}"
+      {% endif %}
+      {% if data.fsBlockData.previewId is defined and data.fsBlockData.previewId is not empty %}
+         data-preview-id="{{data.fsBlockData.previewId}}"
+      {% endif %}>
+      
+      [...]
+      
+      <img src="{{ data.fsBlockData.picture.imageUrl }}"
+         {% if data.fsBlockData.picture.previewId is defined %}
+            data-preview-id="{{ data.fsBlockData.picture.previewId }}"
+            data-tpp-context-image-resolution="BANNER_IMAGE"
+         {% endif %}>
+
+      [...]
+
+   </figure>
+{% endblock %}
+----
+
+Within the template, the name and the tag of the molecule are defined first and then the fsBlockData object is created.
+It provides access to the structured data defined in the output channel of the <<rp_cp_sectiontemp,{fs} section template>>.
+In the preview case, this data is obtained directly from the _Preview {c}_.
+In contrast, the data for the live state comes from {sp}.
+For this they are imported during the <<fs-deployment,{fs} generation>> from the _Online {c}_ and persisted in {sp}.
+The fsBlockData object and the JSON object created in {fs} thus have the same structure.
+
+The block `body` describes the output of the editorial content.
+These correspond to a cropable image and a link as well as a title and a subtitle, for each of which a text color is defined.
+
+The following figure shows the representation of a carousel with an embedded banner in the {cc}.
+
+.Carousel with a single element
+image::banner.png[]
+
+[[fs_molecule]]
+The output of all molecules is controlled by the generic Twig template `fs_molecule_block.twig`.
+The following code fragment shows the content of this template:
+
+[source,PHP]
+.Generic Twig template for the output of all molecules
+----
+{% define data = {
+   fsBlockData: fsBlockData()
+} %}
+
+{% block content %}
+   {% include molecule( data.fsBlockData.moleculename, 'FirstSpiritReferenceComponents') with{
+      data: {
+         fsBlockData: data.fsBlockData
+      }
+      attributes: {
+         'data-attributes': data.fsBlockData.attributes | default('') | json_encode
+      }
+   }only %}
+{% endblock %}
+----
+
+As in the Twig template of the molecule, the fsBlockData object is first created in the generic template.
+The block `content` then includes the molecule specified in the <<rp_section,{fs} section template>> for the parameter `moleculename`.
+In {sp}, the molecule is stored in the <<sp_twigtemplates,directory `*{fs}ReferenceComponents*`>>.
+In this way, the Twig template generically controls the output of all molecules and creates the mapping between the {fs} section template and the respective {sp} block Twig template.
+
+The `attributes` attribute provides additional configuration attributes that can be defined in the output channel of a section template.
+They are provided in this way directly in the tag of the corresponding molecule, so that they can be easily accessed via TypeScript.
+If no configuration attributes are defined within the output channel of a section, the `attributes` attribute remains empty.

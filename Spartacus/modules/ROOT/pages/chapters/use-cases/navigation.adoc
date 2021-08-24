@@ -1,0 +1,2 @@
+[[uc_navigation]]
+=== Create a new content navigation

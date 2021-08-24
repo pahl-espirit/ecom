@@ -1,0 +1,17 @@
+[[referenceproject]]
+== Reference project
+The _{modulname}_ module provides different ways to access shop content from {sp} and use it in {fs}.
+This requires different components both within the {fs} project and on the {sp} side.
+These components and the dependencies between them are described in the following subchapters using the reference project provided.
+
+// Seiten
+include::pages.adoc[]
+
+// Absätze
+include::sections.adoc[]
+
+// Verweise
+include::links.adoc[]
+
+// Navigation
+// include::navigation.adoc[]

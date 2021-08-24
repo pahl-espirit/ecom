@@ -1,0 +1,27 @@
+[[sp_slotimport]]
+==== Slots import 
+In both {sp} and {fs}, pages are based on a structure of different components.
+In {sp}, these include the CMS slots, which are represented in {fs} by the content areas of a page template.
+The slots bind CMS blocks, each of which corresponds to a {fs} section.
+
+The Twig template `home.twig` represents a <<rp_staticsite,static page>> on the {sp} side and is mapped by the page template `homepage` in the provided {refproject_github}[reference project].
+It contains the content areas `fs_slt_2` and `fs_slt_3`, for which the corresponding slots must exist in {sp}.
+
+The slots are imported using the file `cms_slot.csv`, which is stored in {sp} in the directory `*/data/import/common/common*`.
+It must be replaced by the file of the same name from the delivery, which additionally contains the following two lines:
+
+[source,SPRYKER]
+.Import file cms_slot.csv
+----
+template_path,slot_key,content_provider,name,description,is_active
+[...]
+@HomePage/views/home/home.twig,fs-slt-2,FirstSpiritCmsSlotBlock,Banner,Banner content section for the homepage.,1
+@HomePage/views/home/home.twig,fs-slt-3,FirstSpiritCmsSlotBlock,Homepage Content,Homepage main content section.,1
+----
+
+Afterwards, the new slots are taken over via the following command, which has to be executed in the {sp} project directory.
+
+.Import command
+----
+vendor/bin/console data:import cms-slot
+----

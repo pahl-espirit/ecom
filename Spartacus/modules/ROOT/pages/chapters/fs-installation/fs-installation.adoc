@@ -1,0 +1,47 @@
+== {fs} - Installation and Configuration
+Various components must be installed and configured in order to use the functions of the _{modulname}_ module.
+The following subchapters explain the steps required.
+
+[IMPORTANT]
+====
+To use the _{modulname}_ module, the _{ccon}_ module must also be configured.
+The steps required to do this are described in the _{ccondocen}_.
+====
+
+[NOTE]
+====
+In addition to the standard groups `Everyone`, `Administrators` and `Developers`, there are three further *external* user groups in the reference project: `Editors`, `ChiefEditors` and `ProjectAdmins`.
+These groups possess different rights, which are selected depending on their tasks and defined for the different stores.
+Users outside these groups are not authorized to use the reference project by default.
+
+If there is a need for additional accounts or groups, their creation must be requested by contacting the {techsupport}.
+For new accounts, the following information is required:
+
+* first and last name
+* e-mail address
+* groups to be assigned
+====
+
+// Konfiguration der Projektkomponente
+include::project-component-configuration.adoc[]
+
+// Installation der Web-Komponente
+include::web-components-installation.adoc[]
+
+//Vorschau-URL
+include::previewurl.adoc[]
+
+// Freigabe-Arbeitsablauf
+include::workflows.adoc[]
+
+// Translation Studio
+include::translation-studio.adoc[]
+
+// Projekteinstellungen
+include::project-settings.adoc[]
+
+// Deployment-Auftrag
+include::schedule.adoc[]
+
+// Benutzerverwaltung
+// include::user-management.adoc[]

@@ -1,0 +1,20 @@
+== {ccloud} - Installation and configuration
+{fs} is used to create and maintain editorial data, which is then transferred to and persisted by the _{c}_.
+To integrate the data into the shop, the Storefront requires access to the _{c}_.
+This access is provided by various libraries which must be integrated and configured on the {sp} side.
+
+The following chapters explain all necessary steps for installing and configuring the libraries and the required {ccloud} expansions.
+
+[IMPORTANT]
+====
+The _{modulname}_ integration requires the {ccloud} (in version 19.05 or higher) and the {sp} Storefront in version 3.x.
+====
+
+// OAuth-Konfiguraiton
+include::oauth-configuration.adoc[]
+
+// Einbindung & Konfiguration der Bibliotheken
+include::libraries.adoc[]
+
+// Erzeugung einer Dummy-Seite
+include::dummy-page.adoc[]

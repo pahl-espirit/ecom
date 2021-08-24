@@ -1,0 +1,7 @@
+[[sp_modules]]
+=== {sp}-Modules
+Both the retrieval of the _{c}_ contents by {sp} and their display and editing in {cc} is done using various {sp} modules.
+These modules require an installation in {sp} and an extension of the configuration.
+They also require various JavaScript and CSS files to be included in {sp}.
+
+The following chapters describe how to perform the necessary steps.

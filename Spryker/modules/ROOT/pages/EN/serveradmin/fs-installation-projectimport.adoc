@@ -1,0 +1,25 @@
+[[fs-projectimport]]
+=== Project import
+A part of the delivery is the reference project _{refproject}_, which has to be installed on the {fs} server.
+Open the import dialog in `*{manager}*` via `*menu:Project[Import]*` and select the file `referenceproject.tar.gz` from your local file system via the btn:[Local] button.
+Then enter a project name and a description and confirm the import with btn:[Yes].
+After the successful installation, the project was added to the list in the main panel.
+
+.Imported project in {manager}
+image::projectimport.png[]
+
+[NOTE]
+====
+In addition to the standard groups `Everyone` and `Administrators`, there are three further *external* user groups in the reference project: `Editors`, `ChiefEditors` and `ProjectAdmins`.
+The groups have different rights, which are selected according to their tasks and defined for the different stores.
+Users outside these groups are not allowed to use the reference project by default.
+
+The usage of external groups requires an LDAP connection.
+Otherwise they are not usable and the rights set for them do not apply.
+====
+
+[IMPORTANT]
+====
+Before actively using the project for editorial work, the Preview Deployment must be executed once.
+For this, all configuration steps on both the {fs} and the {sp} side must be completed.
+====

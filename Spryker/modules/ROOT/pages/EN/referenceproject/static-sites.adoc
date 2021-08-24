@@ -1,0 +1,312 @@
+[[rp_staticsite]]
+=== Extension of existing static pages
+The _{modulname}_ module allows editors to enrich static pages that already exist on {sp} side with {fs} content.
+The pages are displayed within the {cc} using the _{ocm}_ and thus integrate seamlessly into the editorial process familiar from {fs}.
+
+Besides the integration of the _{ocm}_, which is a step of the installation, the extension of static pages in {fs} requires the filling of the output channel of the page and section templates.
+In addition, an adaptation of the corresponding Twig templates is necessary on {sp} side.
+
+// ********************************************* Seitenvorlage *********************************************
+[[rp_pagetemp]]
+==== Page template
+Editorial content in the {fs} project is always edited on the basis of a page reference.
+It and the page on which it is based must first be created in the {fs} project.
+Within the {refproject_github}[reference project _{refproject}_], the creation of the page reference and its page runs automatically in the background and invisible to the editor.
+The {script_storage_infos}[`infer_page_storage_information` script] uses the page ID defined in the <<sp_controller, IndexController>> to determine the corresponding {fs} page template.
+
+The page template `homepage` contained in the reference project is an example of a static page.
+The following code fragment shows the {homepage_caas_channel}[output channel] of this page template:
+
+[source,XML]
+.Output channel of the page template homepage
+----
+$CMS_TRIM(level:1)$
+   $CMS_SET(json, {:})$
+   $CMS_SET(previewId, previewId(element:#global.node))$
+   $CMS_SET(void, json.put("previewId", "" + previewId))$
+   $CMS_SET(void, json.put("pagetype", "static"))$
+   $CMS_SET(void, json.put("identifier", #global.node.uid))$
+
+   $CMS_SET(blocks, [])$
+   $CMS_FOR(bodyName, #global.page.template.bodies.map(body -> body.name))$
+      $CMS_VALUE(#global.page.body(bodyName))$
+   $CMS_END_FOR$
+
+   $CMS_SET(void, json.put("blocks", blocks))$
+   
+   $CMS_VALUE(json.toJSON)$
+$CMS_END_TRIM$
+----
+
+The page template maps the Twig template `home.twig` and contains the content areas `fs_slt_2`, and `fs_slt_3`.
+The content areas enable the addition of editorial content, for which various section templates are available in the reference project.
+Their content is added to the `json` object created in the template.
+
+In addition to the editorial content, the `previewId`, the `identifier` and the `pagetype` are passed to the JSON object:
+The `previewId` serves to identify the page reference and allows its decoration in the {cc} as well as its mapping to the {sp} Twig template.
+The page reference for the preview is identified by the <<sp_basetemp, JavaScript of the _{ocm}_>>.
+The generation of the page in {sp} is done using the `identifier`.
+It ensures the unique identification in {sp}.
+It must also be known whether the underlying page is static or dynamic. 
+This information is indicated by the `pagetype`.
+
+The generated JSON object is part of the _{c}_ item to be generated, which is persisted on the {sp} side by the importer.
+
+// ********************************************* Absatzvorlage *********************************************
+[[rp_section]]
+==== Section template
+The {homepage_github}[page template `homepage`] contained in the reference project is an example of a static page.
+It contains the content areas `fs_slt_2`, and `fs_slt_3`.
+The content areas allow the addition of editorial content.
+Different section templates are available for this, all based on the same principle.
+One of them is the `shoppable_video` section template, which is described here as an example.
+
+Within the {video_caas_channel}[output channel] of the Shoppable Video section, various general information is first defined and stored in the `block` array:
+The `previewId` serves the identification of the section and enables it to be edited in the {cc}.
+The fields `active` and `store_names` indicate that the CMS block represented by the section is active on the {sp} side and visible in the store selected in the <<fs-projectsettings,project settings>>.
+
+The output of the section on {sp} side is handled by the <<fs_molecule,Twig template `fs_molecule_block`>>.
+This corresponds to a generic template that controls the output of all molecules.
+In order to ensure the output of the section both in the preview and in the live state, the name and path of this Twig template must be stored within the _{c}_ item.
+Both details are therefore included in the general information of the section.
+
+[source,XML]
+.Definition of general information in the output channel of the section
+----
+$CMS_SET(block,{:})$
+
+$-- Defining general block data --$
+$CMS_SET(void, block.put("previewId", "" + previewId()))$
+$CMS_SET(void, block.put("active", "1"))$
+$CMS_SET(void, block.put("store_names",[ps_activeStore]))$
+$CMS_SET(void, block.put("template_name", "fs_molecule_block"))$
+$CMS_SET(void, block.put("template_path", "@CmsBlock/template/fs_molecule_block.twig"))$
+----
+
+The {format_block_render}[`block_name_render` render template] then determines the block name.
+This is composed of the name of the parent content area and the ID of the section.
+
+The `block_key_render` render template behaves in the same way as the `block_name_render` render template.
+In contrast to this, however, it does not determine the block name, but the unique key of the corresponding block.
+
+Using the {format_additional_attributes}[render template `additional_block_attributes_render`], additional attributes are added to the block.
+These attributes are the slot key and the position of the block within the slot, as well as the page type and a unique ID.
+
+The importer requires the `placeholders` field to be in the generated _{c}_ item.
+Therefore, it has to be created here, even though it does not have any data.
+
+[source,XML]
+.Determination of specific information in the output channel of the section
+----
+$CMS_SET(set_pageType, json.get("pagetype"))$
+
+$-- Add block name attribute to block object (page type dependent) --$
+$CMS_RENDER(template: "block_name_render", rt_pageType: set_pageType, rt_blockObject: block)$
+
+$-- Add block key attribute to block object (page type dependent) --$
+$CMS_RENDER(template: "block_key_render", rt_pageType: set_pageType, rt_blockObject: block)$
+
+$-- Add additional block attributes to block object (page type dependent) --$
+$CMS_RENDER(template: "additional_block_attributes_render", rt_pageType: set_pageType, rt_blockObject: block)$
+
+$-- Defining placeholder data of the block --$
+$CMS_SET(placeholders,{:})$
+$CMS_SET(void, block.put("placeholder",placeholders))$
+----
+
+The array `data` contains the editorial contents maintained in the form of the section.
+These correspond to the video ID of the selected YouTube video and a list of video items based on the {videoitem_github}[`shoppable_video_item` section template] described below.
+They are displayed at defined times of the video.
+To display the video, the player needs the `previewId` specified here.
+On {sp} side, the section is represented by the molecule `fs-shoppable-video`, whose name is also contained in the `data` array.
+
+The importer expects the information in the context of the current language.
+For this reason, the corresponding language abbreviation to which the array `data` is assigned is determined.
+
+In the preview, the contents of the section are output directly.
+Otherwise, the last step adds the section to the `blocks` array defined in the page template, which contains all sections of a page and integrates them into the _{c}_ item to be generated.
+
+[source,XML]
+.Processing of editorial content in the output channel of the section
+----
+$CMS_SET(data,{:})$
+$CMS_SET(void, data.put("moleculename", "fs-shoppable-video"))$
+$CMS_SET(void, data.put("videoId", if(!st_video.empty,st_video.values.first.id)))$
+$CMS_SET(void, data.put("previewId", previewId()))$
+
+$CMS_SET(items,[])$
+$CMS_VALUE(st_items)$
+$CMS_SET(void, data.put("items", items))$
+
+$CMS_SET(locale, #global.language.getLocale())$
+$CMS_SET(localeAbbr, locale.getLanguage() + "_" + locale.getCountry())$
+$CMS_SET(localizedData,{:})$
+$CMS_SET(void, localizedData.put(localeAbbr, data))$
+$CMS_SET(void, block.put("data", localizedData))$
+
+$CMS_IF(#global.is("WEBEDIT") && !isSet(caas_preview_generation))$
+   $CMS_VALUE(block.toJSON)$
+$CMS_ELSE$
+   $CMS_SET(void, blocks.add(block))$
+$CMS_END_IF$
+----
+
+As mentioned before, the various video items are based on the `shoppable_video_item` section template.
+Within the {videoitem_caas_channel}[output channel] of this template, the editorial content for a single video item is determined and stored in the `item` array.
+The editorial content corresponds to the time at which the video item is displayed, an image, a text and a reference to the detail page of a product to be selected.
+The last step adds the single video item to the `items` array defined in the {video_caas_channel}[`shoppable_video` section template], which contains all video items and integrates them into the _{c}_ item to be generated.
+
+[source,XML]
+.Output channel of the video item
+----
+$CMS_SET(item, {"time": st_time})$
+
+$CMS_IF(!st_picture.empty)$
+	$CMS_SET(void, item.put("picture", {
+		"imageUrl": ref(st_picture, res:"CONTENT_IMAGE", abs:1).url,
+		"ambilight": !st_ambilight.empty && st_ambilight
+	}))$
+	$CMS_IF(!#global.release)$
+		$CMS_SET(void, item.picture.put("previewId", previewId(element: st_picture)))$
+	$CMS_END_IF$
+$CMS_END_IF$
+
+$CMS_IF(!st_text.empty)$
+	$CMS_SET(void, item.put("text", st_text.normalize.toText(true)))$
+$CMS_END_IF$
+
+$CMS_IF(!st_product.empty)$
+	$CMS_SET(void, item.put("productId", st_product.identifiers.get(0)))$
+$CMS_END_IF$
+
+$CMS_SET(void, items.add(item))$
+----
+
+The edit dialog in the {cc} has the {openvideo} button for entering the display time, the image, the text and the reference of a video item.
+This button opens another dialog in which the selected video is visible and playable.
+With the help of a timeline, the video items can be intuitively created, edited or deleted within this dialog.
+
+.Editing dialog for video items
+image::videoitem.png[]
+
+// ********************************************* Twig-Templates *********************************************
+[[rp_twigtemplates]]
+==== Twig templates
+In {fs}, the creation and editing of editorial content takes place in {cc}.
+The storefront is embedded in it using the _{ocm}_.
+This in turn accesses the _Preview {c}_ and determines the current {fs} contents from there.
+These contents are transferred to the _Online {c}_ via a <<fs-deployment,{fs} deployment>>.
+The latter makes them available to the importer, who transfers them to {sp} and persists them there.
+
+The Twig template `home.twig` represents a static page on the {sp} side and can be found under the path `*src/Pyz/Yves/HomePage/Theme/default/views/home*`.
+To make this page editable in {cc}, it is necessary to replace the CMS slots contained in it.
+
+[NOTE]
+====
+The slots represent the content areas of the respective <<rp_pagetemp,{fs} page template>>.
+For this reason, the key of the CMS slot and the name of the content area must match and start with the prefix `fs-slt` and `fs_slt` respectively.
+It is important to note that hyphens in the key of the slot are replaced by underscores within {fs}.
+The slot `fs-slt-2` thus corresponds to the content area `fs_slt_2`.
+====
+
+The inclusion of a slot is done via the {sp} standard command `cms_slot`, which in turn calls the <<sp_plugin,`{fs}PreviewSlotBlockWidgetCmsSlotContentPlugin`>>.
+This is part of the delivery and requires an extension of the `ShopCmsSlotDependencyProvider`.
+Unlike the `CmsSlotBlockWidget` included in {sp}, it only takes into account the data stored in _{c}_.
+
+The Twig template `home.twig` is represented by the  {homepage_github}[page template `homepage`] contained in the reference project.
+It is an example for a static page and has the content areas `fs_slt_2` and `fs_slt_3`.
+The following code example shows the integration of the slots of the same name within the Twig template to make the static page editable in {cc}.
+
+[NOTE]
+====
+Within the Twig template the ID `idCmsPage` has to be defined and passed to each block.
+It is composed of the page type and the name of the {fs} page.
+====
+
+[source,PHP]
+.Extension of the Twig template home.twig
+----
+{% extends template('page-layout-main') %}
+
+{% define data = {
+   idCmsPage: 'static_homepage',
+} %}
+
+{% block pageInfo %}{% endblock %}
+
+{% block container %}
+   {% cms_slot 'fs-slt-2' with{
+      idCmsPage: data.idCmsPage,
+   }%}
+   
+   <div class="container container--home-page">
+      <main>
+         {% block content %}
+            {% cms_slot 'fs-slt-3' with{
+               idCmsPage: data.idCmsPage,
+            }%}
+         {% endblock %}
+      </main>
+   </div>
+{% endblock %}
+----
+
+The content areas `fs_slt_2` and `fs_slt_3` contained in the <<rp_pagetemp,page template `homepage`>> allow the addition of editorial content.
+For this purpose, various section templates are available within the {refproject_github}[reference project], for which a corresponding block Twig template must exist on the {sp} side.
+One of these templates is the <<rp_section,section template `shoppable_video`>>, which is represented by the molecule `fs-shoppable-video` on the {sp} side.
+This molecule is part of the <<sp_twigtemplates,{sp} module `firstspirit-reference-components`>> included in the delivery and is stored in the directory `*{fs}ReferenceComponents*` in {sp}.
+
+The following code extract shows the content of the molecule `fs-shoppable-video` in a highly abbreviated form:
+
+[source, PHP]
+.Molecule fs-shoppable-video
+----
+{% extends model('component') %}
+
+{% define config = {
+   name: 'fs-shoppable-video',
+   tag: 'fs-shoppable-video'
+} %}
+
+{% define data = {
+   fsBlockData: [],
+} %}
+
+{% block body %}
+   [...]
+   <fs-youtube-player video-id="{{ data.fsBlockData.videoId }}" nocookie muted>
+      {% for item in data.fsBlockData.items %}
+         <div data-time="{{ item.time }}">
+            {% set url = item.productId is defined ? getProductPageUrl(item.productId):null %}
+            <a href="{{url}}">
+               {% set ambilight = item.picture.ambilight is defined and item.picture.ambilight %}
+               <span class="picture{{ambilight ? 'with-ambilight':''}}" 
+                  style="background-image: url('{{ item.picture.imageUrl }}');">
+               </span>
+               [...]
+               {{ item.text | raw }}
+               [...]
+            </a>
+            [...]
+         </div>
+      {% endfor %}
+   </fs-youtube-player>
+   <script type="module" src="https://www.unpkg.com/fs-youtube-player"></script>
+{% endblock %}
+----
+
+Within the template, the name and tag of the molecule are defined first.
+The fsBlockData object is then created.
+It provides access to the structured data defined in the output channel of the <<rp_section,{fs} section template>>.
+In the preview case, this data is obtained directly from the _Preview {c}_.
+In contrast, the data for the live state comes from {sp}.
+Therefore, they are imported during a <<fs-deployment,{fs} generation>> from the _Online {c}_ and persisted in {sp}.
+The fsBlockData object and the JSON object created in {fs} thus have the same structure in both cases.
+
+The block `body` describes the output of the editorial content.
+These correspond to the time at which the video item is displayed, an image, a text and a reference to the detail page of a product to be selected.
+
+The following figure shows the representation of the CMS block.
+
+.Representation of the section
+image::section.png[]

@@ -1,0 +1,85 @@
+[[sp_twigtemplates]]
+==== Twig Templates
+The _{modulname}_ module provides different ways to access shop content from {sp} and use it in {fs}.
+These possibilities are described in the following of this documentation on the basis of the supplied reference project in the form of <<usecases,use cases>>.
+
+If the <<ref-project,sections and page templates>> contained in the reference project should be used, this requires different Twig templates in {sp}.
+
+The sections correspond to different {sp} molecules, atoms and organisms, which are summarized in the folder `*{fs}ReferenceComponents*`.
+This is part of the delivery and is provided in the form of another {sp} module, which is to be installed using the following command:
+
+[source,SPRYKER]
+.Installation command
+----
+composer require e-spirit/firstspirit-reference-components
+----
+
+In order to make the components provided with the module usable in {sp}, the corresponding path must be specified in Spryker.
+This is done by adapting the files `settings.js` and `tsconfig.json`.
+
+Within the `settings.js` file in the directory `*{sp}-directory/frontend*` an extension of the context is necessary:
+
+[source,SPRYKER]
+.Adaptation of the settings.js file
+----
+[...]
+
+dirs: [
+   join(globalSettings.context, paths.core),
+   join(globalSettings.context, './vendor/e-spirit'),
+   join(globalSettings.context, paths.eco),
+   join(globalSettings.context, paths.project)
+],
+----
+
+An additional include must be added to the `tsconfig.json` file in the `*{sp} directory*`:
+
+[source,SPRYKER]
+.Adaptation of the tsconfig.json file
+----
+[...]
+
+"include": [
+   "./vendor/spryker-shop/**/*",
+   "./vendor/spryker-eco/**/*",
+   "./src/Pyz/Yves/**/*",
+   "./vendor/e-spirit/**/*"
+],
+----
+
+The generic Twig template `fs_molecule_block.twig` controls the output of the supplied molecules.
+It is a part of the zip file `b2c-demo-shop-extensions-<VERSION>.zip` included in the delivery and must be stored under the path `*src/Pyz/Shared/CmsBlock/Theme/default/template*` in {sp}.
+
+The integration of the Twig templates in {sp} takes place via the following command, which finally is to be executed in the {sp} project directory.
+
+[source,SPRYKER]
+.Integration of the Twig templates
+----
+npm run yves
+----
+
+The {fs} templates allow the extension of existing <<rp_staticsite,static pages>>, <<rp_productpages,product>>, and <<rp_categorypages,category pages>> and the creation of <<rp_contentpage,dynamic content pages>> or a <<rp_magazine,magazine>>.
+Therefore, the reference project contains the page templates `homepage`, `productpage`, `categorypage`, `contentpage`, and `magazine_detail_page`.
+In addition, the following Twig templates are required in {sp}:
+
+* <<rp_twigtemplates,`home.twig`>>
+* <<rp_pdp_twigtemp,`pdp.twig`>>
+* <<rp_pdp_twigtemp,`product-cms-block.twig`>>
+* <<rp_cp_twigtemp,`page-layout-catalog.twig`>>
+* <<rp_cp_twigtemp,`catalog-with-cms-slot.twig`>> 
+* <<rp_dcp_twigtemp,`fs-content-page.twig`>>
+
+The Twig template `home.twig`, which can be found under the path `*src/Pyz/Yves/HomePage/Theme/default/views/home*`, needs some changes.
+These are explained in the description of the <<rp_twigtemplates,static pages>>.
+The same applies to the Twig templates `pdp.twig`, `page-layout-catalog.twig` and `catalog-with-cms-slot.twig` which are necessary to edit <<rp_pdp_twigtemp,product>> and <<rp_cp_twigtemp,category pages>>.
+
+They are available in {sp} under the following paths:
+
+* `*src/Pyz/Yves/ProductDetailPage/Theme/default/views/pdp*`
+* `*src/Pyz/Yves/CatalogPage/Theme/default/templates/page-layout-catalog*`
+* `*src/Pyz/Yves/CatalogPage/Theme/default/views/catalog-with-cms-slot*`
+
+The remaining Twig templates are part of the zip file included in the delivery and have to be stored under the following paths:
+
+* Product pages: `*src/Pyz/Yves/CmsBlockWidget/Theme/default/components/molecules/product-cms-block*`
+* Dynamic Content Pages: `*src/Pyz/Shared/Cms/Theme/default/templates/fs-content-page*`

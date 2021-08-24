@@ -1,0 +1,18 @@
+=== Ausgabekanal
+Zusätzlich zu den bereits vorhandenen Ausgabekanälen eines Projekts wird ein weiterer XML-Kanal benötigt.
+Dieser muss für leere Projekte manuell angelegt werden, ist innerhalb des mitgelieferten Referenzprojekts _{refproject}_ jedoch bereits enthalten. 
+
+Der Ausgabekanal wurde im `*{manager}*` unter dem Punkt `*menu:{p_settings}[Vorlagensätze]*` angelegt und besitzt folgende Konfiguration:
+
+[[templateset]]
+.Ausgabekanal
+image::templateset.png[]
+
+[IMPORTANT]
+====
+In der gleichnamigen Auswahlbox muss die Konvertierungsregel ausgewählt werden, die für den _{c}_ anzulegen ist.
+Eine Beschreibung der dafür notwendigen Schritte ist in der _{caasdoc}_ enthalten.
+====
+
+Der Ausgabekanal ist aktiviert und steht somit im Projekt zur Verfügung.
+Er dient der Definition der zu übertragenden Inhalte, die während der Generierung in Nachrichten zusammengefasst und an den _{c}_ übermittelt werden.

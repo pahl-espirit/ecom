@@ -1,0 +1,84 @@
+[[rp_navigation]]
+=== Extension of the main navigation
+In addition to the different page types, the main navigation of the {sp} B2C Demo Shop can be edited in the {cc}.
+In {fs} the navigation is represented by a {navigation_extensions}[global page], a {navigation_section}[section template] and a {tech_nav_github}[technical page reference].
+These enable the creation of further menu items in the first level of the navigation and their transfer to the _Preview {c}_ and to the _Online {c}_.
+
+In order to enable the main navigation to be extended, the following Twig templates must also be adapted:
+
+* navigation-header.twig
+* navigation-multilevel-node.twig
+
+[[rp_navigation_globalpage]]
+==== Global page
+The navigations of the {sp} B2C Demo Shop are represented in {fs} via the {navigation_extensions_page}[page template `navigation_extension`], 
+which is used to automatically create a {navigation_extensions}[global page] for each navigation.
+It includes an `FS_CATALOG` input component, which uses the section template <<rp_navigation_section, `navigation_node_reference`>> 
+to refer all start nodes of the menu items *maintained in {fs}*.
+Each of these start nodes corresponds to a structure folder, which is to be selected within an editing dialog in the {cc}.
+Therefore the main navigation in the {cc} has a button which allows the addition of new menu items in the first level of the navigation.
+If a referenced structure folder contains further subfolders, these are automatically interpreted as sub-items of the new menu item.
+
+[NOTE]
+====
+The button for adding further menu items is only visible for those roles that have the right to edit and delete.
+Otherwise the button is hidden.
+====
+
+.Button to extend the navigation
+image::img_navigation.png[]
+
+
+[[rp_navigation_section]]
+==== Section template
+The global page <<rp_navigation_globalpage,`navigation_extension`>> contained in the reference project enables the extension of the main navigation in the {cc}.
+The navigation can be enhanced by adding menu items on the first level, each of which corresponds to a structure folder and serves as a start node.
+Subfolders contained in such a structure folder are automatically interpreted as sub-items of the new menu item.
+
+For all new start nodes, the `FS_CATALOG` input component of the global page is enhanced with an entry based on the {navigation_section}[`navigation_node_reference` section template].
+This section template in turn contains an `FS_REFERENCE` input component, which is used to reference the respective menu item.
+
+In its {navigation_section_caas_channel}[output channel], the section template additionally contains the navigation function `fr_mainNav`.
+Starting from the selected structure folder, this function generates the sub-navigation of the new menu item for this folder and the subfolders contained in it.
+All these sub-navigations of the individual menu items are combined using the technical page template <<rp_navigation_page, `navigations`>> and transferred to the _{c}_.
+
+
+[[rp_navigation_page]]
+==== Page template
+In addition to the <<rp_navigation_globalpage,global page>> the reference project contains the {tech_nav_github}[technical page reference `navigations`].
+This is used to transfer all navigation changes made *in {fs}* to the _{c}_.
+
+Using the {script_get_nav_gca_pages}[script `get_navigation_gca_pages`], the page reference determines all global pages, 
+which are based on the {navigation_extensions_page}[page template `navigation_extension`].
+The global pages represent the navigations in {fs} that can be extended using the {cc}.
+Within the reference project, this is the main navigation of the {sp} B2C Demo Shop.
+
+Each of these global pages contains an `FS_CATALOG` input component,
+which uses the section template <<rp_navigation_section, `navigation_node_reference`>> to reference the start nodes of all menu items *maintained in {fs}*.
+The section template in turn generates a sub-navigation for each of these start nodes.
+The technical page reference combines all these sub-navigations and creates a JSON document containing all navigations that are *extendable in {fs}*.
+
+For the release of the navigation changes made, the reference project provides the workflow <<fs-nav-wf,_Release Navigation_>>, which requires the release right for its execution.
+This workflow only performs the release, but not the publication of the corresponding global page.
+At the same time, it triggers a script that ensures that the technical page reference is transferred to the _Preview {c}_.
+The publication of the adaptations and their transfer to the _Online {c}_ only takes place in the context of a <<fs-deployment,full generation>>.
+
+[[rp_navigation_twigtemplates]]
+==== Twig templates
+In addition to the described {fs} templates, the adaptation of the following Twig templates is required in {sp},
+to enable the extension of the main navigation of the {sp} B2C Demo Shop in the {cc}.
+
+* navigation-header.twig
+* navigation-multilevel-node.twig
+
+[NOTE]
+====
+The necessary adjustments are part of the <<sp_navigation,installation>> and are therefore not described here.
+====
+
+In {sp}, the Twig templates represent the main navigation.
+They reference the menu items and control their display in the preview and in the live state.
+The adaptations provide the main navigation with a button in the {cc}, which allows the addition of further menu items.
+
+If other navigations should be editable in the {cc}, only an adjustment of the corresponding Twig templates is necessary.
+The chapter <<uc_navigation,navigation maintenance>> explains the required steps for this.

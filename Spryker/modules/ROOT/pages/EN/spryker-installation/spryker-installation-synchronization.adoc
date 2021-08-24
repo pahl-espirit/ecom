@@ -1,0 +1,109 @@
+=== Synchronization
+During deployment, the content maintained in {fs} is retrieved from the _Online {c}_ using the importer.
+It transfers the data to {sp} and persists them in the backend in its data system.
+The display of the data in the live state additionally requires its transmission to Yves.
+The transmission of the data requires the registration of an event subscriber, several queues and a message processor.
+
+[NOTE]
+====
+See the https://documentation.spryker.com/docs/publish-and-synchronization[Publish and Synchronization] chapter of the _{sp} documentation_ for more information.
+====
+
+The registration of the EventSubscriber is done with the following code to be added to the `EventDependencyProvider` in the directory `*Pyz/Zed/Event*`.
+
+[source,PHP]
+.EventDependencyProvider
+----
+use ESpirit\Zed\FirstSpiritCmsDataStorage\Communication\Plugin\Event\Subscriber\FirstSpiritCmsDataStorageEventSubscriber;
+
+[...]
+
+class EventDependencyProvider extends SprykerEventDependencyProvider
+{
+   [...]
+
+   public function getEventSubscriberCollection()
+   {
+      $eventSubscriberCollection = parent::getEventSubscriberCollection();
+      
+      /**
+      * Storage Events
+      */
+      [...]
+      $eventSubscriberCollection->add(new FirstSpiritCmsDataStorageEventSubscriber());
+      
+      /**
+      * Search Events
+      */
+      [...]
+      
+      return $eventSubscriberCollection;
+   }
+}
+----
+
+Registration of the queues requires the following adaption of the `RabbitMqConfig` file in the `*Pyz/Client/RabbitMq*` directory:
+
+[source,PHP]
+.RabbitMqConfig
+----
+<?php
+namespace Pyz\Client\RabbitMq;
+
+use ESpirit\Shared\FirstSpiritCmsDataStorage\FirstSpiritCmsDataStorageConfig;
+[...]
+
+class RabbitMqConfig extends SprykerRabbitMqConfig
+{
+   [...]
+   
+   protected function getPublishQueueConfiguration(): array
+   {
+      return [
+         PublisherConfig::PUBLISH_QUEUE => [
+            [...]
+         ],
+         GlossaryStorageConfig::PUBLISH_TRANSLATION,
+         FirstSpiritCmsDataStorageConfig::PUBLISH_FS_CMS_BLOCK_DATA_CONNECTOR,
+         FirstSpiritCmsDataStorageConfig::PUBLISH_FS_CMS_PAGE_DATA_CONNECTOR,
+      ];
+   }
+   
+   protected function getSynchronizationQueueConfiguration(): array
+   {
+      return [
+         [...]
+         FirstSpiritCmsDataStorageConfig::SYNC_FS_CMS_BLOCK_DATA,
+         FirstSpiritCmsDataStorageConfig::SYNC_FS_CMS_PAGE_DATA
+      ];
+   }
+
+   [...]
+} 
+----
+
+The registration of the event subscriber necessary for the queues requires an adjustment of the `QueueDependencyProvider` in the directory `*Pyz/Zed/Queue*`:
+
+[source,PHP]
+.QueueDependencyProvider
+----
+<?php
+namespace Pyz\Zed\Queue;
+
+use ESpirit\Shared\FirstSpiritCmsDataStorage\FirstSpiritCmsDataStorageConfig;
+[...]
+
+class QueueDependencyProvider extends SprykerDependencyProvider
+{
+   protected function getProcessorMessagePlugins(Container $container)
+   {
+      return [
+         [...]
+         FirstSpiritCmsDataStorageConfig::PUBLISH_FS_CMS_BLOCK_DATA_CONNECTOR => new EventQueueMessageProcessorPlugin(),
+         FirstSpiritCmsDataStorageConfig::PUBLISH_FS_CMS_PAGE_DATA_CONNECTOR => new EventQueueMessageProcessorPlugin(),
+         FirstSpiritCmsDataStorageConfig::SYNC_FS_CMS_BLOCK_DATA => new SynchronizationStorageQueueMessageProcessorPlugin(),
+         FirstSpiritCmsDataStorageConfig::SYNC_FS_CMS_PAGE_DATA => new SynchronizationStorageQueueMessageProcessorPlugin(),
+      ];
+   }
+}
+----

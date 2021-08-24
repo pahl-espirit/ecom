@@ -1,0 +1,33 @@
+[[uc_datasets]]
+=== Dataset usage
+On the {sp} side, the output of the content maintained in {fs} is done via <<uc_contentmodule,Angular UI components>>.
+These receive the content to be displayed and define the HTML view in the shop.
+
+The content maintenance is based on section templates, which can include datasets in addition to pure content.
+The use of datasets requires an FS_INDEX input component, which in turn references the associated data source.
+
+The provided reference project _{refproject}_ contains the section template `location_overview` as an example.
+This allows the input of a headline and the selection of any number of dataset, each of which is an address.
+For this purpose it has the `FS_INDEX` input component `st_locations`, which in turn references the data source `locations`.
+
+[source, JAVA]
+.FS_INDEX input component
+----
+<FS_INDEX name="st_locations" height="1" useLanguages="no">
+   <LANGINFOS>
+      <LANGINFO lang="*" label="Locations"/>
+      <LANGINFO lang="DE" label="Standorte"/>
+   </LANGINFOS>
+   <SOURCE name="DatasetDataAccessPlugin">
+      <TEMPLATE uid="locations.locations"/>
+   </SOURCE>
+</FS_INDEX>
+----
+
+In the _{c}_, the selected datasets are stored only as a reference at the section.
+Therefore, when querying the data, the bridge automatically checks all documents for such references and determines the datasets by their ID.
+The <<create_converter,converter>> associated with the section takes the data on the {sp} side and converts it to a format that is optimal for the <<create_ui_component,Angular UI component>>.
+Each of these components is associated with a {fs} section template and defines the HTML output of the transferred data within the shop.
+
+For the `location_overview` section template, the integration provides the `location-overview` component.
+It displays the datasets selected in the {fs} project in the form of an overview below the specified headline.

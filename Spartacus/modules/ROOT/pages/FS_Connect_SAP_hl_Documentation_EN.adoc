@@ -1,0 +1,29 @@
+= FirstSpirit Connect (Headless): For SAP Commerce Cloud
+e-Spirit AG
+{docdate}
+include::../../includes/variables.adoc[]
+
+// Einleitung
+include::chapters/introduction.adoc[]
+
+// SAP Commerce Cloud - Installation und Konfiguration
+include::chapters/sapcc-installation/sapcc-installation.adoc[]
+
+// FirstSpirit - Installation und Konfiguration
+include::chapters/fs-installation/fs-installation.adoc[]
+
+// Referenzprojekt
+include::chapters/referenceproject/referenceproject.adoc[]
+
+// Anwendungsfälle
+include::chapters/use-cases/use-cases.adoc[]
+
+////
+
+// Wartung
+include::chapters/maintenance/maintenance.adoc[]
+
+////
+
+// Rechtliche Hinweise
+include::chapters/legal-notice.adoc[]

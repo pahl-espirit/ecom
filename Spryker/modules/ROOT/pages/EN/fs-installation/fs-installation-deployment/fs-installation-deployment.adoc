@@ -1,0 +1,11 @@
+// Voll-Deployment
+include::fs-installation-fulldeployment.adoc[]
+
+// Media Deployment
+include::fs-installation-mediadeployment.adoc[]
+
+// Teil-Deployment
+// include::fs-installation-partialdeployment.adoc[]
+
+// Preview Deployment
+include::fs-installation-previewdeployment.adoc[]

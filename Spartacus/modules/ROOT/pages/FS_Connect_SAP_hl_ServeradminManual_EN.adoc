@@ -1,0 +1,13 @@
+= FirstSpirit Connect (Headless) for SAP: Documentation for Server Administrators
+e-Spirit AG
+{docdate}
+include::../../includes/variables.adoc[]
+
+// Einleitung
+include::chapters/serveradmins/introduction.adoc[]
+
+// Installation & Konfiguration
+include::chapters/serveradmins/installation.adoc[]
+
+// Rechtliche Hinweise
+include::chapters/legal-notice.adoc[]

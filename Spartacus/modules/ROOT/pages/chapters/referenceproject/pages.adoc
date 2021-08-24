@@ -1,0 +1,58 @@
+[[rp_pages]]
+=== Pages
+In contrast to the delivery of content, its creation and maintenance shifts from the {ccloud} to {fs}.
+Therefore {fs} provides the {wc}.
+In it, <<concept_pagestypes,Shop and {fsdp}s>> can be displayed and enriched with editorial content using the {tppdocen}[_{ocm}_].
+
+Editorial content in {fs} is always created and edited on the basis of a page reference.
+It and the page on which it is based are automatically generated in the background in the provided reference project as soon as a new page is created in the {wc}.
+The script `page_type_mapping` determines the corresponding {fs} page template which must be included in the project.
+
+The reference project provides the following page templates for content, product, and category pages that correspond to the {sdp}s:
+
+* `cartpagetemplate`
+* `contentpage1`
+* `landingpage2`
+* `searchresultslistpage`
+* `storefinderpage`
+* `product_detail_page`
+* `category_page`
+
+The page templates for the {sdp}s map the respective {ccloud} page templates and differ only in the number of their content areas.
+Each of these content areas allows the integration of different sections, which are used to create and persist the editorial content.
+The mapping between the {ccloud} templates and the {fs} page templates for the {sdp}s is done in the <<install_pset,project settings>> as described in the installation chapter.
+Since {fsdp}s have no associated page in the {ccloud}, no mapping is required for them.
+
+For the Shop as well as for the {fsdp}s it must be ensured that the content areas of the {fs} templates match the <<sp_installation_config_pages, slots>> configured in the bridge:
+For each defined slot, the page template must have a content area with *the same* name.
+Otherwise, the editorial content will be ignored by the Storefront and not be output in the live state.
+
+[NOTE]
+====
+The mapping between the configured slots and the content areas of the {fs} page templates is not case-sensitive.
+The names `Section1` and `section1` are therefore considered identical and are successfully mapped to each other.
+====
+
+[[rp_pages_inputcomponents]]
+In addition, all page templates must have the input components `pt_seoUrl` and `pt_cc_identifier`.
+The language-dependent text input component `pt_seoUrl` enables the definition of an SEO url and must therefore be editable.
+In contrast, the language-independent text input component `pt_cc_identifier` is a hidden component.
+It is filled automatically and ensures the accessibility of the page in the {wc}.
+
+The following code snippet shows the definition of the two input components:
+
+[source,XML]
+.Input components pt_seoUrl und pt_cc_identifier
+----
+<CMS_INPUT_TEXT name="pt_seoUrl" hFill="yes" useLanguages="yes">
+  <LANGINFOS>
+    <LANGINFO lang="*" label="SEO URL"/>
+  </LANGINFOS>
+</CMS_INPUT_TEXT>
+
+<CMS_INPUT_TEXT name="pt_cc_identifier" hFill="yes" hidden="yes" useLanguages="no">
+  <LANGINFOS>
+    <LANGINFO lang="*" label="Commerce Cloud Identifier"/>
+  </LANGINFOS>
+</CMS_INPUT_TEXT>
+----

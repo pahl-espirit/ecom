@@ -1,0 +1,27 @@
+[[fs-conversionrule]]
+=== Conversion rule
+The data to be transferred to _{c}_ is defined in the <<fs-templateset,template set>> still to be created.
+The use of certain special characters could lead to invalid JSON objects.
+A conversion rule must therefore be created in order to prevent potential errors.
+
+It is advisable to create a new conversion rule instead of editing an existing rule.
+To do this, create a text file in your file system and add the following content to this file:
+
+[source, Script]
+.Conversion rule
+----
+0x22="\""
+[convert] 
+0x3c="&lt;" 
+0x3e="&gt;" 
+0x22="&#34;" 
+0x26="&amp;" 
+0x27="&#39;"
+----
+
+Then open `*{manager}*` and select `*menu:Server properties[Conversion rules]*`.
+A list of the existing conversion rules is displayed in the main panel.
+After clicking btn:[Add], select the text file created earlier from your file system and click btn:[Open] to confirm your selection.
+The new rule is then added to the list in the main panel and is to be assigned to the <<fs-templateset,template set>> to be created.
+
+More information is available in the _{admindocen}_.

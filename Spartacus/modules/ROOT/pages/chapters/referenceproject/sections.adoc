@@ -1,0 +1,49 @@
+[[rp_sections]]
+=== Sections
+Within the reference project _{refproject}_ included in the delivery, the content areas of a {fs} page template represent the slots of a {ccloud} page.
+Sections can be added to them; each one corresponds to a content module.
+
+For this purpose, the reference project provides the following sections:
+
+* Teaser
+* Carousel
+* Multi Slot Container
+
+Teaser::
+The teaser corresponds to a single image in horizontal format, which is by default included in the header of a page.
+On this image another image and a text can be placed.
++
+In addition to the selection of the image and the two overlay options, the section allows the specification of a <<rp_links, link>> and an alt text.
+All link types available in the reference project are permitted for linking the image.
+
+Carousel::
+The carousel is equivalent to the teaser.
+In contrast to the latter, it embeds several images which, depending on the configuration, rotate continuously or can be clicked through individually.
++
+The individual images of the carousel each correspond to a teaser.
+For these, the carousel therefore has the same functions.
+Furthermore, the section enables the de-/activation of the automatic image scrolling and the definition of the image display duration in seconds.
+
+Multi Slot Container::
+The Multi Slot Container is a layout component that in addition to entering a headline allows the automatic arrangement of content, category or product elements.
+The arrangement of the elements depends on their number:
+Up to a number of four elements, they are displayed side by side and scaled accordingly.
+Additional elements are combined in groups of also up to four elements and displayed in further lines below.
++
+The templates of all three elements allow entering a headline, a subtitle, and a teaser text as well as selecting an image for which an alternative text can be specified.
+Furthermore, the display of each element contains a button whose caption can be defined freely and which refers to the detailed view of the respective element.
+This button is only visible if the Multi Slot Container contains just a single element.
++
+In addition to the input options mentioned above the content element allows the definition of a <<rp_links, link>>.
+For this, also in this case, all link types available in the reference project are permitted.
++
+Along with the mentioned input components the category element contains a component for selecting a category.
+If no image is selected for a category the category element displays a default image.
++
+In contrast to the category element the information for the product element comes from the {ccloud} by default.
+They serve as a fallback and are overwritten by the content in the mentioned components.
+
+Location Overview::
+This section allows the input of a user-defined headline and the selection of any number of locations, each of which contains various address data.
+Each of these locations corresponds to a dataset stored in the datasource _locations_.
+The selected datasets are displayed as two-lined adresses in the form of an overview below the specified headline.

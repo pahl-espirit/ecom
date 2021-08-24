@@ -1,0 +1,26 @@
+[[install_pset]]
+=== Project settings
+The installation on the {ccloud} side includes the integration of the <<sp_installation_libraries,library `fs-spartacus-bridge`>>.
+In addition to various _{c}_ information, this library expects a definition of the {ccloud} templates, whose processing is to be enabled in the {wc}.
+
+For each {sdp} specified in the bridge configuration, a page must exist within {fs} and within the {ccloud}.
+The mapping between the {fs} page template and the {ccloud} template is done via the project settings form.
+
+For each {ccloud} template, the project settings contain an input component in which the corresponding page template is referenced.
+Furthermore, a content folder is selected for content, product, and category pages.
+These folders define the destination where the pages created based on the page templates are stored.
+The site store contains folders with the same names in which the corresponding page references are stored.
+
+[NOTE]
+====
+All reference names of the input components contained in the project settings use the following scheme:
+
+* `ps_template_<Name of the {ccloud} Template>` or
+* `ps_folder_<{ccloud} Page Type>`
+
+When extending the project settings, this schema must be adopted for the reference names of new input components.
+====
+
+.Project settings - Mapping for product pages
+image::images/project_set.png[]
+

@@ -1,0 +1,17 @@
+[[fs-templateset]]
+=== Template set
+In addition to the existing template sets of a project, another XML channel is required.
+This must be created manually for empty projects, but is already contained within the supplied {refproject_github}[reference project _{refproject}_].
+
+The template set was created in the `*{manager}*` under `*menu:Project properties[Template sets]*` and has the following configuration:
+
+.Template set
+image::templateset.png[]
+
+[IMPORTANT]
+====
+In the selection box of the same name, the <<fs-conversionrule,conversion rule>> created previously must be selected.
+====
+
+The template set is activated and therefore available in the project.
+It is used to define the contents to be transmitted, which are summarized in messages during generation and transmitted to the _{c}_.

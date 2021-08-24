@@ -1,0 +1,18 @@
+[[sp_customer]]
+=== Technical user
+The integration realized with the _{modulname}_ module only allows {fs} to create and maintain editorial content and to publish it in the form of JSON objects.
+The integration of these contents and the creation of the preview, however, still takes place in {sp}.
+
+In the preview case, {fs} determines the current view of a page in the storefront and displays it in {cc} using the _{ocm}_.
+To integrate the editorial content into the shop, {sp} imports it from the _Online {c}_ and persists it in its internal data system.
+
+As both the preview and the import process are protected by authentication, a technical user must be specified in the <<fs_pcomp,project component of the _{modulname}_ module>>.
+This corresponds to a customer, who in turn is assigned to a Zed user.
+The assignment can be done in the menu `*menu:Users Control[User]*` via the button {assign}.
+
+[NOTE]
+====
+For a more detailed description of the steps required for the assignment, see the chapters
+https://documentation.spryker.com/docs/managing-users#assigning-customers-to-users[Assigning Customers] and
+https://documentation.spryker.com/v2/docs/managing-cms-pages#previewing-cms-pages[Previewing a Page] of the _{sp} documentation_.
+====

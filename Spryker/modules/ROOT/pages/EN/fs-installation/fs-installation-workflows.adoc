@@ -1,0 +1,139 @@
+[[fs-wf]]
+=== Workflows
+// Content as well as menu items in the navigation are released, deleted and published within the provided {refproject_github}[reference project] via workflows.
+
+Content is released, deleted and published within the provided {refproject_github}[reference project] via workflows.
+These are already added to the project and are described in the following subchapters.
+
+////
+
+// ********************************************* Arbeitsablauf für die Navigation *********************************************
+[[fs-nav-wf]]
+==== Release workflow for navigation
+The {refproject_github}[reference project] provides the possibility to extend an existing navigation or to create a brand new navigation.
+As with content changes, navigation changes must be released in order to publish them to the live state.
+The reference project therefore contains the workflow _Release Navigation_, which requires the release right for its execution.
+The workflow merely releases a global page for the navigation and is therefore only activated in the Global Settings.
+It does not provide conflict handling, nor does it follow the principle of dual control.
+
+////
+
+// ********************************************* Arbeitsablauf für verwaiste Seiten *********************************************
+[[fs-delete-wf-report]]
+==== Delete workflow for automated deletion
+The {refproject_github}[reference project] contains the <<uc_orphanedpages,report `*Lost and Found*`>>, which shows an overview of all orphaned <<rp_productpages,product>> and <<rp_categorypages,category pages>>.
+These are pages that contain references to deleted or inactive products or categories in {sp}.
+
+Each entry of this report has a delete button, which enables the removal of the corresponding page.
+The reference project therefore contains the workflow _Direct delete_, which is triggered by this button.
+With the exception of the dual control principle, its functionality corresponds to that of the <<fs-bwfs, delete BasicWorkflow>> described in the following chapter.
+In addition to the deletion of the page, the workflow releases the parent structure and finally performs a <<fs-deployment,full deployment>>.
+
+
+// ********************************************* BasicWorkflows *********************************************
+[[fs-bwfs]]
+==== {bwfs}
+Content is released, deleted, and published by editors within the supplied {refproject_github}[reference project _{refproject}_] via the _{bwfs}_.
+These were adapted project-specifically and extended by the possibility to execute a <<fs-deployment, full generation>>.
+Just like the direct release or delete option, this option is only available to roles that have the release or delete right.
+In the reference project, this is the group `ChiefEditors`.
+
+In addition, both workflows send an e-mail to the user who has performed (and not just requested) the release or deletion.
+In case of success, this e-mail only informs that the workflow has been successfully executed.
+In case of an error, it indicates that the recipient specified in the <<fs-deployment, deployment schedule>> has received all necessary information and should be contacted.
+
+The following <<fs-wf-adaptions,subchapter>> explains the adjustments made.
+
+[underline]#*Installation of the {bwfs} module*#
+
+Before using the workflows, the _{bwfs}_ module must first be installed on the {fs} server and the web component activated.
+The necessary steps are the same as the installation of the other modules and activation of the corresponding <<fs-webcomponents,web components>>.
+By default, these steps are already performed.
+
+The use of _{bwfs}_ in {cc} also requires the selection of the provided `{bwfs} Status Provider` in the `*menu:Project properties[{cc}]*` area within the `*{manager}*`.
+This setting has as well already been made in the {refproject_github}[reference project _{refproject}_].
+
+.Element Status Provider
+image::basicwfs.png[]
+
+[underline]#*Templates*#
+
+The _{bwfs}_ need different templates.
+These usually have to be imported into the {fs} project via the context menu.
+However, they are already included in the reference project and an import of the templates is therefore not necessary.
+
+[NOTE]
+====
+The templates contained in the reference project were adapted to the specific project and supplemented with additional templates.
+If the workflows contained in the reference project should be used in another project, these templates and not those of the _{bwfs}_ module must be transferred to the other project.
+====
+
+[underline]#*Permission assignment*#
+
+In the final step, the workflows must be allowed in each store to run on {fs} elements.
+To do this, you can open the permission assignment on the root nodes of the stores via the context menu entry `*menu:Extras[Change Permissions]*`.
+This step has already been performed in the reference project and is therefore omitted.
+
+The rights set on the stores' root nodes to execute the workflows refer to the `Everyone` group.
+If this is not desired, the rights must be adjusted manually.
+
+[NOTE]
+====
+More information about the installation, configuration and functionality of the workflows can be found in the _{bwfsdocen}_.
+====
+
+// ********************************************* projektspezifische Anpassungen *********************************************
+[[fs-wf-adaptions]]
+==== Project-specific adjustments
+By default, the _{bwfs}_ workflows has two ways to release or to delete an item:
+
+* Direct release | Direct delete
+* Request
+
+In both cases, the direct option is only available to roles that have the release or delete right.
+In the {refproject_github}[reference project], this is the group `ChiefEditors`.
+Otherwise, a release or deletion can only be requested and assigned to the next person.
+This person either rejects the request by manually triggering a conflict, or executes the release or deletion of the element by continuing the workflow.
+
+Both workflows provided in the reference project were adapted project-specific and extended by the possibility, 
+to execute a <<fs-deployment,full generation>> in addition to the release or deletion of a page.
+Therefore, an additional button has been added to the start dialog and the check dialog.
+
+In the release workflow this is the button btn:[Page Publication].
+It corresponds to the transition `trigger_release_and_deploy`, which, like direct release, can only be executed with the release right. +
+The delete workflow has been extended by the button btn:[Delete with publication], which represents the transition `trigger_delete_and_deploy` and requires both release and delete rights.
+
+.Extension of the release workflow
+image::wf_dialogs.png[]
+
+Both buttons execute the `set_value_for_deployment` script, which sets the `deploymentTriggered` variable. 
+This variable is evaluated in the last step of the respective workflow in the script `trigger_full_deployment` and defines whether the workflow executes a full generation in addition to the release or deletion.
+
+In order to execute the publication, the Executable triggered by the `trigger_full_deployment` script must know the name of the corresponding <<fs-deployment, full deployment schedule>>.
+Therefore the Executable accesses the combo box `Schedule Entry for publication`, which is included in the `*Publication*` tab of the <<fs_pcomp,project component>>, and queries the schedule selected in it.
+Within the {refproject_github}[reference project], the full generation _{sp} Deployment_ is defined here.
+
+After execution, both workflows also send an e-mail to the user who has performed (and not just requested) the release or deletion.
+This e-mail either just informs about the successful execution of the workflow or points out that an error occurred during the publication.
+In this case, the e-mail also indicates that the recipient specified in the <<fs-deployment,Deployment schedule>> has received all needed information and should be contacted.
+This is necessary because only project administrators can resolve errors in the deployment schedule.
+
+Both in the case of success and in the case of error, the executable called in the last step of the respective workflow accesses the technical page template {mail_template}[`html_mail_template`] to send the corresponding e-mail.
+This template includes the texts of all e-mails sent by the workflows or deployment schedules.
+
+[NOTE]
+====
+The notification of the recipient defined in the <<fs-deployment,deployment schedule>> is done via the action <<fs-deployment-spryker-sendmail,_Send Result Mail_>>.
+This e-mail is sent for all errors that occur during a generation and is not linked to the execution of a workflow.
+====
+
+[NOTE]
+====
+Since the delete workflow can only be used for deleting <<rp_contentpage,dynamic content pages>> as well as <<rp_productpages,product>> and <<rp_categorypages,category pages>>, its display logic has also been extended.
+The new statement hides the workflow for all pages that do not match a content, product, or category page.
+====
+
+[NOTE]
+====
+For more information on the functionality of the workflows, see the _{bwfsdocen}_.
+====

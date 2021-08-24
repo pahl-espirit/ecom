@@ -1,0 +1,11 @@
+// Definition der externen Vorschau-URL
+[[fs_previewurl]]
+=== Definition of the external preview URL
+By using the _{ocm}_, the {wc} displays external content from the {ccloud} to which the _{ocm}_ needs access.
+The preview URL of the Storefront must therefore be specified in the {wc} properties.
+Since the specification is always project-specific, there is no default configuration for it within the reference project.
+
+Open the `*menu:Project properties[{wc}]*` area within the `*{manager}*` and enter the URL of the Storefront in the `External preview URL` field.
+
+.External Preview URL
+image::images/previewurl.png[]

@@ -1,0 +1,67 @@
+[[sp_controller]]
+=== Controllers
+The previously installed <<sp_plugin,`CmsBlockTwigFunctionPlugin`>> allows mapping between the content stored in {fs} and in {sp}.
+For this, it assumes that the view data of a page contains its ID and type.
+The controllers of {sp} do not provide this information by default.
+For this reason, the following controllers must be overwritten both for <<rp_contentpage,content>> and <<rp_categorypages,category pages>> and in the case of the homepage, which corresponds to a <<rp_staticsite,static page>>:
+
+* IndexController
+* CatalogController
+* CmsController
+* PreviewController
+
+The overwriting is done by creating the corresponding classes, which are all part of the zip file `b2c-demo-shop-extensions-<VERSION>.zip` included in the delivery.
+They must be copied into the directory `*Controller*` to be created below `*src/Pyz/Yves/HomePage|CatalogPage|CmsPage*`.
+
+[NOTE]
+====
+If the classes already exist under the path specified for them, the controllers are already overwritten project-specifically.
+In this case, it need to be ensured that the view parameters are extended accordingly.
+====
+
+In contrast to the other pages, the <<rp_productpages,product pages>> require the adaptation of the ProductController which already exists in {sp}.
+It is contained in the directory `*src/Pyz/Yves/ProductDetailPage/Controller/ProductController*` and must be extended by the definition of the page type and the Product SKU.
+The following code snippet shows the changes to be made:
+
+[source,PHP]
+.Extension of the ProductController
+----
+<?php
+namespace Pyz\Yves\ProductDetailPage\Controller;
+
+[...]
+use ESpirit\Shared\FirstSpiritPreview\FirstSpiritPreviewConstants;
+
+class ProductController extends SprykerShopProductController
+{
+   protected function executeDetailAction(array $productData, Request $request): array
+   {
+      [...]
+
+       $viewData['cart'] = $quoteTransfer;
+       $viewData[FirstSpiritPreviewConstants::VIEW_DATA_PAGE_TYPE_KEY] = FirstSpiritPreviewConstants::PRODUCT_PAGE_TYPE;
+       $viewData[FirstSpiritPreviewConstants::VIEW_DATA_PAGE_ID_KEY] = $productData['sku'];
+
+       return $viewData;
+   }
+}
+----
+
+In addition to the controllers mentioned above, the delivery includes further render controllers which enable individual CMS elements to be updated in the preview.
+They are addressed by the `FirstSpiritPreviewRoutePlugin` which initially does not exist in {sp} and therefore requires registration in the `RouterDependencyProvider` file in the `*Pyz/Yves/Router*` directory.
+Within the file, the method `getRouteProvider` has to be extended as follows.
+
+[source,PHP]
+.Extension of the method getRouteProvider
+----
+use ESpirit\Yves\FirstSpiritPreview\Plugin\Route\FirstSpiritPreviewRoutePlugin;
+
+[...]
+protected function getRouteProvider(): array
+{
+   return [
+      [...]
+      new FirstSpiritPreviewRoutePlugin()
+   ];
+}
+----

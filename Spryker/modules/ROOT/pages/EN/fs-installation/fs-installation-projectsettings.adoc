@@ -1,0 +1,43 @@
+[[fs-projectsettings]]
+=== Project settings
+There is some essential project-specific information that needs to be entered for the connection between {fs} and {sp}.
+It is entered using the project settings form and must be specified within the project being used.
+
+Within the supplied reference project, the {projectsettings_github}[project settings page] with the required configuration already exists.
+In this case, there is no need to create the template or the required components.
+Even defining the `settings page` in the `*Options*` of the project in the `*{manager}*` is no longer required.
+
+The form of the project settings in the reference project is divided into the tabs `*General*` and `*Static Pages*`, in which different information must be entered:
+
+Aktive Store::
+This input component provides the option to select the store in which the created content is to be published.
+The selection is read out at different points within the <<ref-project,{fs} templates>>.
++
+Page Reference::
+The feature associated with this field is not yet available in the current version.
+It therefore has no function at this time.
++
+////
+The reference project contains a {tech_nav_github}[technical page reference] that is used to generate JSON for all <<rp_navigation,navigations>> maintained in the project.
+It must be referenced using the input component to ensure that the JSON is transferred to the _Preview {c}_.
+////
++
+.{p_set} - General
+image::psettings_general.png[]
+
+Static Page URLs::
+This input component provides the option of assigning a relative URL to <<rp_staticsite,static pages>>.
+This is needed because static pages do not have a URL by default and <<rp_links,content page links>> to them would therefore not be possible.
++
+The definition of the URLs first requires a determination of all static pages.
+For this purpose, the btn:[Static Page Templates Import] button within the reference project reads the contents of the {static_pages_github}[_static_pages_ template folder], 
+which contains all page templates for static pages.
+For each template, an entry is automatically created that contains a reference to the template and a language-dependent field for the relative URL to be defined.
++
+.{p_set} - Static Pages
+image::psettings_staticpages.png[]
+
+[NOTE]
+====
+A future modification of the defined URLs requires the execution of both the <<fs-deployment,full generation>> and the <<fs-previewdeployment,preview generation>>.
+====

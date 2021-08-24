@@ -1,0 +1,23 @@
+[[fs-webcomponents]]
+=== Adding the web component
+To prepare the {cc}, a web component is needed, which is already added to the {refproject_github}[reference project].
+By default it is installed globally in the `*{manager}*` in the area `*menu:Server Properties[Web applications]*`.
+In this case, all installation or configuration steps required for the web component have already been performed by the {creator}.
+
+Alternatively, you may install the web component in the `*Project properties*`.
+*Only in this case* it still needs to be installed on an active web server.
+Therefore, open the `*{manager}*` and select `*menu:Project properties[Web components]*`.
+
+Within the main panel there are several tabs, each with a list of existing web components.
+This list contains the `{modulname} for {sp} {os} Web App` for the `*Preview*` and `*{cc}*`.
+The `*{cc}*` tab also contains the `{fs} ThirdPartyPreview WebApp` and optionally the <<fs-bwfs,`{bwfs}_ContentCreator_Library`>> (see figure <<webcomp>>).
+The web component of the _{bwfs}_ is only required when using the workflows.
+
+In both tabs, select a web server via the selection box and start the installation with the btn:[Install] button.
+After the successful installation, a dialog opens, in which the activation of the web server is to be confirmed.
+
+For detailed information about adding web components, see the _{admindocen}_.
+
+[[webcomp]]
+.Web components in the project properties
+image::webcomponents.png[]

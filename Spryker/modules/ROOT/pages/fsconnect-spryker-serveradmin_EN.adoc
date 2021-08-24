@@ -1,0 +1,13 @@
+= {mainTitle} for Spryker Commerce OS: Manual for server administrators
+e-Spirit AG
+{docdate}
+include::variables.adoc[]
+
+// Einleitung
+include::EN/serveradmin/introduction.adoc[]
+
+// Installation & Konfiguration
+include::EN/serveradmin/installation.adoc[]
+
+// Rechtliche Hinweise
+include::EN/legal-notice.adoc[]

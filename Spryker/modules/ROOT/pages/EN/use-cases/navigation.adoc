@@ -1,0 +1,86 @@
+[[uc_navigation]]
+=== Navigation maintenance
+In addition to a <<sp_navigation,main navigation>>, a shop generally has numerous other navigations.
+The integration realised with the _{modulname}_ module offers the possibility to maintain these navigations with {fs} and to add further menu items.
+This requires the following steps to be carried out first.
+
+[NOTE]
+====
+The steps described refer to the *enhancement* of an existing navigation.
+If instead an existing navigation should be managed completely in {fs}, its menu items must be deleted in {sp}.
+
+Alternatively, a new navigation can be maintained in {fs}.
+For this, it must first be created in {sp}.
+====
+
+Replacement of the ContentNavigationWidget::
+The <<sp_widgets, `{fs}PreviewContentNavigationWidget`>> contained in the delivery replaces the `ContentNavigationWidget` existing in {sp}.
+In {sp}, therefore, a replacement must be done by deleting the `ContentNavigationWidget` and adding the `{fs}PreviewContentNavigationWidget` instead.
+
+Addition of a further menu item::
+In the preview, an additional menu item is required to display the navigation.
+It serves as a placeholder and must be added within the twig template that represents the first level menu items:
++
+[source,PHP]
+.Addition of a further menu item
+----
+[..]
+<ul class="menu {{ menuClass }} grid grid--center grid--no-wrap">
+   {% for node in data.nodes %}
+      [..]
+   {% endfor %}
+   
+   {% if isFsPreview() %}
+      <li class="fs-navigation-extension" 
+         style="padding-left: 1rem; transform: translate(0,15% );">
+      </li>
+   {% endif %}
+</ul>
+[..]
+----
+
+Definition of the Preview ID::
+In addition to the placeholder, a preview ID is required for the preview.
+It must be defined in the twig template that controls the output of the individual menu items:
++
+[source, PHP]
+.Definition of the Preview ID
+----
+{% block attributes %}
+   {% if isFsPreview() and data.node.previewId is defined and data.node.previewId is not empty %}
+      data-preview-id="{{ data.node.previewId }}" style="min-height: unset;"
+   {% endif %}
+{% endblock %}
+----
+
+[NOTE]
+====
+After the changes have been made, it may be necessary to empty the cache for the twig templates and to rebuild the frontend.
+====
+
+After a successful completion of the described steps, the corresponding navigation in {cc} is extended by a button, which allows the addition of further menu items.
+The addition of further menu items requires the right to edit and delete.
+If a user does not have these rights, the button is hidden.
+
+.Button for extending the navigation
+image::img_navigation.png[]
+
+A click on the button opens an editing dialog, in which a structure folder has to be selected as target of the new menu item.
+If the referenced structure folder contains further subfolders, these are automatically displayed as sub-items of the new menu item.
+
+[NOTE]
+====
+Mixing menu items maintained in {fs} and those originating from {sp} is not possible.
+For this reason, menu items created using the {cc} are only appended to the existing navigation.
+====
+
+The changes done to the navigation finally require a release.
+Therefore, the workflow <<fs-nav-wf,_Release Navigation_>> can be executed via via a button that appears by hovering over the navigation.
+This workflow only performs a release, but not a publication.
+The publication of the adaptations only takes place in the context of a <<fs-deployment,full generation>>.
+
+[NOTE]
+====
+The button to execute the workflow requires the release right.
+If a user does not have this right, hovering over the navigation has no effect.
+====

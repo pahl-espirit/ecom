@@ -1,0 +1,19 @@
+// Hinzufügen der Web-Komponente
+[[fs-webcomponents]]
+=== Adding the web components
+The _{module name}_ integration requires various web components to be added to the project used.
+Therefore open the `*menu:Server Properties[Web applications]*` panel in the `*{manager}*`.
+
+Within the main panel several tabs are visible, each with a list of the existing web components.
+First add the `{module name} for {sp} {os} Web App` to the `*Preview*` and `*{cc}*` tabs.
+In the `*{cc}*` tab, also add the `{fs} ThirdPartyPreview WebApp` and optionally the <<fs-bwfs,`{bwfs}_ContentCreator_Library`>>.
+The latter is only required when using the _{bwfs}_.
+Select the web components one after the other using the {add} button and confirm each selection with {ok}.
+
+Finally, select an `Active web server` in both tabs using the selection box of the same name and start the installation by clicking the {install} button.
+After successful installation, a dialog opens, in which the activation of the web server is to be confirmed.
+
+For detailed information about adding web components, see the _{linkfsadocen}_.
+
+.Web components in the Server Properties
+image::sp_webcomponents.png[]

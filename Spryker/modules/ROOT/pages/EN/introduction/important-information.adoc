@@ -1,0 +1,51 @@
+=== Important information
+This chapter contains information that should be observed when using the _{modulname}_ module.
+
+==== Configuration of the glue web server
+During deployment, the content maintained in {fs} is retrieved from the _Online {c}_ using the importer.
+It transfers the data to {sp} and persists them in the backend in its data system.
+
+Since the _Online {c}_ potentially contains a large amount of data, the transfer of the contents requires a certain time span.
+Therefore, early timeouts during the import should be avoided.
+Due to this reason the web server of the glue API needs to be configured to allow http requests for a duration of at least 60 seconds.
+
+==== Configuration of the {fs} project settings page
+The _{c}_ generations assume that a template for the project settings is maintained in the {fs} project.
+Otherwise, the generation job terminates early and reports the following error in the job logs:
+
+[source,JAVA]
+.Exception with missing project settings page
+----
+error during script execution : java.lang.IllegalStateException: 
+Invalid value for key 'usedCaasProjects' - Value is not a HashMap (zero). 
+This can happen when a deployment does not include a single PageRef (blue), which is not supported (e.g. remote-media-project).
+----
+
+For this reason, a template must exist in the project and be configured in the project options in `*{manager}*`, even if it has no content.
+
+.Configuration of the project settings page in the project options
+image::p_settings.png[]
+
+==== Use of the {sp} B2C Demo Shop
+As mentioned before, the entire documentation is geared to the connection of the {sp} B2C Demo Shop.
+When using it, some difficulties may occur that are neither caused by the _{modulname}_ module nor by the integration.
+However, they are listed below and a possible solution is outlined.
+
+[underline]#*Preview page not found in {cc}*#
+
+If the {cc} cannot find the preview page, the page certificate is invalid or does not exist.
+In this case, the page must be opened in a separate browser tab to renew the SSL certificate and allow the page to be displayed.
+The preview page is then visible again in {cc}.
+
+[underline]#*Missing RAM on Composer calls*#
+
+There is a RAM limit for PHP by default, but it is too low to execute Composer actions.
+For this reason, the limit defined in the `php.ini` configuration file in the `*etc/php/7.2/cli*` directory must be disabled:
+
+[source,PHP]
+.Deactivation of the RAM limit
+----
+[...]
+set memory_limit=-1
+[...]
+----

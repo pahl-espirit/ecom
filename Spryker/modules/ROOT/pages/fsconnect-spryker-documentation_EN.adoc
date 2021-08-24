@@ -1,0 +1,22 @@
+= {mainTitle}: {subtitle}
+e-Spirit AG
+{docdate}
+include::variables.adoc[]
+
+// Einleitung
+include::EN/introduction/introduction.adoc[]
+
+// Spryker-Installation
+include::EN/spryker-installation/spryker-installation.adoc[]
+
+// FS-Installation
+include::EN/fs-installation/fs-installation.adoc[]
+
+// Referenceprojekt
+include::EN/referenceproject/referenceproject.adoc[]
+
+// Anwendungsfälle
+include::EN/use-cases/use-cases.adoc[]
+
+// Rechtliche Hinweise
+include::EN/legal-notice.adoc[]

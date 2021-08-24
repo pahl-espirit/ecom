@@ -1,0 +1,50 @@
+[[use_cases]]
+== Use cases
+Within the progress of a project, different situations can arise that require certain steps to be taken.
+The following subchapters describe situations that can typically occur in integration projects, 
+and describe the necessary steps for resolving them by using the reference project supplied as a reference.
+
+////
+
+// Sprachen
+include::languages.adoc[]
+
+// Pflege bestehender Shopseiten
+include::shoppages.adoc[]
+
+////
+
+// Entwicklung eines Content Moduls 
+include::contentmodule.adoc[]
+
+// Verwendung von Datensätzen
+include::datasets.adoc[]
+
+////
+
+// Pflege neuer Seiten 
+include::newpages.adoc[]
+
+////
+
+// Erzeugung einer FirstSpirit Driven Page
+include::fsdrivenpage.adoc[]
+
+// Übersetzung
+include::translation.adoc[]
+
+// Seiten löschen
+include::deletepages.adoc[]
+
+////
+
+// SEO-URLs
+include::seo-urls.adoc[]
+
+// Erzeugung einer Menüstruktur
+include::navigation.adoc[]
+
+// Inhaltsabgleich
+include::content-sync.adoc[]
+
+////

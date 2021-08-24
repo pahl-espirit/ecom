@@ -1,0 +1,109 @@
+[[sp_plugin]]
+=== Plugins
+In addition to the installation of the <<sp_modules,{sp} modules>>, the following plugins must be included:
+
+* `HeadersSecurityExtensionPlugin`
+* `FsTwigExtensionPlugin`
+* `{fs}PreviewSlotBlockWidgetCmsSlotContentPlugin`
+* `{fs}DataImportsResourceRoutePlugin`
+* `{fs}DataCleanupsResourceRoutePlugin`
+* `{fs}CmsPagesResourceRoutePlugin`
+
+// Unterbrechung der Listen - Kommentar nicht entfernen!
+
+HeadersSecurityExtensionPlugin and FsTwigExtensionPlugin::
+The `HeadersSecurityExtensionPlugin` uses the <<sp_configuration, hosts of the {fs} home page>> defined in the https://documentation.spryker.com/docs/configuration-management[configuration file `config_default-[environment\].php`] to enable the storefront to be displayed in {cc}.
+Therefore, it checks if storefront queries contain the <<sp_configuration,Token>> also defined in the configuration file or if a logged in user exists.
+If one of the two options applies, the plugin sets the Content Security Policy Header and extends the Cookie header.
++
+The `FsTwigExtensionPlugin` enables the maintenance of CMS placeholders and CMS blocks in {fs}.
+Therefore, it accesses information provided by the <<sp_controller,CmsController>> to be installed.
+The information is needed for mapping between the data stored in {fs} and in {sp}.
++
+The integration of both plugins is done with the following code, which has to be added to the `ShopApplicationDependencyProvider` in the directory 
+`*src/Pyz/Yves/ShopApplication*`.
++
+[source,PHP]
+.Extension of the ShopApplicationDependencyProvider
+----
+use ESpirit\Yves\FirstSpiritPreview\Plugin\HeadersSecurityExtensionPlugin;
+use ESpirit\Yves\FirstSpiritPreview\Plugin\FsTwigExtensionPlugin;
+
+[...]
+
+protected function getApplicationPlugins(): array
+{
+   return [
+      new HeadersSecurityExtensionPlugin(),
+      new FsTwigExtensionPlugin()
+   ];
+}
+----
+
+{fs}PreviewSlotBlockWidgetCmsSlotContentPlugin::
+The `{fs}PreviewSlotBlockWidgetCmsSlotContentPlugin` enables the output of all blocks contained in a slot.
+In contrast to the `CmsSlotBlockWidget` included in {sp}, which is limited to the output of the {sp} data, the plugin only considers the information from the _{c}_.
+The inclusion of the plugin requires an extension of the `ShopCmsSlotDependencyProvider` in the `*src/Pyz/Yves/ShopCmsSlot*` directory.
++
+[source,PHP]
+.Extension of the ShopCmsSlotDependencyProvider
+----
+<?php
+
+namespace Pyz\Yves\ShopCmsSlot;
+
+use ESpirit\Yves\FirstSpiritPreviewSlotBlockWidget\FirstSpiritPreviewSlotBlockWidgetConfig;
+use ESpirit\Yves\FirstSpiritPreviewSlotBlockWidget\Plugin\FirstSpiritPreviewSlotBlockWidget\
+   FirstSpiritPreviewSlotBlockWidgetCmsSlotContentPlugin;
+[...]
+
+class ShopCmsSlotDependencyProvider extends SprykerShopShopCmsSlotDependencyProvider
+{
+   protected function getCmsSlotContentPlugins(): array
+   {
+      return [
+         CmsSlotBlockConfig::CMS_SLOT_CONTENT_PROVIDER_TYPE 
+            => new CmsSlotBlockWidgetCmsSlotContentPlugin(),
+         FirstSpiritPreviewSlotBlockWidgetConfig::FS_CMS_SLOT_CONTENT_PROVIDER_TYPE 
+            => new FirstSpiritPreviewSlotBlockWidgetCmsSlotContentPlugin(),
+      ];
+   }
+}
+----
+
+{fs}DataImportsResourceRoutePlugin and {fs}DataCleanupsResourceRoutePlugin::
+The `{fs}DataImportsResourceRoutePlugin` and `{fs}DataCleanupsResourceRoutePlugin` each provide an API endpoint. 
+This endpoint allows the <<fs-deployment, {fs} deployment>> to address the importer.
++
+The `{fs}DataImportsResourceRoutePlugin` controls the transfer of editorial content from the _Online {c}_ to {sp} and its persistence there.
+In contrast, the `{fs}DataCleanupsResourceRoutePlugin` is used to find and delete obsolete data in {sp}.
++
+Both plugins and the following `{fs}CmsPagesResourceRoutePlugin` must be added to the `GlueApplicationDependencyProvider`.
+
+{fs}CmsPagesResourceRoutePlugin::
+If a new page is created within the {cc}, the creation of a CMS page in {sp} is required in parallel.
+Because the {cc} displays the storefront, the newly created page would otherwise not be visible in the preview.
+Instead, it would already be available in the live state if it were created in {sp} with a deployment.
++
+The `{fs}CmsPagesResourceRoutePlugin` is used to create the new page.
+This plugin and the other two ResourceRoutePlugins described above must be added to the `GlueApplicationDependencyProvider` in the `*src/Pyz/Glue/GlueApplication*` directory:
++
+[source,PHP]
+.Extension of the GlueApplicationDependencyProviders
+----
+use ESpirit\Glue\FirstSpiritDataRestApi\Plugin\FirstSpiritDataImportsResourceRoutePlugin;
+use ESpirit\Glue\FirstSpiritDataRestApi\Plugin\FirstSpiritDataCleanupsResourceRoutePlugin;
+use ESpirit\Glue\FirstSpiritDataRestApi\Plugin\FirstSpiritCmsPagesResourceRoutePlugin;
+
+[...]
+
+protected function getResourceRoutePlugins(): array
+{
+   return [
+      new FirstSpiritDataImportsResourceRoutePlugin(),
+      new FirstSpiritDataCleanupsResourceRoutePlugin(),
+      new FirstSpiritCmsPagesResourceRoutePlugin()
+      [...]
+   ];
+}
+----

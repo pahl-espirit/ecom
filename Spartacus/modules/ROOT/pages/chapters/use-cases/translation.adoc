@@ -1,0 +1,22 @@
+[[uc_translation]]
+=== Translation of editorial content
+{fs} consistently pursues the concept of multiple languages and allows the output of different language variants.
+Translation of editorial content into these languages is often done in cooperation with external translation agencies or with the help of translation services.
+The integration therefore supports {tsdocwhitepaperen}[_{ts}_], which allows the export of content to be translated into a target system and to reimport translations into the {fs} project.
+
+If _{ts}_ is configured in the project, the {wc} provides various workflows.
+These are executable via the `*Actions*` menu and are used to perform the following tasks:
+
+* Translation of the current page or specific sections on this page
+* Translation of all pages within a specific folder
+* Translation of multiple pages
+* Translation of the datasets of a data source
+
+Each of these workflows opens a dialog where different settings for the translation have to be defined.
+These differ depending on the elements to be translated and are described in detail in the {tsdoceditorsen}[_{ts} Editor Manual_].
+A click on the btn:[Request Translation] button triggers the export of the content to be translated into the predefined target system.
+Once the translation is complete, a preselected workflow automatically imports the content into the {fs} project and embeds it in the correct places.
+
+Alternatively, an EasyEdit button is provided for translating single pages or sections.
+The button also first displays the configuration dialog and then opens the so-called TranslationHelper dialog.
+This displays both the source text and its translation side by side and enables immediate editing if required.
