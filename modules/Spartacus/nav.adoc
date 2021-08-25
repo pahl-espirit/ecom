@@ -1,7 +1,7 @@
 * Spartacus
 ** xref:chapters/introduction.adoc[Main Documentation]
-*** xref:chapters/sapcc-installation/sapcc-installation.adoc[]
-*** xref:chapters/fs-installation/fs-installation.adoc[]
-*** xref:chapters/referenceproject/referenceproject.adoc[]
-*** xref:chapters/use-cases/use-cases.adoc[]
+*** xref:chapters/sapcc-installation/sapcc-installation.adoc[Spartacus - Installation]
+*** xref:chapters/fs-installation/fs-installation.adoc[FirstSpirit - Installation]
+*** xref:chapters/referenceproject/referenceproject.adoc[Reference Project]
+*** xref:chapters/use-cases/use-cases.adoc[Use Cases]
 ** xref:chapters/serveradmins/introduction.adoc[Admin Manual]
