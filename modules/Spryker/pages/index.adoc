@@ -1,4 +1,4 @@
-include::../../variables.adoc[]
+include::variables.adoc[]
 == Introduction
 {fs} is used to create versatile and project-specific content.
 Thanks to the _{modulname} for {sp} {os}_ module, it is possible to transfer these contents to the e-commerce shop system {sp} {os} and use it there.
@@ -32,7 +32,7 @@ It is *not* intended as a manual for {fs} editors.
 It is assumed that the reader is confident in the use of {fs} and {sp} as well as _{c}_ and _{ocm}_.
 ====
 
-
+// Functions
 include::EN/introduction/functions.adoc[]
 
 // Architektur
@@ -46,5 +46,3 @@ include::EN/introduction/requirements.adoc[]
 
 // Wichtige Hinweise
 include::EN/introduction/important-information.adoc[]
-
-////
