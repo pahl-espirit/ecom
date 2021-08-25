@@ -1,3 +1,4 @@
+include::../../variables.adoc[]
 == Introduction
 {fs} is used to create versatile and project-specific content.
 Thanks to the _{modulname} for {sp} {os}_ module, it is possible to transfer these contents to the e-commerce shop system {sp} {os} and use it there.

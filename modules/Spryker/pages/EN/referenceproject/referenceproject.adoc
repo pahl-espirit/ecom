@@ -1,3 +1,4 @@
+include::../../variables.adoc[]
 [[ref-project]]
 == Reference project
 The _{modulname}_ module provides different ways to access shop content from {sp} and use it in {fs}.

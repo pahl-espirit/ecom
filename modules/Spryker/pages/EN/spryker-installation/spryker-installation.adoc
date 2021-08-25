@@ -1,3 +1,4 @@
+include::../../variables.adoc[]
 == {sp} - Installation and configuration
 {fs} is used to create and maintain editorial data that is transferred to and persisted by the _{c}_.
 To integrate the data, {sp} needs access to the _{c}_.
