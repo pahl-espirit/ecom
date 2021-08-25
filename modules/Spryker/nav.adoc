@@ -5,7 +5,7 @@
 *** xref:EN/introduction/concept.adoc[Concept]
 *** xref:EN/introduction/requirements.adoc[Technical requirements]
 *** xref:EN/introduction/important-information.adoc[Important information]
-** xref:sEN/spryker-installation/spryker-installation.adoc[Spryker - Installation and Configuration]
+** xref:EN/spryker-installation/spryker-installation.adoc[Spryker - Installation and Configuration]
 ** xref:EN/fs-installation/fs-installation.adoc[FirstSpirit - Installation and Configuration]
 ** xref:EN/referenceproject/freferenceproject.adoc[FirstSpirit - Installation and Configuration]
 
