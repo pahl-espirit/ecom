@@ -1,0 +1,294 @@
+[[pcomp]]
+=== Configuring the project component
+A project-specific configuration is required in order to use the _{modulname}_ module.
+It is set up using the project component, which is already added to the reference project supplied.
+
+[IMPORTANT]
+====
+To use the _{modulname}_ module, the _{caas}_ and the _{ocm}_ modules must also be configured.
+The steps required to do this are described in the _{caasfsmdocen}_ and in the _{tppdocen}_.
+====
+
+[NOTE]
+====
+The reference project also includes the project component of the _{cxt}_.
+This contains a predefined configuration, the modification of which can lead to a change in the behavior of the {wc}.
+An adjustment of the configuration is therefore only to be made after prior consultation with the {techsupport}.
+====
+
+To perform configuration, open the `*{manager}*` and select `*menu:Project properties[Project components]*`.
+
+[[projectComponents]]
+.Server properties - Project components
+image::projectcomponents.png[Server properties - Project components]
+
+A list of all existing project components is displayed in the main panel.
+Select the entry `{modulname} for SAP {ccloud} Project Configuration` and open the corresponding configuration dialog via btn:[Configure].
+
+
+
+// [yellow-background]#Beschreibung der Parameter überarbeiten!#
+
+// ************************************ Allgemein ************************************
+
+[[config]]
+.Project component - General
+image::config-general.png[]
+
+URI::
+The indicated URI is the server URI to the {ccloud} instance.
+
+Connection timeout (sec)::
+This parameter defines the time that elapses (in seconds) before the process of establishing a connection for communication with {ccloud} times out.
+
+Connection retries::
+This parameter defines the number of attempts the system will make to establish a connection for communication with {ccloud}.
+
+[NOTE]
+====
+The following fields are used to configure authentication and are available in each tab.
+To overwrite the settings defined on the `General` tab, the other tabs provide an option to `Override general OAuth` settings.
+====
+
+Auth Server URI::
+This parameter defines the standard end point for OAuth authentication (relative to the URI of the {ccloud} instance).
+
+Username::
+This field is used to enter the standard user for OAuth authentication.
+
+[IMPORTANT]
+====
+The user specified here must belong to the following user groups in the {ccloud}:
+
+* `previewmanagergroup` to generate a preview ticket
+* `basecmsmanagergroup` to load product and category information in the reports
+* `cmsmanagergroup` to create and update pages in the {ccloud}
+====
+
+Password::
+This field is used to enter the password associated with the user provided in the previous field.
+
+OAuth Client ID::
+This field is used to indicate the standard client ID used for OAuth authentication.
+It has an impact on the rights of the users.
+
+OAuth Client Secret::
+A secret is used for OAuth authentication; this secret must match the indicated client ID.
+
+OAuth Grant Type::
+OAuth authentication requires a standard grant type.
+This can either be set to `password` or `client credentials`.
+
+Test OAuth Settings::
+This button is used to test the established connection based on the authentication settings entered.
+If the `Override general OAuth settings` option is checked on the other tabs, these settings are also tested.
+
+// Override general OAuth settings:
+// Der Haken schaltet die (De)Aktivierung der Überschreibung der allgemeinen OAuth-Einstellungen mit Produkt-DAP-spezifischen Einstellungen.
+
+// ************************************ Produkt DAP ************************************
+
+[[config2]]
+.Project component - Product DAP
+image::config-product-dap.png[]
+
+Collection::
+This field is used to define the end point for product data queries.
+
+[[pdp_url]]
+PDP URL::
+The URL of a product detail page must be entered in this field.
+Both absolute and relative URLs are permitted.
+`\{code}` can be used as a placeholder for the product code.
+The default value is `p/\{code}`.
+
+Header/Extract/Icon/Thumbnail::
+By default, search results in the product report show the product name in the header, the catalogue ID in the extract, and a thumbnail.
+The fields `Header`, `Extract`, `Icon`, and `Thumbnail` allow the configuration of this information.
+For this purpose the following placeholders are available in addition to simple text entries:
+
+* `$\{catalogId}`
+* `$\{catalogVersion}`
+* `$\{code}`
+* `$\{description}`
+* `$\{name}`
+* `$\{thumbnailMediaUrl}`
+
+{blank}::
+The entries in the fields replace the standard information in the search results of the product report.
+Textual entries are adopted unchanged.
+If the fields remain empty, the search results display the standard information.
+
+Override general OAuth settings::
+The fields for OAuth authentication contained in this tab enable the overwriting of the entries in the tab `*General*`.
+The overwriting is done by activating the checkbox `Override general OAuth settings`.
+Otherwise, the entries from the `*General*` tab will be used for authentication.
+
+// ************************************ Kategorie DAP ************************************
+
+[[configCategoryDap]]
+.Project component - Category DAP
+image::config-category-dap.png[]
+
+Katalog Id::
+The catalog defined here is used as the source of the categories for the category DAP.
+
+Katalog Version::
+For configuration purposes, this field is used to specify the version of the product catalog from which the categories for the category DAP were taken.
+
+[[cdp_url]]
+CDP URL::
+The URL of a category detail page must be entered in this field.
+Both absolute and relative URLs are permitted.
+`\{code}` can be used as a placeholder for the category code.
+The default value is `c/\{code}`.
+
+Override general OAuth settings::
+The fields for OAuth authentication contained in this tab enable the overwriting of the entries in the tab `*General*`.
+The overwriting is done by activating the checkbox `Override general OAuth settings`.
+Otherwise, the entries from the `*General*` tab will be used for authentication.
+
+// ************************************ Vorschau ************************************
+
+[[configPreview]]
+.Project component - Preview
+image::config-preview.png[]
+
+Language::
+The language abbreviation entered in this field sets the language of the generated preview ticket.
+
+Resource Path::
+This field defines the resource URL of the generated preview ticket.
+
+Page Id::
+This field indicates the ID of the page of the generated preview ticket.
+
+Catalog Versions::
+This field is used to enter the catalog versions of the generated preview ticket.
+
+[NOTE]
+====
+The previously mentioned settings on the `Preview` tab correspond to the parameters of a 
+https://help.sap.com/doc/65f54fc80c71428cb3425c97daf250e5/1808/en-US/previewwebservices/index.html#_previewticket[preview ticket] in the `Preview API` of {ccloud}.
+This ticket is requested by {fs} to allow a protected storefront to be previewed in {wc}.
+The delivery includes the file `fs-preview-session-initializer.js`, which is used as necessary by the `caas:includeOcmScripts` tag and triggers the generation of a preview ticket by calling up an executable.
+If necessary, additional parameters can be transferred during this call to overwrite the settings on the `Preview` tab shown here.
+The structure of the parameter object must match the structure of one of the 
+https://help.sap.com/doc/65f54fc80c71428cb3425c97daf250e5/1808/en-US/previewwebservices/index.html#_previewticket[preview tickets] in the `Preview API`.
+====
+
+Override general OAuth settings::
+The fields for OAuth authentication contained in this tab enable the overwriting of the entries in the tab `*General*`.
+The overwriting is done by activating the checkbox `Override general OAuth settings`.
+Otherwise, the entries from the `*General*` tab will be used for authentication.
+
+// ************************************ Inhalte ************************************
+
+[[configContent]]
+.Project component - Contents
+image::config-content.png[]
+
+Site Id::
+The ID of the {ccloud} site (e.g. `powertools`) must be entered in this field.
+
+Content Catalog Id::
+As with the Site Id, this field is used to enter the ID of the content catalog (e.g. `powertoolsContentCatalog`).
+
+Content Catalog Version::
+In this field, the version of the content catalog to be used must be selected (`Staged` or `Online`).
+
+[[template_mappings]]
+Template Mappings::
+To maintain existing {ccloud} pages in {fs}, a {fs} template must be assigned to each {ccloud} template.
+For this purpose, a mapping between the `{ccloud} Template Item IDs` and the corresponding `{fs} Page Template UIDs` must be defined at this point.
++
+Since the content pages based on the templates can have different URLs, the `{ccloud} URL Pattern` column enables the creation of a specific preview URL in each case.
+The URL can be entered either relative to the storefront or the host (see example below).
+Furthermore, it is also possible to use the placeholder `pageUid`.
+If the column remains empty, the URL defined in the <<contentpage_url,`Contentpage URL`>> field is used instead for the preview of the corresponding page.
++
+*Example* +
+The configuration visible in the figure would have the following meaning:
++
+[options="header", cols="10,10,10,70" ]
+.{ccloud} URL Pattern - Example
+|=======
+|{fs} template | Entry | resulting URL | Explanation
+|content_page 
+|/magazin/outdoor
+|http(s)://<host>/magazin/outdoor
+|If the entry starts with a slash, only the server URL is extended.
+
+|content_page_1
+|---
+|http(s)://<host>/<storefront-context-root>/preview-content?uid={pageUid} 
+|Since no specific URL is defined in this case, the general `Contentpage URL` is used instead.
+
+|content_page_2 
+|assortment/{pageUid}
+|http(s)://<host>/<storefront-context-root>/assortment/{pageUid}
+|This entry has no leading slash.
+  It therefore represents a URL relative to the storefront.
+  Furthermore, it contains the placeholder `pageUid`.
+
+|content_page_3
+|indoor
+|http(s)://<host>/<storefront-context-root>/indoor
+|This entry also does not contain a leading slash and therefore also leads to an extension of the storefront URL.
+|=======
+
+
+Content Page Attribute Mapping::
+The data entered here corresponds to the mapping of the {fs} content page attributes to the {ccloud} content page attributes.
++
+The following {fs} input components are supported for entering the {fs} content page attributes: `CMS_INPUT_TEXT`, `CMS_INPUT_TOGGLE`, `CMS_INPUT_RADIOBUTTON`, `CMS_INPUT_CHECKBOX`, `CMS_INPUT_COMBOBOX`, `CMS_INPUT_LIST`, `CMS_INPUT_DATE`, `CMS_INPUT_NUMBER`, `CMS_INPUT_TEXTAREA`.
++
+*Example*
++
+[source,html]
+.Example configuration of attribute mapping
+----
+[{
+   "templateUid": "landinglayout2",
+   "uidType": "TEMPLATESTORE",
+   "attributeMappings": [
+      { "source": "pt_title",
+        "target": "title",
+        "languageDependent": true
+      },
+      { "source": "pt_label",
+        "target": "label",
+        "languageDependent": false
+      }
+   ]
+},
+{
+   "templateUid": "news.news_article",
+   "uidType": "TEMPLATESTORE_SCHEMA",
+   "attributeMappings": [
+      { "source": "tt_title",
+        "target": "title",
+        "languageDependent": true
+      },
+      { "source": "tt_label",
+        "target": "label",
+        "languageDependent": false
+      }
+   ]
+}]
+----
+
+Content Pages Sitestore Folder UID::
+In this field, the UID of the structure folder in which the content pages managed in {fs} are stored must be entered.
+
+[[contentpage_url]]
+Contentpage URL::
+Content pages can have specific URLs that are optionally specified during the definition of the <<template_mappings,`Template Mapping`>> which have to be configured beforehand.
+If a content page does not have a specific URL, the general `Contentpage URL` entered in this field is used instead for displaying the content page in the preview.
+Both absolute and relative URLs as well as the use of the placeholder `\{pageUid}` are permitted in this field.
+The default value is `preview-content?uid=\{pageUid}`.
+
+Override general OAuth settings::
+The fields for OAuth authentication contained in this tab enable the overwriting of the entries in the tab `*General*`.
+The overwriting is done by activating the checkbox `Override general OAuth settings`.
+Otherwise, the entries from the `*General*` tab will be used for authentication.

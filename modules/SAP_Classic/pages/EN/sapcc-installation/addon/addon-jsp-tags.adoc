@@ -1,0 +1,78 @@
+[[viewextension_tags]]
+==== JSP tags
+The <<addon-install,add-on `FSContentConnect`>>, which is included in the delivery and was previously installed and configured, provides the following JSP tags:
+
+* `caas:includeOcmScripts`
+* `caas:request`
+* `caas:whenFirstSpiritPreview`
+
+These tags are used to query the _{c}_ content and can be used in the required {ccloud} page templates.
+
+[[ocmscript]]
+caas:includeOcmScripts::
+_{ocm}_ requires various JavaScript files; in the preview, the tag creates the script tags required for the integration of these files.
+It determines the preview using the session attributes, which are set by the <<addon-filter,{filter}>> contained within the <<addon-install,add-on>>.
+It is only necessary to integrate the tag for this purpose.
++
+[source,html]
+.Integration - JSP tag caas:includeOcmScripts
+----
+<caas:includeOcmScripts/>
+----
+
+caas:request::
+The tag enables data to be requested from _{c}_.
+In order to do this, the element to be determined and the collection containing the element must be specified.
+This information can be assigned to the tag using the attributes `itemId` and `collection`.
+The result of the query is stored in a variable, the name of which is defined via the `var` variable.
+Once the indicated _{c}_ item has been successfully queried, the variable is stored in the page scope.
++
+[source,html]
+.Example - caas:request JSP tag
+----
+<caas:request itemId="homepage" collection="contentpages" var="homepageItem" />
+
+<!-- Display the revision of the current content -->
+${homepageItem['fs_revision_id']}
+----
++
+If no content exists in _{c}_ for a defined request, this can be dealt with using standard JSP techniques:
++
+[source,html]
+.Specification of fallback content
+----
+<c:choose>
+   <c:when test = "${homepageItem != null}">
+      <!-- do this if we have a response -->
+      <%-- ${homepageItem['slots']['section1']} --%>
+   </c:when>
+   <c:otherwise>
+      <!-- do this when nothing else is true, i.e. output the fallback content. -->
+   </c:otherwise>
+</c:choose>
+----
+
+caas:whenFirstSpiritPreview::
+The tag enables code to be executed exclusively in the {fs} preview.
+For this purpose, it evaluates a session attribute set by the <<addon-filter,{filter}>>.
+This is contained within the previously installed <<addon-install,add-on>>.
++
+[source,html]
+.Example - JSP tag whenFirstSpiritPreview
+----
+<caas:whenFirstSpiritPreview>
+   <script type="text/javascript">
+      const PAGE_PREVIEW_DATA = {
+         pageType: '${cmsPage.typeCode}',
+         pagePreviewId: '${pagePreviewId}',
+         pageId: '${cmsPage.uid}',
+         pageTemplate: '${cmsPage.masterTemplate.uid}'
+      };
+   </script>
+</caas:whenFirstSpiritPreview>
+----
+
+[NOTE]
+====
+Further information on the use of _{c}_ and the _{ocm}_ is provided in the _{caasplatformdocen}_ and in the _{tppdocen}_.
+====

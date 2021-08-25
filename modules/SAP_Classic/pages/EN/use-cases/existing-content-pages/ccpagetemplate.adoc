@@ -1,0 +1,139 @@
+[[ccpagetemplate]]
+==== {ccloud} Page Template
+In {fs}, the editorial content is created and edited in {wc}.
+With the help of the _{ocm}_, the staged storefront of the {ccloud} is embedded in it.
+The Staged Storefront in turn accesses the _Preview {c}_ and determines the current {fs} contents from it.
+This also applies to the online storefront and the _Online {c}_.
+
+This link requires modifications to the page template of the {ccloud} content page; these modifications are explained in this chapter.
+The modifications are contained in the `landingLayout2Page.jsp` page, which is part of the delivery, and can be reproduced in this page.
+
+The following code extract shows the querying of a _{c}_ item that is saved in the variable `caasItem`.
+The first step of this process is to determine the _{c}_ collection in which the data is stored:
+The {fs} content pages from the reference project are always stored in the _contentpages_ collection, while other content is stored in the standard collection _content_.
+
+[source,html]
+.Example - Querying of the {c} item
+----
+<%@ taglib prefix="caas" uri="/WEB-INF/tld/addons/fscontentconnect/caas.tld" %>
+
+<c:choose>
+   <c:when test="${cmsPage.typeCode == 'ContentPage'}">
+      <c:set var="caasCollection" value="contentpages"/>
+   </c:when>
+   <c:otherwise>
+      <c:set var="caasCollection" value="content"/>
+   </c:otherwise>
+</c:choose>
+
+<caas:request itemId="${cmsPage.uid}" collection="${caasCollection}" var="caasItem" />
+----
+
+To edit editorial content, {wc} displays the familiar EasyEdit buttons, which appear together with a frame while hovering.
+Via Omnichannel Manager, {wc} can display external content.
+However, _{ocm}_ requires information from {ccloud} to highlight this content.
+This information is read from a data object, which is populated via the corresponding page template in {ccloud}.
+
+The following code extract shows an example of how this type of data object may be populated; the page type, preview ID, and page ID are transferred to this object.
+The preview ID matches the ID of the previously determined _{c}_ item.
+If it was not possible to query a _{c}_ item, the preview ID in the data object remains empty.
+
+[source,html]
+.Example - Population of a data object
+----
+
+[... Determine the CaaS item (see above) ...]
+
+<c:set var="pagePreviewId" value="${not empty caasItem and not empty caasItem['previewId'] ? caasItem['previewId'] : ''}"/>
+
+<caas:whenFirstSpiritPreview>
+   <script type="text/javascript">
+      const PAGE_PREVIEW_DATA = {
+         pageType: '${cmsPage.typeCode}',
+         pagePreviewId: '${pagePreviewId}',
+         pageId: '${cmsPage.uid}',
+         pageTemplate: '${cmsPage.masterTemplate.uid}'
+      };
+   </script>
+</caas:whenFirstSpiritPreview>
+----
+
+[NOTE]
+====
+For product detail pages, the product code must be defined as the page ID instead of the UID:
+
+[source,html]
+.Example - Defining the product code
+----
+const PAGE_PREVIEW_DATA = {
+   [...]
+   pageId: '${productCode}',
+   [...]
+};
+----
+====
+
+In addition to determining the _{c}_ item and populating the data object, the output must also be defined.
+As part of this process, a check is needed whether the previously determined _{c}_ item includes content for the relevant content area.
+If this is not the case, fallback content can be defined.
+
+The following code extract shows the definition of the output for the content area `stage_body`:
+
+[source,html]
+.Example - Definition of output
+----
+<%@ taglib prefix="caas" uri="/WEB-INF/tld/addons/fscontentconnect/caas.tld" %>
+
+[... Determine the CaaS item and set the PAGE_PREVIEW_DATA object (see above) ...]
+
+<c:choose>
+   <c:when test="${not empty caasItem and not empty caasItem['slots']['stage_body']}">
+      <div data-slot-name="stage_body">
+         ${caasItem['slots']['stage_body']}
+      </div>
+   </c:when>
+   <c:otherwise>
+      <div data-slot-name="stage_body" data-fs-content-editing>
+         <cms:pageSlot position="Section1" var="feature">
+            <cms:component component="${feature}"/>
+         </cms:pageSlot>
+      </div>
+   </c:otherwise>
+</c:choose>
+----
+
+Whether the outcome is positive or the fallback is applied, a Dom element must be defined to mark the {fs} content area.
+This element allows external content to be visually highlighted and maintained in {wc}.
+The name of the content area must be transferred to the Dom element via the `data-slot-name` attribute.
+In the event of a fallback, the Dom element also requires the attribute `data-fs-content-editing`.
+This attribute controls the display of a plus button in {wc}, which shows the label `override content` or `add content` when hovering.
+
+override content::
+If the fallback is applied and existing content from {ccloud} is displayed, the button is displayed with the `override content` label while hovering.
+This means that there is not yet any content in {fs} for the content area.
+For this reason, the existing content can only be overwritten and not edited.
+The previously described code extract shows this option.
++
+.override content button
+image::overridecontent.png[]
+
+add content::
+If the fallback is applied and the Dom element does not contain any content, the button is displayed with the `add content` label while hovering.
+This situation can arise when there is no content on an empty page for the area in {ccloud}, or if no content has been defined for the Dom element.
+Within the `landingLayout2Page.jsp` page, which is included in the delivery, this option is used for the output of the `main_body` content area:
++ 
+[source,html]
+.Example - Fallback for output of main_body content area
+----
+<c:choose>
+   <c:when test="${not empty caasItem and not empty caasItem['slots']['main_body']}">
+      [... show Content ...]
+   </c:when>
+   <c:otherwise>
+      <div data-slot-name="main_body" data-fs-content-editing></div>
+   </c:otherwise>
+</c:choose>
+----
++
+.add content button
+image::addcontent.png[]

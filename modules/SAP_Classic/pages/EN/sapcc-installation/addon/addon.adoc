@@ -1,0 +1,28 @@
+[[addon]]
+=== Add-on
+The _{c}_ content is queried by the {ccloud} using an add-on.
+This add-on is included in the delivery in the form of a `fscontentconnect-<Versionsnumber>.zip` file requiring installation and configuration in {ccloud}.
+The {filter} included in the add-on must also be activated in {ccloud}.
+
+The following chapters describe how to execute the required steps.
+
+[IMPORTANT]
+====
+The {ccloud} server must be stopped before the steps described below are carried out.
+Otherwise this can lead to malfunctions.
+====
+
+// Installation des Addons
+include::addon-installation.adoc[]
+
+// Konfiguration des Addons
+include::addon-configuration.adoc[]
+
+// Konfiguration mehrerer Sites
+include::addon-sites.adoc[]
+
+// Aktivierung des PreviewFilters
+include::addon-previewfilter.adoc[]
+
+// JSP-Tags
+include::addon-jsp-tags.adoc[]

@@ -1,0 +1,33 @@
+[[productreport]]
+=== Selection of a product or a category
+The module provides a product and a category report in {wc}.
+These reports present the products and categories originating from _{ccloud}_.
+The lists can be filtered via the search field in the report.
+
+.Products and categories in the report
+image::reports.png[]
+
+=== Inclusion of a product or category
+A product or category can be dragged from the report and dropped into an `FS_INDEX` input component in the editing dialog.
+Alternatively, the component has an btn:[Add] button which opens a selection dialog.
+This dialog lists all the available products and categories.
+
+The selection is saved using the button of the same name.
+
+=== Calling up a content page or product/category detail page
+Content pages as well as product and category detail pages can be accessed via the shop navigation and via the product, category or search report.
+In the report, these pages are called up by clicking on one of them.
+Thereby detail pages that are not yet available in the shops main navigation can also be called up.
+
+To determine the URL of product and category detail pages, the reports use the URLs from the fields <<pdp_url,`PDP URL`>> and <<cdp_url,`CDP URL`>> 
+that must be specified during the configuration of the project component. +
+Content pages can have specific URLs that are optionally specified during the definition of the <<template_mappings,`Template Mappings`>>.
+If a content page does not have a specific URL, the general <<contentpage_url,`Contentpage URL`>> is used for it instead.
+If one of these fields contains a relative URL, this is converted into an absolute URL based on the URL of the current shop page.
+
+[IMPORTANT]
+====
+The product report shows all of the products in the configured product catalog.
+This means that the detail pages of all products in the catalog must be accessible.
+To ensure that this is the case, the <<searchrestrictions,configuration of the FlexibleSearch Restrictions>> must be checked.
+====

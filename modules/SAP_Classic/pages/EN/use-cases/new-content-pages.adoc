@@ -1,0 +1,14 @@
+[[edit-new-content-pages]]
+=== Maintaining content on new {ccloud} content pages
+
+// To Do: SAPCC-118
+
+The maintenance of content on new {ccloud} content pages is subject to the same requirements as the maintenance of <<edit-existing-content-pages,existing {ccloud} content pages>>.
+
+However, the creation of new pages must be configured in the <<configContent,project component>>.
+Once this configuration is complete, the familiar {wc} functions can be used to create new pages.
+
+[NOTE]
+====
+The `label` attribute of new {ccloud} content pages is set by the _{modulname}_ module and by default starts with a slash (`/`).
+====

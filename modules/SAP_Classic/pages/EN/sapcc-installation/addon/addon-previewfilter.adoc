@@ -1,0 +1,22 @@
+[[addon-filter]]
+==== Activating the {filter}
+The previously installed and configured <<addon-install,add-on `FSContentConnect`>> contains the {filter}.
+This filter sets the session variables that are required for the integration to work.
+It requires activation in {ccloud} and must be added to the `PlatformFilterChain` for this purpose.
+
+The delivery includes a B2B accelerator storefront, which contains a `spring-filter-config.xml` file with the `firstSpiritPreviewFilter` bean already added to the FilterChainList.
+
+[source, xml]
+.Activating the {filter}
+----
+<alias
+ name="defaultStorefrontTenantDefaultFilterChainList" 
+ alias="storefrontTenantDefaultFilterChainList" />
+<util:list id="defaultStorefrontTenantDefaultFilterChainList">
+
+   [...]
+   <!-- filter to handle requests from FirstSpirit -->
+   <ref bean="firstSpiritPreviewFilter"/>
+
+</util:list>
+----

@@ -1,0 +1,18 @@
+// ************************************ Styling und JavaScript ************************************
+[[javascript]]
+==== Integrating {ocm} into the storefront
+In {fs}, the editorial content is created and edited in the {wc}.
+With the help of the _{ocm}_, the staged storefront of the {ccloud} is embedded in it.
+The Staged Storefront in turn accesses the _Preview {c}_ and determines the current {fs} contents from it.
+
+To enable the content from the storefront to be edited in {wc}, the _{ocm}_ JavaScript must be integrated into {ccloud}.
+For this purpose, the Taglib and the <<ocmscript,tag `caas:includeOcmScripts`>> must be integrated into the `javaScript.tag` file.
+The delivery includes storefront modifications with _{ocm}_ already integrated, which renders this step unnecessary.
+
+[source,html]
+.Integration of the Taglib and the tag caas:includeOcmScripts
+----
+<%@ taglib prefix="caas" tagdir="/WEB-INF/tags/addons/fscontentconnect/responsive/caas"%>
+
+<caas:includeOcmScripts/>
+----

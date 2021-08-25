@@ -1,0 +1,19 @@
+[[addon-sites]]
+==== Connection of multiple sites
+The _{modulname}_ module allows editors to create {ccloud} content using {fs} and to integrate it into the shop.
+This requires the {ccloud} to be connected to the _{c}_.
+The parameters needed for the connection are definable either in the <<addon-config,configuration file>> of the previously installed add-on or for each site.
+The _{modulname}_ module thus allows multiple sites to be connected to {fs}.
+
+The configuration of the sites is done in the {ccloud} backoffice.
+Under the item `*Administration*` each site has the fields visible in the following figure.
+
+.configuration parameters of a site
+image::config_parameters.png[]
+
+The information defined in the fields always refers to the corresponding site only.
+If no entry exists for a field, the parameter specified in the <<addon-config,configuration file of the add-on>> represents a fallback value.
+Since the data stored in the configuration file applies to all sites, mixed operation can be implemented in this way.
+For example, it is possible to store the {key}, the protocol as well as the URL and the port of the _{c}_ centrally in the configuration file, 
+while the name of the database to be used is specified separately for each site.
+The site-specific parameters always overwrite the data persisted in the configuration file.

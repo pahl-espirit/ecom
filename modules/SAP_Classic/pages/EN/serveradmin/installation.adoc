@@ -1,0 +1,12 @@
+== Installation and Configuration
+Various components must be installed and configured on the {fs} side in order to use the functions of the _{modulname}_ module.
+The following subchapters explain the steps required.
+
+// Installation der Module
+include::module-installation.adoc[]
+
+// Projekt-Import
+include::project-import.adoc[]
+
+// Webkomponente
+include::web-components-installation.adoc[]

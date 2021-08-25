@@ -1,0 +1,65 @@
+[[app_sync]]
+==== Content Page Approval & Sync Definition
+By default, <<bulk_update,Bulk-Update>> only updates the staged content catalog in {ccloud}.
+To initiate an update of the online catalog content as well, the relevant pages must be approved and synchronized.
+
+[NOTE]
+====
+The update of the online content catalog may involve various dependencies.
+For this reason, a decision as to whether the approval and synchronization processes form part of the import process or not must be made on a project-specific basis.
+
+It is also possible to simply carry out an approval and a <<direct_release,direct publication in the online content catalogue>>.
+In this case, the synchronization of the data must be ensured on a project-specific basis.
+====
+
+In such cases, the import process permits the execution of an additional update logic, which is applied to each content page that is to updated or created.
+This logic can be added to the deployment schedule in the form of the _Content Page Approval & Sync Definition_ script.
+As the previously described <<bulk_update, Bulk Update>> uses the update logic, the logic must be executed before the update.
+
+[NOTE]
+====
+Approval and synchronization take place via the API of the _{modulname}_ module.
+The associated manual and the JavaDoc-JAR is included in the delivery.
+====
+
+[IMPORTANT]
+====
+Content in the staged content catalog may contain references to products in the staged product catalog.
+To avoid inconsistencies in the online catalogs, it is a good idea to synchronize the product catalog before synchronizing the content catalog.
+
+A standard process for synchronizing various catalogs always involves complex and project-specific requirements.
+For this reason, it is not possible to define this kind of process here.
+====
+
+The code extract below shows an example definition of the approval process for an imported content page and its synchronization with the online content catalog.
+
+[source, HTML]
+.Update logic for the approval and synchronization of a content page
+----
+import com.espirit.moddev.contentconnect.sap.module.ServiceFactory;
+import com.espirit.moddev.contentconnect.sap.module.synchronization.ContentPageAdditionalUpdate;
+import com.espirit.moddev.contentconnect.sap.module.catalogs.cmsitem.CMSItemService;
+import com.espirit.moddev.contentconnect.sap.module.catalogs.cmsitem.CMSItem;
+
+contentPageAdditionalUpdate = new ContentPageAdditionalUpdate() {
+   updateCMSContentPage(cmsContentPage, pageRef) {
+      cmsItemService = ServiceFactory.getCMSItemService(context);
+
+      context.logInfo("Approving content page " + cmsContentPage.getUid() + "..");
+      
+      // Approving CMSContentPage
+      cmsContentPage.setApprovalStatus("APPROVED");
+      updatedCMSContentPageOpt = cmsItemService.updateCMSContentPage(cmsContentPage);
+
+      if(updatedCMSContentPageOpt.isPresent()) {
+         // Synchronizing CMSContentPage to online catalog
+         context.logInfo("Synchronizing content page " + cmsContentPage.getUid() + "..");
+         cmsItemService.synchronizeItem(cmsContentPage, "Online");
+      } else {
+         context.logWarning("Approving content page " + cmsContentPage.getUid() + " failed!");
+      }
+   }
+};
+
+context.setProperty("sapcc_additional_contentpage_update", contentPageAdditionalUpdate);
+----

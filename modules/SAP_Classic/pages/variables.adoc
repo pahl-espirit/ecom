@@ -1,0 +1,92 @@
+// *********** Konfiguration *********** //
+:lang: de
+:espirit: e-Spirit AG
+:copyright: {espirit}
+:creator: {espirit}
+:publisher: {espirit}
+:toclevels: 4
+:toc-placement: right
+:icons: font
+:sectanchors:
+:experimental:
+:title-logo: firstspirit-logo.png
+:sectnums:
+:source-highlighter: coderay
+ifdef::backend-pdf[]
+:pagenums:
+:pygments-style: bw
+:source-highlighter: pygments
+endif::[]
+:imagesdir: ../../resources/images/de-DE
+:homepage: http://www.e-spirit.com
+:asterisk: &#42;
+// *********** Begriffe *********** //
+:modulname: FirstSpirit Connect
+:refproject: {modulname} Reference Project
+:ccloud: Commerce Cloud
+:c: CaaS
+:caas: Content as a Service
+:cxt: CXT ContentCreator Extension
+:bwfs: BasicWorkflows
+:ocm: Omnichannel Manager
+:filter: FirstSpiritPreviewFilter
+:fs: FirstSpirit
+:manager: ServerManager
+:s_settings: Server-Eigenschaften
+:p_settings: Projekt-Eigenschaften
+:p_set: Projekteinstellungen
+:p_comp: Projekt-Komponente
+:w_comp: Web-Komponente
+:server: FirstSpirit-Server
+:jc: SiteArchitect
+:wc: ContentCreator
+:key: API Key
+:sitestore: Strukturverwaltung
+:mediastore: Medienverwaltung
+:pagestore: Inhalteverwaltung
+:admindoc: FirstSpirit Dokumentation für Administratoren
+:tppsnapapi: TPP-SNAP-API
+:blank:
+// DON'T delete the variable blank! It is used for formatting reasons.
+// *********** Links *********** //
+:techsupport: link:https://help.e-spirit.com/[Technical Support]
+:linkfsadoc: link:https://docs.e-spirit.com/odfs/edocs/admi/index.html[{admindoc}]
+:linkfsadocen: link:https://docs.e-spirit.com/odfs/edocs/admi/introduction/index.html[{fs} Manual for Administrators]
+:bwfdoc: link:https://docs.e-spirit.com/module/basicworkflows/BasicWorkflows_Documentation_DE.html[{bwfs}-Dokumentation]
+:bwfdocen: link:https://docs.e-spirit.com/module/basicworkflows/BasicWorkflows_Documentation_EN.html[{bwfs} Manual]
+:caasfsmdoc: link:https://docs.e-spirit.com/module/caas-module/CaaS_FSM_Documentation_DE.html[{caas}-Dokumentation]
+:caasfsmdocen: link:https://docs.e-spirit.com/module/caas-module/CaaS_FSM_Documentation_EN.html[{caas} Manual]
+:caasplatformdoc: link:https://docs.e-spirit.com/module/caas-platform/CaaS_Platform_Documentation_DE.html[{caas}-Dokumentation]
+:caasplatformdocen: link:https://docs.e-spirit.com/module/caas-platform/CaaS_Platform_Documentation_EN.html[{caas} Manual]
+:tppdoc: link:https://docs.e-spirit.com/tpp/[Dokumentation des {ocm}s]
+:tppdocen: link:https://docs.e-spirit.com/tpp/index.html.en[Omnichannel Manager Manual]
+:maindoc: link:https://docs.e-spirit.com/ecom/fsconnect-sap/FirstSpirit_Connect_SAP_Documentation_DE.html
+:maindocen: link:https://docs.e-spirit.com/ecom/fsconnect-sap/FirstSpirit_Connect_SAP_Documentation_EN.html
+// *********** Buttons *********** //
+:settings: btn:[Eigenschaften]
+:install: btn:[Installieren]
+:open: btn:[Öffnen]
+:config: btn:[Konfigurieren]
+:add: btn:[Hinzufügen]
+:create: btn:[Anlegen]
+:local: btn:[Lokal]
+:ok: btn:[OK]
+:yes: btn:[Ja]
+:activate: btn:[Aktivieren]
+:upload: btn:[Upload]
+:next: btn:[Next]
+:addvar: btn:[Neue Variable anlegen]
+:value: btn:[Für alle Sprachen übernehmen]
+// *********** Übersetzungen *********** //
+:toc-title: Inhaltsverzeichnis
+:caution-caption: Achtung
+:important-caption: Wichtig
+:note-caption: Hinweis
+:tip-caption: Tip
+:warning-caption: Warnung
+:appendix-caption: Anhang
+:example-caption: Beispiel
+:figure-caption: Abbildung
+:table-caption: Tabelle
+// if defined, comments are visible in the output
+:showcomments:

@@ -1,0 +1,19 @@
+== {ccloud} - Installation and configuration
+{fs} is used to create and maintain editorial data, which is then transferred to and persisted by _{c}_.
+To integrate the data into the shop, {ccloud} requires access to _{c}_.
+This access is provided by an add-on included in the delivery package which must be installed and configured on the {ccloud} side.
+The delivery also includes storefront modifications that already incorporate the add-on.
+
+The following chapters explain all necessary steps for installing and configuring the add-on and the required {ccloud} expansions.
+
+//Add-on
+include::addon/addon.adoc[]
+
+// Templateanpassungen
+include::ocmjavascript.adoc[]
+
+// OAuth-Konfiguraiton
+include::oauth-configuration.adoc[]
+
+// Search-Restriction Konfiguration
+include::searchrestriction-configuration.adoc[]

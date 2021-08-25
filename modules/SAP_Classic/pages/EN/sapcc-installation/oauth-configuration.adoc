@@ -1,0 +1,19 @@
+=== OAuth configuration
+The _{modulname}_ module requires OAuth authentication to query information from {ccloud}.
+For this purpose, an OAuth client must be configured within {ccloud}.
+There are two options for creating this type of OAuth client:
+
+* Automatically, by importing the following ImpExes +
+  (in the `*Hybris Admin Console*` under `*menu:Console[ImpEx Import]*`)
+* Manually, in the back office under `*menu:System[OAuth>OAuth Clients]*`
+
+[source,xml]
+----
+INSERT_UPDATE OAuthClientDetails;clientId[unique=true] ;resourceIds;scope ;authorizedGrantTypes ;authorities ;clientSecret;registeredRedirectUri
+;firstspirit ;hybris ;extended,previewwebservices;authorization_code,refresh_token,password,client_credentials;ROLE_TRUSTED_CLIENT ;secret; ;
+----
+
+[IMPORTANT]
+====
+The validity scope of the OAuth client used for the <<configPreview,Preview>> must be set to `previewwebservices`.
+====

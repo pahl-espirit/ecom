@@ -1,0 +1,33 @@
+=== Architecture
+{fs} and {ccloud} are linked by an architecture made up of a range of components (see figure <<img_architecture>>).
+
+These components are:
+
+* The modules installed on the {fs} server:
+** _{modulname}_
+** _{ocm}_
+** _{caas}_
+* {ccloud}-Instanz
+
+[[img_architecture]]
+.Architecture
+image::architecture.png[]
+
+The individual components always interact in accordance with the following schema:
+
+. In {fs}, the editorial content is created and edited in {wc}.
+   With the help of the _{ocm}_, the staged storefront of the {ccloud} is embedded in it.
+. The Staged Storefront in turn accesses the _Preview {c}_ and determines the current {fs} contents from it.
+   It also integrates the `{ocm} JavaScript`, which enables the content in {wc} to be edited and highlighted.
+. The product and category information is provided via a report.
+   The report accesses the product catalog and obtains the required data via the `CMS WebServices` interface of the {ccloud}.
+. The module also uses the `CMS WebServices` interface.
+   It triggers the automatic synchronization of content pages created or modified in {fs} in the content catalog of the staged storefront.
+   The automatic synchronization of the information in the online storefront must always be developed on a project-specific basis, so there is no predefined mechanism for this process.
+. The released editorial content is transferred via a generation process to the _Online {c}_.
+   This process makes the content available to the online storefront, which is then used to integrate it into the shop.
+
+{ccloud} thus represents the main component in this architecture.
+In addition to providing all shop functionality, this system queries content created or maintained in {fs} from _Online {c}_ and provides it to customers.
+There is only one loose link between the two systems; they primarily work in parallel with one another.
+If the {fs} server is shut down because of maintenance work, for example, this has no effect on {ccloud}.

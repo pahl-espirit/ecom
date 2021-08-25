@@ -1,0 +1,13 @@
+= {mainTitle}: {subtitle}
+e-Spirit AG
+{docdate}
+include::variables.adoc[]
+
+// Einleitung
+include::EN/serveradmin/introduction.adoc[]
+
+// FirstSpirit - Installation und Konfiguration
+include::EN/serveradmin/installation.adoc[]
+
+// Rechtliche Hinweise
+include::EN/legal-notice.adoc[]

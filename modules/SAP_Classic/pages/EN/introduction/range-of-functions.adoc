@@ -1,0 +1,16 @@
+=== Range of functions
+_{modulname}_ allows editors to:
+
+* Create {ccloud} content using {fs} for one or more sites of a {ccloud} instance
+* Access to product and category information
+* Display shop elements and editorial content in the {fs} preview simultaneously
+* Transfer of content to {ccloud}
+
+The corresponding functions are made available when the module is installed and configured in {wc}.
+
+Familiar {fs} tools are used to maintain the content, meaning that editors who are already familiar with {fs} do not require any additional knowledge.
+The content is made available to {ccloud} as part of a deployment so that it can be imported.
+It integrates the information into the shop.
+
+As far as {ccloud} is concerned, this means there is no difference when it comes to delivering editorial content to the live state.
+Even if the {fs} server is shut down because of maintenance work, for example, this has no effect on {ccloud}.

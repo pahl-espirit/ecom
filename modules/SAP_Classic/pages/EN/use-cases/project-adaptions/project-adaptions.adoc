@@ -1,0 +1,17 @@
+// JavaScript zur Benutzung der TPP-SNAP-API
+// include::tpp-javascript.adoc[]
+
+// Produktdetailseiten
+include::product-detail-pages.adoc[]
+
+// Löschung von FirstSpirit-verwalteten Contentpages
+include::delete-content-pages.adoc[]
+
+// Produktreferenzierung
+include::product-reference.adoc[]
+
+// Kategoriereferenzierung
+include::category-reference.adoc[]
+
+// Generierung der Navigationsstruktur
+include::navigation.adoc[]

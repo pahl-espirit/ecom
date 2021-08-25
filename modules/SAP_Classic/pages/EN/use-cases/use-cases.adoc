@@ -1,0 +1,19 @@
+[[use_cases]]
+== Use cases
+The _{modulname}_ module provides various options for accessing {ccloud} content and for using this in {fs}.
+These options are described below using use cases based on the supplied _{refproject}_.
+
+// Pflege bestehender Inhaltsseiten
+include::existing-content-pages/existing-content-pages.adoc[]
+
+// Erzeugung neuer Inhaltsseiten
+include::new-content-pages.adoc[]
+
+// Dynamische Inhalte
+include::dynamic-content.adoc[]
+
+// Anpassungen im Projekt
+include::project-adaptions/project-adaptions.adoc[]
+
+// Verwendung in FS
+include::usage-in-firstspirit.adoc[]

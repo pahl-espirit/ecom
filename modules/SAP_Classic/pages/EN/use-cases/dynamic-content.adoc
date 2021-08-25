@@ -1,0 +1,75 @@
+[[dynamiccontent]]
+=== Dynamic content
+The _{modulname}_ module allows the maintenance of dynamic content.
+This content is code that is defined in the presentation channel of the {fs} template and stored in the generated _{c}_ item.
+This content is evaluated when the content area is output in the {ccloud} page template.
+
+[underline]#*Modifications in {fs}*#
+
+In the supplied reference project, the dynamic content is integrated via the link template `a_product_price_link`.
+This can be used in text-image sections and uses the template language http://velocity.apache.org/[Apache Velocity] to integrate the name and price of a product.
+To do so, it accesses the context objects `productOptions` and `productFacade`, which provides the <<addon,add-on>> in the storefront during the evaluation process:
+
+* The `productOptions` context object is a list of all values of the
+   https://help.sap.com/doc/a4265d5ea8314eb2929e6cf6fb8e35a5/1811/en-US/de/hybris/platform/commercefacades/product/ProductOption.html[ProductOption enum].
+* The `productFacade` context object is a reference to the https://help.sap.com/doc/a4265d5ea8314eb2929e6cf6fb8e35a5/1811/en-US/de/hybris/platform/commercefacades/product/ProductFacade.html[ProductFacade].
+
+The following code extract shows the presentation channel of the link template `a_product_price_link` in the reference project:
+
+[source,HTML]
+.Presentation channel for the link template
+----
+$CMS_SET(productCode,lt_productRef.values.iterator.next.getValueMap().get("code"))$
+$CMS_SET(void,dynamicContent.put("active",true))$
+<span data-dynamic-content="true">
+   #set( $product = $productFacade.getProductForCodeAndOptions("$CMS_VALUE(productCode)$", $productOptions))
+   #if( $product )
+      <a href="$CMS_RENDER(template:"product_link_render", prodRef:lt_productRef)$">
+         $product.getName()
+         #set( $priceData = $product.getPrice())
+         #if ( $priceData )
+            ($priceData.getFormattedValue())
+         #end
+      </a>
+   #end
+</span>
+----
+
+Within the template, the first action is to determine the product code of the referenced product and to transfer it to the `getProductForCodeAndOptions` method together with the `productOptions` context object.
+This step ensures that all product information is available within the `product` variable.
+The `dynamicContent` variable is needed to determine the product information to be used in the generation of the _{c}_ item.
+This variable is evaluated in the <<existingcpoutput,{fs} page template>> and the `active` parameter must be set to `true`.
+
+Unlike static content, dynamic content is pulled from the staged storefront for display in {wc}, so it must be identifiable.
+For this purpose, this content must be enclosed in a Dom element with the attribute `data-dynamic-content` set to `true`.
+Furthermore, the page template must also indicate the `pageRevisionId`.
+This ID is used to ensure that the revision of the _{c}_ item always corresponds to the pages displayed in {wc} and allows the content to be updated if necessary.
+The dynamic content must be queried from the staged storefront as the initial evaluation of this content takes place in this location.
+If the content were to be determined directly from {fs}, like static content, {wc} would only show the code defined for it in the presentation channel.
+
+[underline]#*Modifications in {ccloud}*#
+
+The code for dynamic content is evaluated in the <<ccpagetemplate,{ccloud} page template>>.
+This evaluation is executed during access to the relevant content area within the result object of the <<viewextension_tags,caas:request tag>>; the process returns a string.
+The output is therefore the same as that for static content and is defined as such.
+
+The following code extract shows a shortened form of the definition of the output for the content area `stage_body` on the `landingLayout2Page.jsp` page, which is included in the delivery:
+
+[source,html]
+.Example - Definition of output
+----
+<%@ taglib prefix="caas" uri="/WEB-INF/tld/addons/fscontentconnect/caas.tld" %>
+
+[... Determine the CaaS item and set the PAGE_PREVIEW_DATA object (see above) ...]
+
+<c:choose>
+   <c:when test="${not empty caasItem and not empty caasItem['slots']['stage_body']}">
+      <div data-slot-name="stage_body">
+         ${caasItem['slots']['stage_body']}
+      </div>
+   </c:when>
+   <c:otherwise>
+      [...]
+   </c:otherwise>
+</c:choose>
+----

@@ -5,4 +5,5 @@ nav:
 - modules/Spryker/nav.adoc
 - modules/Spartacus/nav.adoc
 - modules/Salesforce/nav.adoc
+- modules/SAP_Classic/nav.adoc
 

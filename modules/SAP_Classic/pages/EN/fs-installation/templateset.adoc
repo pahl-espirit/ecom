@@ -1,0 +1,18 @@
+=== Presentation channel
+An additional XML channel is required in addition to the presentation channels that already exist for the project.
+For empty projects, this channel must be created manually; however, it is already contained within the supplied _{refproject}_.
+
+The presentation channel was created in the `*{manager}*` under `*menu:Project properties[Template sets]*` and is configured as follows:
+
+[[templateset]]
+.Presentation channel
+image::templateset.png[]
+
+[IMPORTANT]
+====
+In the selection box of the same name, the conversion rule to be created for _{c}_ must be selected.
+The steps required to do this are described in the _{caasfsmdocen}_.
+====
+
+The presentation channel is activated and is therefore available in the project.
+It is used to define the content to be transferred, which is summarized in messages during the generation operation and transferred to _{c}_.

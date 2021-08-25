@@ -1,0 +1,37 @@
+=== Category referencing
+Category referencing requires modifications to the <<categoryform,form>> and <<categorychannel,presentation channel>> of a template.
+
+[[categoryform]]
+==== Form
+To reference categories in a template, this template must first include the appropriate form.
+The form requires an `FS_INDEX` component to store the category ID as a minimum.
+
+[[template-form]]
+[source,html]
+.Form
+----
+<CMS_MODULE>
+   <FS_INDEX name="st_categories" useLanguages="no">
+      <LANGINFOS>
+         <LANGINFO lang="*" label="Categories"/>
+      </LANGINFOS>
+      <SOURCE name="ContentConnectSAPCommerceCloud/ContentConnectSAPCommerceCloud_CategoryDataAccessPlugin"/>
+   </FS_INDEX>
+</CMS_MODULE>
+----
+
+[[categorychannel]]
+==== Presentation channel
+The presentation channel permits access to the <<categoryform,`FS_INDEX` component>> and the referenced categories it contains.
+Each element of the `FS_INDEX` component is an object of type `com.espirit.moddev.contentconnect.sap.module.catalogs.productcatalogs.Category`,
+which is described in the JavaDoc of the API included in delivery.
+
+The following code extract shows an example use of a category in the presentation channel:
+
+[source,html]
+.Use of a category in the presentation channel
+----
+$CMS_FOR(for_category, st_categories.values())$
+   $CMS_VALUE(for_category.getName(#global.language))$
+$CMS_END_FOR$
+----

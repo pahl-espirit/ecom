@@ -1,0 +1,38 @@
+[[addon-install]]
+==== Installing the add-on
+The zip file that must first be unzipped in order to install the add-on contains the directory `*fscontentconnect*`, which must be copied to the `*$HYBRISHOME/hybris/bin/custom*` directory on the {ccloud} server.
+The add-on must also be introduced to the {ccloud} server.
+This is achieved by entering the add-on in the `localextensions.xml` file in the `*$HYBRISHOME/hybris/config directory*`.
+
+[source,xml]
+.Entering the add-on in the localextensions.xml file
+----
+<hybrisconfig>
+   <extensions>
+      [...]
+      <extension name='fscontentconnect' />
+   </extensions>
+</hybrisconfig>
+----
+
+[[addon-build]]
+In the next installation step, the add-on must be built.
+This can be achieved using the following command sequence, which must be executed in the `*$HYBRISHOME/hybris/bin/platform*` directory of the previously stopped {ccloud} server.
+
+[source,code]
+----
+// 1.
+. ./setantenv.sh
+
+// 2.
+ant addoninstall -Daddonnames="fscontentconnect"
+-DaddonStorefront.yb2bacceleratorstorefront="yb2bacceleratorstorefront"
+
+// 3.
+ant clean all
+----
+
+The first command sets environment variables, the second command adds the add-on to the {ccloud}, and the final command triggers the compilation.
+
+To complete the installation of the add-on, the last step is to update the {ccloud} server.
+The update can be executed via the `*menu:Platform[Update]*` area in the `*hybris administration console*`.

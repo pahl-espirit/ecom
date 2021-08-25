@@ -1,0 +1,46 @@
+[[fssectiontemplate]]
+==== Section template
+The slots contained within a {ccloud} page are represented in {fs} by the sections `banner_section`, `category_teaser_section`, and `text_picture_section`.
+If a corresponding content page is to be created in the {fs} project for an existing {ccloud} page, the relevant sections are created automatically and populated with the existing content.
+
+The following code extract shows the presentation channel for the text-image section from the reference project:
+
+[source,html]
+.Presentation channel for the text-image section
+----
+<div data-preview-id="$CMS_VALUE(previewId())$">
+   [...]
+   <div class="yCmsComponent" style="margin: 20px;">
+      $CMS_IF(!st_headline.isEmpty())$
+         <h1 style="text-align:center;">$CMS_VALUE(st_headline.convert2)$</h1>
+      $CMS_END_IF$
+      
+      $CMS_IF(!st_picture.isEmpty())$
+         <img 
+            data-preview-id="$CMS_VALUE(previewId(element:st_picture))$" 
+            class="js-responsive-image" 
+            style="margin: 20px;float:$CMS_VALUE(st_picturePosition, default:"left")$" 
+            $CMS_IF(!st_pictureDescription.isEmpty())$
+               title="$CMS_VALUE(st_pictureDescription.convert2)$" 
+               alt="$CMS_VALUE(st_pictureDescription.convert2)$"
+            $CMS_END_IF$ 
+            data-media="{}" 
+            src="$CMS_REF(st_picture,resolution:"CATEGORY_TEASER_ITEM",abs:1)$">
+      $CMS_END_IF$
+      $CMS_IF(!st_text.isEmpty())$
+         $CMS_VALUE(st_text)$
+      $CMS_END_IF$
+   </div>
+   [...]
+</div>
+----
+
+This section has various input components for entering a heading and text and adding an image with a definable position and image description.
+The heading, text and image are displayed within a DIV, with a `data-preview-id` attribute configured to the value `$CMS_VALUE(previewId())$`.
+This attribute serves to decorate and identify the section; again, this process is executed by the <<javascript,JavaScript of _{ocm}_>>.
+To enable media-specific actions, such as release or image cropping, the same attribute is also provided for the img tag.
+
+[NOTE]
+====
+The _{tppdocen}_ contains additional information on the use of the preview ID.
+====

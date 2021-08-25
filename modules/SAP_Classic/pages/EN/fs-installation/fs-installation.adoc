@@ -1,0 +1,47 @@
+== {fs} - Installation and configuration
+Various components must be installed and configured in {fs} in order to use the functions of the _{modulname}_ module.
+The following sub-chapters describe the steps required to do this.
+
+[IMPORTANT]
+====
+To use the _{modulname}_ module, the _{caas}_ and the _{ocm}_ modules must also be configured.
+The steps required to do this are described in the _{caasfsmdocen}_ and in the _{tppdocen}_.
+====
+
+[NOTE]
+====
+In addition to the standard groups `Everyone`, `Administrators` and `Developers`, there are three further *external* user groups in the reference project: `Editors`, `ChiefEditors` and `ProjectAdmins`.
+The groups have different rights, which are selected according to their tasks and defined for the different stores.
+Users outside these groups are not allowed to use the reference project by default.
+
+If there is a need for additional accounts or groups, their creation must be requested by contacting the {techsupport}.
+For new accounts, the following information is required:
+
+* first and last name
+
+* e-mail address
+
+* groups to be assigned
+====
+
+// Konfiguration der Projektkomponente
+include::project-component-configuration.adoc[]
+
+// Installation der Web-Komponente
+include::web-components-installation.adoc[]
+
+// Externe Vorschau-URL
+include::preview-url.adoc[]
+
+// Ausgabekanal
+include::templateset.adoc[]
+
+// Freigabe-Arbeitsablauf
+include::workflows.adoc[]
+
+// Projekteinstellungen
+include::project-settings.adoc[]
+
+// Deployment-Auftrag
+include::schedule/schedule.adoc[]
+

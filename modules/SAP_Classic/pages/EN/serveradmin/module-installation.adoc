@@ -1,0 +1,38 @@
+[[install]]
+===  Installing the modules
+In order to provide the functions of the _{modulname}_ module, the modules _{caas}_ and _{ocm}_ are additionally required, which must also be installed on the {fs} server.
+Furthermore, when using the supplied _{refproject}_, the _{bwfs}_ and the _{cxt}_ must also be installed.
+
+[NOTE]
+====
+The delivery only includes the _{modulname}_ module.
+The _{caas}_ and _{ocm}_ modules as well as the _{bwfs}_ and the _{cxt}_ can be obtained from {techsupport}.
+====
+
+To install the modules, open the `*{manager}*` and select `*menu:Server properties[Modules]*`.
+
+.Server properties - Module installation
+image::modules.png[]
+
+The main panel contains a list of all modules installed on the {fs} server.
+After clicking btn:[Install], select the following files one after the other and confirm your selection with btn:[Open]:
+
+* `contentconnect-sap-module-<Versionnumber>.fsm`
+* `caas-<Versionnumber>.fsm`
+* `fs-tpp-api-<Versionnumber>.fsm`
+* `cxt-cc-extension-<Versionsnummer>.fsm` (only required when using the reference project)
+* `basicworkflows-fsm-<Versionsnummer>.fsm` (only required when using the _{bwfs}_)
+
+After the successful installation, the folders `{modulname} for SAP {ccloud}`, `{caas}`, `{fs} ThirdPartyPreview`, and optionally the folders `{bwfs}` and `{cxt}` were added to the list.
+Each of which must be given `All permissions`.
+
+[IMPORTANT]
+====
+The _{caas}_ module contains a service used to define a standard configuration.
+The steps required to do this are described in the _{caasfsmdocen}_.
+====
+
+[IMPORTANT]
+====
+After any module installation or update, the {fs} server needs to be restarted.
+====

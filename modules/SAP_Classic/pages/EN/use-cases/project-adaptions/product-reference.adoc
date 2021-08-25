@@ -1,0 +1,70 @@
+=== Product referencing
+Product referencing requires modifications to the <<productform,form>> and <<productchannel,presentation channel>> of a template.
+
+[[productform]]
+==== Form
+To reference products in a template, this template must first include the appropriate form.
+The form requires an `FS_INDEX` component to store the product ID as a minimum.
+
+[[template-form]]
+[source,html]
+.Form
+// codeAnfang
+----
+<CMS_MODULE>
+   <FS_INDEX name="st_products">
+      <LANGINFOS>
+         <LANGINFO lang="*" label="Products"/>
+      </LANGINFOS>
+      <SOURCE name="ContentConnectSAPCommerceCloud/ContentConnectSAPCommerceCloud_ProductDataAccessPlugin"/>
+   </FS_INDEX>
+</CMS_MODULE>
+----
+// codeEnde
+
+[[productchannel]]
+==== Presentation channel
+The presentation channel permits access to the <<productform,`FS_INDEX` component>> and the referenced products it contains.
+Each element of the `FS_INDEX` component provides methods for querying information on the relevant product and, for example, to output this information.
+
+[source,html]
+.Use of a product in the presentation channel
+----
+$CMS_FOR(for_product, st_products.values())$
+   $CMS_VALUE(for_product.getValueMap().get("name_de"))$
+$CMS_END_FOR$
+----
+
+[options="header", cols="25,25,25,80"]
+.Methods
+|=======
+|Name | Parameter | Return value	| Description
+|get | name: String | String | Returns the value of the stated attribute or `null` if the attribute does not exist.
+|getValueMap | | Map<String, String> | Returns a map of all attributes of the product.
+|=======
+
+The description of the https://help.sap.com/doc/adfb51f81d064d95a5cc925140553000/1808/en-US/smartedit/cmswebservices/index.html#_productwsdto[ProductWsDTOs] 
+in the `Cmswebservices API` provides an overview of the available attributes and their identifiers.
+
+Some attributes, such as `name`, contain language-dependent values.
+For this reason, their identifier must be expanded for the purposes of the query: `name_de`.
+
+The code extract <<product-link-template,Use of the product code within a product link template>> shows an example of how the product code can be used to link a product.
+It uses various input components from the project settings, which are defined as follows:
+
+[options="header", cols="25,25,80"]
+.Input components in the project settings
+|=======
+|Name | Value (example) | Description
+|ps_hybrisAcceleratorName | yb2bacceleratorstorefront | Name of the {ccloud} storefront
+|ps_hybrisSiteName | powertools | Name of the {ccloud} site
+|=======
+
+[[product-link-template]]
+[source,html]
+.Use of the product code within a product link template
+----
+$CMS_IF(!lt_ref.isEmpty && !lt_ref.values.isEmpty)$
+   $CMS_VALUE(ps_hybrisAcceleratorName.replace("/", ""))$/$CMS_VALUE(ps_hybrisSiteName.replace("/", ""))$/$CMS_VALUE(#global.language.abbreviation.toLowerCase())$/p/$CMS_VALUE(lt_ref.values.iterator.next.getValueMap().get("code"))$
+$CMS_END_IF$
+----

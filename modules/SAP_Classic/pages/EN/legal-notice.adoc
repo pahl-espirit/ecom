@@ -1,0 +1,7 @@
+== Legal notices
+_{modulname} for SAP {ccloud}_ is a product of {creator}, Dortmund, Germany. +
+Only a license agreed upon with {creator} is valid with respect to the user for using the module.
+
+== Help
+The https://help.e-spirit.com/[Technical Support] of the {creator} provides expert technical support covering any topic related to the {fs} product.
+You can get and find more help concerning relevant topics in our https://community.e-spirit.com/[community].

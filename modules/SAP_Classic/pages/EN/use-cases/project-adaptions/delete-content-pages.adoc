@@ -1,0 +1,21 @@
+=== Deleting content pages managed in {fs}
+When maintaining content on C{ccloud} content pages, {fs} is the leading system used to manage and delete pages.
+The {fs} executable `CMSItemRemoval` can be used to delete these pages from {ccloud}.
+This executable can be called up by entering an `itemUid` parameter that contains the UID of the page reference to be deleted.
+Alternatively, the executable can be used within a workflow.
+In such cases, ensure that a `trigger_finish_full` transition exists, as the executable will move on to this transition once deletion has been completed successfully.
+This allows the deletion of pages from {ccloud} to be integrated into a deletion workflow.
+The following code extract shows the call-up of the executable within a script.
+
+[source,html]
+.Call-up of the CMSItemRemoval executable
+----
+#!executable-class
+com.espirit.moddev.contentconnect.sap.module.catalogs.cmsitem.CMSItemRemoval
+----
+// codeEnde
+
+[NOTE]
+====
+After deleting a page, the editor is redirected to the start page.
+====

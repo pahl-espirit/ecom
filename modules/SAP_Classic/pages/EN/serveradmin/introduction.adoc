@@ -1,0 +1,35 @@
+== Introduction
+{fs} is used for creating versatile and project-specific content.
+Thanks to the _{modulname} for SAP {ccloud}_ module, it is now possible to transfer this content to the SAP {ccloud} e-commerce shop system and use it there.
+
+[NOTE]
+====
+In the remainder of this document, the abbreviated form {ccloud} will be used instead of SAP {ccloud}.
+This abbreviated form refers to SAP {ccloud} in all cases.
+====
+
+The module combines the functional strengths of both systems, delivering the key advantages that each offers and creating a highly effective overall system 
+made up of two areas that work in parallel and are largely decoupled from one another:
+
+Components on the {fs} side::
+These components are used for creating and maintaining editorial data.
+The data is transferred in JSON and media format to the relevant _{caas}_ instance, and queried from this instance by the {ccloud}.
+
+Components on the {ccloud} side::
+These components are used for integrating editorial content created in {fs}.
+{ccloud} integrates this data into the shop.
+
+Included in the delivery of the _{modulname} for SAP {ccloud}_ module is the reference project _{refproject}_.
+This documentation is consistently based on the reference project and provides an explanation of the functions made available by the module using common use cases.
+
+[NOTE]
+====
+This document is intended for server administrators and therefore only describes the installation and configuration of the module as well as the import of the reference project on the {fs} server.
+All steps to be performed in the project and the functionalities provided with the integration are described in the {maindocen}[_{modulname} for SAP {ccloud}_] documentation.
+====
+
+include::../introduction/range-of-functions.adoc[]
+
+include::../introduction/architecture.adoc[]
+
+include::../introduction/requirements.adoc[]

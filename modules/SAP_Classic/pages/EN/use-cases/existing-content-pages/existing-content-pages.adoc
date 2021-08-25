@@ -1,0 +1,16 @@
+[[edit-existing-content-pages]]
+=== Maintenance of existing {ccloud} content pages
+The _{modulname}_ module enables editors to maintain content pages that already exist in {ccloud} in {fs}.
+For this purpose, the content pages are displayed in {wc} via _{ocm}_, enabling them to be seamlessly integrated into the familiar {fs} editorial process.
+
+As well as <<javascript,integrating _{ocm}_>>, which is an installation step, the presentation channel of the page and section templates must be completed in order to maintain content pages in {fs}.
+In addition, the relevant page template must also be modified in {ccloud}.
+
+// FirstSpirit Seitenvorlage
+include::fspagetemplate.adoc[]
+
+// FirstSpirit Absatzvorlage
+include::fssectiontemplate.adoc[]
+
+// CommerceCloud Page Template
+include::ccpagetemplate.adoc[]

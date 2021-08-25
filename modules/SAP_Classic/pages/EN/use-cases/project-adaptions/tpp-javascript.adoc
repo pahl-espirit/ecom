@@ -1,0 +1,175 @@
+[[tppusagejs]]
+=== JavaScript zur Benutzung der {tppsnapapi}
+
+Der {ccloud}-Storefront wird im _OCM_ dargestellt und benötigt Anweisungen zur Dekoration der Inhaltsbereiche bzw. Absätze.
+In der Auslieferung des _{modulname}_-Moduls befindet sich eine JavaScript-Datei `fs-app.js`, die die Benutzung der {tppsnapapi} zeigt und als Referenzimplementierung dient.
+Es muss sichergestellt sein, dass ein JavaScript zur Benutzung der {tppsnapapi} im {ccloud}-Storefront geladen wird.
+
+Die mitgelieferte Referenzimplementierung für die Benutzung der {tppsnapapi} benötigt zusätzlich folgende BeanShell-Skripte, die im Projekt anzulegen sind.
+
+[source,html]
+.HTML-Ausgabekanal des `trigger_page_save`-Skripts
+// codeAnfang
+----
+import de.espirit.firstspirit.agency.StoreAgent;
+import de.espirit.firstspirit.access.store.Store;
+
+/**
+ * Triggers a save action on the given page reference.
+ * 
+ * Usage: TPP_SNAP.execute('script:trigger_page_save', {
+ *          pageRefId: '<id>' // id of 'PageRef'
+ *        })
+ */
+
+if (pageRefId == void)
+  throw new IllegalArgumentException("Missing Parameter 'pageRefId'");
+pageRefId = Long.parseLong("" + pageRefId);
+
+pageRef = context.requireSpecialist(StoreAgent.TYPE)
+            .getStore(Store.Type.SITESTORE)
+            .getStoreElement(pageRefId);
+
+pageRef.setLock(true, true);
+pageRef.save();
+pageRef.setLock(false, true);
+----
+// codeEnde
+
+
+[source,html]
+.HTML-Ausgabekanal des `tpp_move_section`-Skripts
+// codeAnfang
+----
+import de.espirit.firstspirit.agency.StoreAgent;
+import de.espirit.firstspirit.access.store.Store;
+
+/**
+ * Moves a section with the given id to the given position within a body of a page.
+ *
+ * Usage: TPP_SNAP.execute('script:tpp_move_section', {
+ *          sectionId: '<id>', // id of 'Section'
+ *          pos: '<pos>',      // new position
+ *        })
+ */
+
+if (sectionId == void)
+  throw new IllegalArgumentException("Missing Parameter 'sectionId'");
+sectionId = Long.parseLong("" + sectionId);
+
+if (pos == void)
+  throw new IllegalArgumentException("Missing Parameter 'pos'");
+pos = Integer.parseInt("" + pos);
+
+
+section = context.requireSpecialist(StoreAgent.TYPE)
+            .getStore(Store.Type.PAGESTORE)
+            .getStoreElement(sectionId);
+
+if (section == null)
+  throw new IllegalArgumentException("Could not find Section with ID=" + sectionId);
+
+section.parent.moveChild(section, pos);
+return true;
+----
+// codeEnde
+
+[source,html]
+.HTML-Ausgabekanal des `page_type_mapping`-Skripts
+// codeAnfang
+----
+/**
+ * Maps SAP CommerceCloud page types to FS objects (page folder, page template). 
+ *
+ * Usage: TPP_SNAP.execute('script:page_type_mapping', {
+ *          pageType: '<pageType>' // SAP CC page type
+ *        })
+ */
+
+if (pageType == void)
+  throw new IllegalArgumentException("Missing parameter 'pageType'");
+
+Map mappingDef = new HashMap();
+if (pageType.equals("ContentPage")) {
+	mappingDef.put("fsTemplate", "landinglayout2");
+	mappingDef.put("fsTemplateType", "TEMPLATESTORE");
+	mappingDef.put("pageFolder", "contentpages");
+	mappingDef.put("supportsContentPageEnrichment", "true");
+} else if (pageType.equals("CategoryPage")) {
+	mappingDef.put("fsTemplate", "productgrid");
+	mappingDef.put("fsTemplateType", "TEMPLATESTORE");
+	mappingDef.put("pageFolder", "categorypages");
+} else if (pageType.equals("ProductPage")) {
+	mappingDef.put("fsTemplate", "productlayout2");
+	mappingDef.put("fsTemplateType", "TEMPLATESTORE");
+	mappingDef.put("pageFolder", "productpages");
+}
+
+return mappingDef;
+----
+// codeEnde
+
+[source,html]
+.HTML-Ausgabekanal des `get_page_type`-Skripts
+// codeAnfang
+----
+import de.espirit.firstspirit.access.store.IDProvider;
+import de.espirit.firstspirit.access.store.sitestore.PageRef;
+import de.espirit.firstspirit.agency.StoreElementAgent;
+
+/**
+ * Infers the page type of the given page ref by looking at its parent folders.
+ * 
+ * Usage: const pageType = await TPP_SNAP.execute('script:get_page_type', {
+ *            pageRefUid: [pageRefUid]
+ *        });
+ */
+
+if(pageRefUid == null) {
+    throw new IllegalArgumentException("Parameter pageRefUid can't be null");
+}
+
+storeElementAgent = context.requireSpecialist(StoreElementAgent.TYPE);
+pageRef = storeElementAgent.loadStoreElement(pageRefUid, PageRef.UID_TYPE, false);
+
+if(pageRef == null) {
+    return null;
+}
+
+parent = pageRef.getParent();
+while(parent != null) {
+    parentUid = parent.getUid();
+    if(parentUid.equals("contentpages")) {
+        return "ContentPage";
+    } else if(parentUid.equals("categorypages")) {
+        return "CategoryPage";
+    } else if(parentUid.equals("productpages")) {
+        return "ProductPage";
+    }
+    parent = parent.getParent();
+}
+return null;
+----
+// codeEnde
+
+Außerdem ist innerhalb der Referenzimplementierung in Zeile 4 der Name des anzuzeigenden Storefronts anzugeben (z. B. `yb2bacceleratorstorefront`).
+
+[source,javascript]
+.Ausschnitt der Referenzimplementierung
+// codeAnfang
+----
+class FsApp {
+
+    constructor({ pageType, pagePreviewId, pageId, lang, storefrontContextRoot }) {
+        this.STOREFRONT_CONTEXT_ROOT = storefrontContextRoot.replace(/^\/|\/$/g, '');
+
+        this.pageType = pageType;
+        this.pageId = pageId.toLowerCase();
+        this.lang = lang;
+
+        this.setPreviewElement(pagePreviewId || null);
+    }
+
+    ...
+----
+// codeEnde

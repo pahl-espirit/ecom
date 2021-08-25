@@ -1,0 +1,9 @@
+=== Maintaining content on product detail pages
+To maintain content on product detail pages, in addition to the relevant <<addon,storefront expansions>>, the modifications to the presentation channel of the templates - as described in chapter <<edit-existing-content-pages>> - must also have been implemented.
+
+Once these requirements are met, product detail pages can be maintained in the same way as content pages.
+
+[IMPORTANT]
+====
+Product detail and content pages must be stored in different structure and content folders in {fs} and in different collections in _{c}_.
+====

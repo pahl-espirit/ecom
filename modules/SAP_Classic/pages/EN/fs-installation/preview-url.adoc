@@ -1,0 +1,13 @@
+[[install_previewurl]]
+=== Definition of the external preview URL
+By using the _{ocm}_, the {wc} displays external content from the storefront of the {ccloud} to which the _{ocm}_ needs access.
+The preview URL of the storefront must therefore be specified in the {wc} properties.
+This must be extended by the parameter `firstSpiritPreview=1`, which is required for initializing the preview.
+Since the specification of the URL is always project-specific, there is no default configuration for it within the reference project.
+
+*Example:* `\https://sap-storefront.e-spirit.com?site=e-spirit&firstSpiritPreview=1`
+
+Open the `*menu:Project properties[{wc}]*` area within the `*{manager}*` and enter the URL of the storefront in the `External preview URL` field.
+
+.External Preview URL
+image::previewurl.png[]

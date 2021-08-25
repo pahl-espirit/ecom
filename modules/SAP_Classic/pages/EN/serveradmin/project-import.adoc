@@ -1,0 +1,18 @@
+=== Project import
+Included in the delivery is the _{refproject}_, which must be installed on the {fs} server.
+To do this, open the import dialog in the `*{manager}*` via the menu item `*menu:Project[Import]*` and click the btn:[Local] button to select the `referenceproject-<VERSIONNUMBER>.tar.gz` file from your local data system.
+Then assign a project name and description and confirm the import with btn:[Yes].
+After successful installation, the project is added to the list in the main panel.
+
+.Imported project in the ServerManager
+image::importedproject.png[]
+
+[NOTE]
+====
+In addition to the standard groups `Everyone`, `Administrators` and `Developers`, there are three further *external* user groups in the reference project: `Editors`, `ChiefEditors` and `ProjectAdmins`.
+The groups have different rights, which are selected according to their tasks and defined for the different stores.
+Users outside these groups are not allowed to use the reference project by default.
+
+The usage of external groups requires an LDAP connection.
+Otherwise they are not usable and the rights set for them do not apply.
+====

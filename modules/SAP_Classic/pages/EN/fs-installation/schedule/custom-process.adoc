@@ -1,0 +1,89 @@
+[[custom-process]]
+==== Expansion of the standard process
+The previously described standard process for the release and deployment of content can be modified and expanded as required on a project-specific basis.
+This chapter describes possible use cases and contains information on how to use them.
+
+[[preview-page-attributes]]
+Preview of changes to {ccloud}-specific page attributes::
+Editorial changes to content or product detail pages are automatically transferred to _Preview {c}_, which renders them available for display in the preview.
+However, changes to Commerce Cloud-specific page attributes of content pages are processed in a different way:
+These changes are not stored in _{c}_, but are transferred to the staged content catalog during <<install_schedule,deployment>>.
++
+If these changes need to be reflected in the preview, it must be possible to manually transfer them to the staged content catalog.
+To do so, the system requires a schedule which, like the <<install_schedule, deployment schedule>>, is comprised of a generation operation and the subsequent import process.
+In such cases, instead of a _{c}_ full generation, a _{c}_ partial generation must be selected.
+The update logic for the import process must also contain an unapproval of the content page and must *not* trigger synchronization.
+
+Approval of a content page during page release::
+Using the <<install_workflow,release workflow>>, the user can execute an automatic approval of the corresponding {ccloud} page in the staged content catalog in parallel to the {fs} release process.
+To achieve this, the workflow must be modified to call up the relevant <<install_schedule,deployment schedule>>.
+In order to update only the single released page, the _{c}_ full generation must be replaced with a _{c}_ partial generation.
+As is the case with the <<preview-page-attributes,preview of changes to {ccloud}-specific page attributes>>, the update logic must *not* trigger synchronization.
+
+Hot deployment::
+A hot deployment - the publication of a single page - works in the same way as a standard <<install_schedule,released page deployment>>.
+However, instead of a delta or full generation, only a partial generation of the page to be deployed should be carried out.
+
+[[direct_release]]
+Direct publication in the online content catalogue::
+The described <<install_schedule, deployment schedule>> updates both the Staged and the Online Content Catalog.
+Therefore it triggers an approval and synchronization of the affected content pages.
+Alternatively, it is also possible to trigger only an approval and a direct publication into the online content catalog. 
+In this case, automatic synchronization is not necessary.
++
+The following steps are required to implement direct publication:
++
+In the first step the sync definition must be removed within the <<app_sync,schedule action `Content Page Approval & Sync Definition`>>.
+For this purpose, the update logic must be adapted as shown in the code snippet.
++
+[IMPORTANT]
+====
+Due to the direct publication and the adaptation of the update logic, the automatic synchronization of both content catalogs will be omitted.
+For this reason, it must be ensured on a project-specific basis that the contents of both catalogs remain identical.
+Otherwise, divergences are unavoidable.
+====
++
+[source, HTML]
+.Update logic for the approval of a content page
+----
+import com.espirit.moddev.contentconnect.sap.module.ServiceFactory;
+import com.espirit.moddev.contentconnect.sap.module.synchronization.ContentPageAdditionalUpdate;
+import com.espirit.moddev.contentconnect.sap.module.catalogs.cmsitem.CMSItemService;
+import com.espirit.moddev.contentconnect.sap.module.catalogs.cmsitem.CMSItem;
+
+contentPageAdditionalUpdate = new ContentPageAdditionalUpdate() {
+   updateCMSContentPage(cmsContentPage, pageRef) {
+      cmsItemService = ServiceFactory.getCMSItemService(context);
+
+      context.logInfo("Approving content page " + cmsContentPage.getUid() + "..");
+      
+      // Approving CMSContentPage
+      cmsContentPage.setApprovalStatus("APPROVED");
+      updatedCMSContentPageOpt = cmsItemService.updateCMSContentPage(cmsContentPage);
+
+      if(!updatedCMSContentPageOpt.isPresent()) {
+         context.logWarning("Approving content page " + cmsContentPage.getUid() + " failed!");
+      }
+   }
+};
+
+context.setProperty("sapcc_additional_contentpage_update", contentPageAdditionalUpdate);
+----
++
+An identical, second schedule is created by a subsequent duplication of the existing schedule.
+Without any further configuration, both schedules would write into the Content Catalog that is selected as the `Content Catalog Version` in the <<configContent,Content tab>> of the project component.
+In the reference project, this is the Staged Content Catalog.
++ 
+In order for the second schedule to write into the online content catalog, the parameter `catalogVersion` must be added to the properties of the schedule action `SAPCC - Bulk Update` and configured with the value `Online`.
+If the value is missing or the configuration is incorrect, the bulk update terminates and an exception occurs.
+Otherwise, the log contains the information about which content catalog is used for deployment.
++
+.Parameter catalogVersion
+image::schedule-parameter.png[]
++
+[IMPORTANT]
+====
+If, as described in this section, writing to the Online Content Catalog is done by a separate schedule, the _{c}_ generation must be adjusted in the schedule that writes to the Staged Content Catalog.
+This must fill the _Preview {c}_ equivalent to writing to the Staged Content Catalog.
+Information on the necessary adaptation of the _{c}_ generation is contained in the _Initialize CaaSGeneration_ section of the _{caasfsmdocen}_.
+====

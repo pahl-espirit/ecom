@@ -1,0 +1,17 @@
+=== Technical requirements
+To use the _{modulname}_ module, the following technical requirements must be met:
+
+* The latest versions of the _{modulname}_ and _{caas}_ modules
+* _{ocm}_ in version 1.2.27 or higher
+* {fs} 2018-11 (Legacy or Isolated mode)
+* Java 8 or 11
+* SAP {ccloud} 18.08
+
+When using the supplied _{refproject}_, the latest version of the _{bwfs}_ module must also be installed.
+
+[NOTE]
+====
+The version number of the delivery differs from the version numbers of the individual components of the delivery.
+It follows a scheme of two-digit year, month number and the number of the release within the respective month (for example: `20.10.0` for the first release in October 2020)
+In contrast, the module, the reference project, and the add-on receive their own version numbers, which are separated from the version number of the delivery.
+====

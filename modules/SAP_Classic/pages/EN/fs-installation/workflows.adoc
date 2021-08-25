@@ -1,0 +1,36 @@
+[[install_workflow]]
+=== Release workflow
+Within the supplied _{refproject}_, content is released by editors via the release workflow of the _{bwfs}_.
+This can be used as an alternative to project-specific workflows.
+
+[underline]*Installing the {bwfs} module*
+
+Before using the release workflow, you must install the _{bwfs}_ module on the {fs} Server and activate the web component.
+The steps required to do this are the same as those required for the installation of the other modules and the activation of the associated <<wcomp,web component>>.
+By default, these steps are already performed.
+
+In addition, to use _{bwfs}_ in the {wc}, the provided `{bwfs} Status Providers` must be selected in the `*menu:Project properties[{wc}]*` area within the `*{manager}s*`.
+This setting has already been applied in the _{refproject}_.
+
+.Element Status Provider
+image::statusprovider.png[]
+
+[underline]*Templates*
+
+The _{bwfs}_ require various templates.
+Usually, these templates need to be imported via the context menu in the {fs} project used.
+However, they are already contained within the reference project and importing the templates is therefore not necessary.
+
+[underline]*Permission assignment*
+
+In the final step, the release workflow must be authorized in the individual stores so that they can be executed on {fs} elements.
+To do this, select `*menu:Extras[Change permissions]*` from the context menu of the stores' root nodes to call up the permission assignment.
+This step has also already been carried out in the reference project and is therefore omitted.
+
+The permissions for executing the workflow set on the stores' root nodes relate to the Everyone group.
+This can only be changed by modifying the permissions manually.
+
+[NOTE]
+====
+More detailed information on the installation, configuration, and functionality of the workflow can be found in the _{bwfdocen}_.
+====

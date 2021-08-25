@@ -1,0 +1,76 @@
+[[addon-config]]
+==== Configuring the add-on
+The integration of the content maintained in {fs} into the store requires a connection of the {ccloud} to the _{c}_.
+For this, the following information is required after the <<addon-install,installation of the add-on>> for both the productive environment as well as the preview:
+
+* {c} {key}
+* {c} Database
+* {c} Host
+* {c} Port
+* {c} Scheme
+* Content Catalog ID
+
+They are to be specified either <<addon-sites,for each site used>> or in the `project.properties` file in the `*fscontentconnect*` directory of the add-on.
+In contrast to the specifications at the respective site, the parameters in the configuration file always refer to *all* sites.
+Therefore they serve as fallback parameters.
+
+The following code block shows an example for the content of the `project.properties` file:
+
+[source,ini]
+.Example configuration
+----
+caas-online.apikey=abcdefghijklmn1234567890
+caas-online.database=MyProject
+caas-online.host=caas.mydomain.com
+caas-online.port=80
+caas-online.scheme=http
+
+caas-staged.apikey=abcdefghijklmn1234567890
+caas-staged.database=MyProject
+caas-staged.host=caas-preview.mydomain.com
+caas-staged.port=80
+caas-staged.scheme=http
+
+content-catalog-id=powertoolsContentCatalog
+
+fscontentconnect.dev=true
+----
+
+apikey::
+A valid API key is required to access the data stored in _{c}_.
+This key requires read permissions for the project in question.
+It can be generated in the _{c} Admin Interface_ and must be entered in this line.
+
+database::
+The value of this parameter corresponds to the name of the project stored in _{c}_.
+It can be determined via the _{c} Admin Interface_.
+
+host::
+This parameter requires the host name to be entered under which _{c}_ can be reached.
+
+port::
+This parameter requires the port to be entered under which _{c}_ can be reached.
+
+scheme::
+This parameter indicates whether communication with _{c}_ is to take place via http or https.
+
+[NOTE]
+====
+Further information on using _{c}_ is provided in the _{caasplatformdocen}_.
+====
+
+content-catalog-id::
+The value of this parameter corresponds to the ID of the content catalog used (for example, `powertoolsContentCatalog`).
+
+fscontentconnect.dev::
+In addition to the other parameters, the configuration parameter `fscontentconnect.dev` is optionally definable.
+It controls the inclusion of the `fs-tpp-api` JavaScript library and is *exclusively* usable in the configuration file of the add-on.
+If the value `true` is specified, the `cloud-sap-acc-dev` tag is used when loading the `fs-tpp-api` library.
+If the parameter is missing or set to `false`, the `cloud-sap-acc` tag is used.
+Which versions are behind these two tags can be seen at any time on the corresponding https://www.npmjs.com/package/fs-tpp-api[npm page] in the tab `Versions`.
+
+[NOTE]
+====
+The `cloud-sap-acc-dev` tag is upgraded by e-Spirit on every DEV/QA patchday to the latest compatible version of the `fs-tpp-api` library.
+The `cloud-sap-acc` tag on every PROD patchday.
+====

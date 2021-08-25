@@ -1,0 +1,39 @@
+[[bulk_update]]
+==== SAPCC - Bulk Update
+Product detail pages maintained in {fs} are generally based on pages that already exist in {ccloud}.
+When these pages are edited, only the content is changed; the page creation process is separate.
+Their publication therefore only requires an update of the data stored in the _Online {c}_.
+There is no need to synchronize the online content catalog in {ccloud}.
+
+Unlike product detail pages, content pages can be created in {fs}.
+For this type of page, it is not sufficient to just update _Online {c}_ to trigger deployment.
+Deployment also involves importing the content pages into {ccloud}.
+This import process must be added to the deployment schedule as the last action in the form of the script _SAPCC - Bulk Update_.
+
+[IMPORTANT]
+====
+To update the online storefront, the bulk update accesses the approval and sync definition.
+These match the action described in the <<app_sync,following chapter>>.
+
+However, the update of the online content catalog may involve various dependencies.
+For this reason, the action is optional and a decision as to whether or not it is included in the import process must be made on a project-specific basis.
+If the action is not included, the bulk update script only updates the staged storefront.
+
+It is also possible to simply carry out an approval and a <<direct_release,direct publication in the online content catalogue>>.
+In this case, the synchronization of the data must be ensured on a project-specific basis.
+====
+
+[source, HTML]
+.SAPCC - Bulk Update
+----
+#! executable-class
+com.espirit.moddev.contentconnect.sap.module.synchronization.CommerceCloudBulkUpdate
+----
+
+To create and update content pages in {ccloud}, the import process must know the mapping of the {fs} and {ccloud} content pages.
+For this purpose, a mapping must be configured in the project component under <<configContent,`*Content*`>>.
+
+The reference name of the structure folder in which the content pages within the {fs} project are stored must be entered at the same position.
+The structure folder allows the import process to identify the pages to be transferred.
+For this reason, the folder must only contain content pages that are managed by {fs}.
+During deployment, the import process updates or creates all pages contained in this folder in the {ccloud}.

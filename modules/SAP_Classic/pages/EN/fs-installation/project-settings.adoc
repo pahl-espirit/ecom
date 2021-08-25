@@ -1,0 +1,27 @@
+[[install_pset]]
+=== Project settings
+There is some essential project-specific information that needs to be entered for the connection between {fs} and {ccloud}.
+It is entered using the project settings form and must be specified within the project being used.
+
+Within the supplied reference project, the project settings page with the required configuration already exists.
+In this case, there is no need to create the template or the required components.
+
+[NOTE]
+====
+Changes to the project settings do not take effect straight away, as they are saved in the session of the user.
+They require the client to be restarted.
+====
+
+.Project settings
+image::project_set.png[]
+
+CONTENT PAGE | LANDINGPAGE2 TEMPLATE::
+For the maintenance of <<edit-existing-content-pages,existing {ccloud} content pages>> in {fs} each {ccloud} page template must be assigned to a {fs} template.
+The {fs} template selected in this field is used to maintain {ccloud} content pages based on the {ccloud} template `LandingPage2Template`.
+To support different or further {ccloud} templates the project settings form must be extended by similar fields.
+This information enables the scripts `page_type_mapping` and `get_page_type` to correctly map {ccloud} and {fs} content pages.
+Therefore changes in the project settings page have to be reflected in these two scripts.
+
+CONTENT PAGE FOLDER::
+Within the {fs} project, all content pages are created in the same content folder, which is defined in this field.
+The script `page_type_mapping` requires the details of the folder for the maintenance of <<edit-existing-content-pages,existing {ccloud} content pages>>.

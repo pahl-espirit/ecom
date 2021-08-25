@@ -1,0 +1,45 @@
+[[searchrestrictions]]
+=== FlexibleSearch Restrictions
+The <<productreport,product report>> in {wc} shows all of the products in a product catalog.
+It therefore requires access to all of the detail pages for all displayed products.
+If search restrictions exist that prevent the product detail pages for specific products in a product catalog from being called up, these restrictions must be expanded with the condition described below.
+Within the condition, the placeholder must be replaced with the ID of the product catalog.
+
+[source,sql]
+.Additional condition within the filter query of a search restriction for products
+----
+-- existing conditions such as approval status check
+OR
+   ({{ SELECT {PK} FROM {CatalogVersion} WHERE {Catalog} IN 
+      ({{ SELECT {PK} FROM {Catalog as c} WHERE {c.id} = '<Catalog Id of product catalog>'}})
+      AND {version} = 'Staged' AND {PK} IN (?session.catalogversions)
+   }}) IS NOT NULL
+----
+
+This additional condition prevents the relevant search restriction from being used in the context of the `Staged` version of the product catalog.
+
+[NOTE]
+====
+Search restrictions are configured in the back office under `*menu:System[Personalization]*`.
+For example, in the B2B accelerator, the search restriction `Frontend_ProductApprovalStatus` must be modified as described.
+====
+
+Search restrictions, that affect content pages, also need to be extended.
+Again, the placeholder within the condition needs to be replaced with the ID of the content catalog.
+
+[source,sql]
+.Additional condition within the filter query of a search restriction for pages
+----
+-- existing conditions such as approval status check
+OR
+   ({{ SELECT {PK} FROM {CatalogVersion} WHERE {Catalog} IN
+      ({{ SELECT {PK} FROM {Catalog as c} WHERE {c.id} = '<Catalog Id of content catalog>'}})
+      AND {version} = 'Staged' AND {PK} IN (?session.catalogversions)
+   }}) IS NOT NULL
+----
+
+[NOTE]
+====
+For example, in the B2B accelerator, the search restriction `Frontend_PageApprovalStatus` must be modified as described.
+====
+

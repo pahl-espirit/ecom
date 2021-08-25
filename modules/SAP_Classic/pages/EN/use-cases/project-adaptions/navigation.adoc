@@ -1,0 +1,71 @@
+=== Generating the navigation structure
+The _{modulname}_ module allows the navigation structure to be generated in {fs}.
+The generation process produces a JSON document in _{c}_.
+
+To use this function, a navigation function that generates the JSON document is required.
+The following code extract shows an example of this kind of function, taking into account all of the elements in the structure folder `contentpages`.
+
+[[navigation-function]]
+[source,xml]
+.Navigation function
+----
+<CMS_HEADER>
+   <CMS_FUNCTION name="Navigation" resultname="nav">
+      <CMS_PARAM name="root" value="pagefolder:contentpages" />
+      <CMS_PARAM name="expansionVisibility" value="all"/>
+      <CMS_PARAM name="siteMap" value="0" />
+      <CMS_ARRAY_PARAM name="beginHTML">
+         <CMS_ARRAY_ELEMENT index="0..4">{</CMS_ARRAY_ELEMENT>
+      </CMS_ARRAY_PARAM>
+      <CMS_ARRAY_PARAM name="delimiter">
+         <CMS_ARRAY_ELEMENT index="0..4">,</CMS_ARRAY_ELEMENT>
+      </CMS_ARRAY_PARAM>
+      <CMS_ARRAY_PARAM name="selectedDelimiter">
+         <CMS_ARRAY_ELEMENT index="0..4">,</CMS_ARRAY_ELEMENT>
+      </CMS_ARRAY_PARAM>
+      <CMS_ARRAY_PARAM name="innerBeginHTML">
+         <CMS_ARRAY_ELEMENT index="0..3">,"children":[</CMS_ARRAY_ELEMENT>
+      </CMS_ARRAY_PARAM>
+      <CMS_ARRAY_PARAM name="unselectedHTML">
+         <CMS_ARRAY_ELEMENT index="0..4">
+            "label":"$CMS_VALUE(#nav.label)$",
+            "id":"$CMS_VALUE(#nav.id)$",
+            "pageRef":"$CMS_VALUE(#nav.ref.getUid())$"
+         </CMS_ARRAY_ELEMENT>
+      </CMS_ARRAY_PARAM>
+      <CMS_ARRAY_PARAM name="selectedHTML">
+         <CMS_ARRAY_ELEMENT index="0..4">
+            "label":"$CMS_VALUE(#nav.label)$",
+            "id":"$CMS_VALUE(#nav.id)$",
+            "pageRef":"$CMS_VALUE(#nav.ref.getUid())$"
+         </CMS_ARRAY_ELEMENT>
+      </CMS_ARRAY_PARAM>
+      <CMS_ARRAY_PARAM name="innerEndHTML">
+         <CMS_ARRAY_ELEMENT index="0..3">]</CMS_ARRAY_ELEMENT>
+      </CMS_ARRAY_PARAM>
+      <CMS_ARRAY_PARAM name="endHTML">
+         <CMS_ARRAY_ELEMENT index="0..4">}</CMS_ARRAY_ELEMENT>
+      </CMS_ARRAY_PARAM>
+   </CMS_FUNCTION>
+</CMS_HEADER>{"navigation":[$CMS_IF(!nav.isEmpty)$$CMS_VALUE(nav)$$CMS_END_IF$]}
+----
+
+The execution of this function requires a page and a page reference based on this page, which must also be created.
+
+
+
+[IMPORTANT]
+====
+The page reference must contain the reference name `main_navigation`.
+====
+
+[IMPORTANT]
+====
+The navigation function shown only incorporates the start page of a menu level.
+If you wish to incorporate all page references, the function must be modified accordingly.
+====
+
+Each time an element is created, modified, moved, or deleted in the structure area, the _{modulname}_ module starts generating the page reference `main_navigation`.
+As a result, the document in _{c}_ always reflects the most up-to-date navigation structure in {fs}.
+The _{c}_ configuration for the higher level structure folder determines which collection the document will be stored in.
+The name of the document saved in _{c}_ is `main_navigation_<LANGUAGE>`.

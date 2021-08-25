@@ -1,0 +1,41 @@
+[[install_schedule]]
+=== Deployment schedule
+By default, the release of content does not involve any update to _Online {c}_ or any transfer for data to the {ccloud}.
+Instead, it only involves the {fs} release process, which can be mapped, for example, using the <<install_workflow,Release workflow of the _{bwfs}_>>.
+The _Online {c}_ update and data transfer to the {ccloud} only takes place when the content is deployed.
+
+The deployment of released editorial content is executed via a _{c}_ schedule.
+This executes a _{c}_ generation and transfers the data to _Online {c}_, which then makes it available to {ccloud}.
+The schedule can also be used to synchronize the online content catalog in {ccloud}.
+
+[NOTE]
+====
+The update of the online content catalog may involve various dependencies.
+For this reason, a decision as to whether the approval and synchronization processes form part of the import process or not must be made on a project-specific basis.
+
+It is also possible to simply carry out an approval and a <<direct_release,direct publication in the online content catalogue>>.
+In this case, the synchronization of the data must be ensured on a project-specific basis.
+====
+
+The supplied reference project contains a schedule that incorporates the following actions:
+
+.Generation schedule actions
+image::schedule.png[]
+
+The actions `Initialize {c}Generation`, `{c} Generate`, `{c} CleanUp`, and `Finalize {c} Generation` make up the _{c}_ schedule.
+The actions described in the following sub-chapters are added to the schedule.
+As the <<bulk_update,Bulk Update>> requires access to the <<app_sync,Approval or Sync Definition>>, these actions are described in reverse order.
+
+[NOTE]
+====
+The _{caasfsmdocen}_ contains further information on the _{c}_ schedule.
+====
+
+// Bulk-Update
+include::bulk-update.adoc[]
+
+// Approval & Sync-Definition
+include::approval-sync.adoc[]
+
+// Erweiterung des Standardprozesses
+include::custom-process.adoc[]
