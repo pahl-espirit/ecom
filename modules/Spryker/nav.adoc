@@ -8,3 +8,5 @@
 ** xref:EN/spryker-installation/spryker-installation.adoc[Spryker - Installation and Configuration]
 ** xref:EN/fs-installation/fs-installation.adoc[FirstSpirit - Installation and Configuration]
 ** xref:EN/referenceproject/referenceproject.adoc[Reference Project]
+** xref:EN/use-cases/use-cases.adoc[Use Cases]
+** xref:EN/legal-notice.adoc[Legal Notice]
