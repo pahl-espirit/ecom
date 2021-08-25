@@ -1,4 +1,4 @@
-// == Introduction
+== Introduction
 {fs} is used for creating versatile and project-specific content.
 Thanks to the _{modulname} for SAP {ccloud}_ module, it is now possible to transfer this content to the SAP {ccloud} e-commerce shop system and use it there.
 
