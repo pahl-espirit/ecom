@@ -84,15 +84,15 @@ endif::[]
 :uploadpicture: btn:[Upload a picture]
 :newvar: btn:[Create a new variant]
 // *********** Übersetzungen *********** //
-:toc-title: Inhaltsverzeichnis
-:caution-caption: Achtung
-:important-caption: Wichtig
-:note-caption: Hinweis
-:tip-caption: Tip
-:warning-caption: Warnung
-:appendix-caption: Anhang
-:example-caption: Beispiel
-:figure-caption: Abbildung
-:table-caption: Tabelle
+:toc-title: Table of Content
+:caution-caption: CAUTION
+:important-caption: IMPORTANT
+:note-caption: NOTE
+:tip-caption: TIP
+:warning-caption: WARNING
+:appendix-caption: APPENDIX
+:example-caption: EXAMPLE
+:figure-caption: Figure
+:table-caption: Table
 // if defined, comments are visible in the output
 :showcomments:
