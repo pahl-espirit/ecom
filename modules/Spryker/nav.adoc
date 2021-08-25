@@ -7,7 +7,4 @@
 *** xref:EN/introduction/important-information.adoc[Important information]
 ** xref:EN/spryker-installation/spryker-installation.adoc[Spryker - Installation and Configuration]
 ** xref:EN/fs-installation/fs-installation.adoc[FirstSpirit - Installation and Configuration]
-** xref:EN/referenceproject/freferenceproject.adoc[FirstSpirit - Installation and Configuration]
-
-
-// include::partial$navigation.adoc
+** xref:EN/referenceproject/freferenceproject.adoc[Reference Project]
