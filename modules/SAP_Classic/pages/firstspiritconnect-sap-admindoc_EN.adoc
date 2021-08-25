@@ -1,4 +1,4 @@
-= {mainTitle}: {subtitle}
+= FirstSpirit Connect for SAP Commerce Cloud - Admin Manual
 e-Spirit AG
 {docdate}
 include::variables.adoc[]
