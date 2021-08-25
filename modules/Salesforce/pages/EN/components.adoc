@@ -1,0 +1,71 @@
+== Components
+_{modulname}_ consists of various components.
+The functionality of these components is described in the following sub-chapters.
+
+
+// ************************************ ContentConnect-Modul ************************************
+[[module]]
+=== {modulname} module
+The _{modulname}_ module is the main component for connecting {fs} and {ccloud}.
+It is extremely important for bidirectional data exchange between the {fs} server and {ccloud}.
+
+The module provides a report in both {jc} and {wc}, showing the product information obtained from {ccloud}.
+The module determines which data is required and transfers it to the report when an editor initiates a query prompting it to do so.
+The data that is returned can then be used again for creating and maintaining editorial content.
+
+If a generation is performed once the content has been created, the module combines the content in the form of two XML files.
+The <<wdmodule,WebDAV module>> then transfers the files to the {ccloud} storage location.
+{ccloud} reads out the data from this location and transfers it to the live state.
+
+[TIP]
+====
+The _{modulname}_ module provides an API for the implementation of product-specific functions.
+More information is available in the accompanying Javadoc documentation.
+====
+
+// ************************************ WebDAV-Modul ************************************
+[[wdmodule]]
+=== WebDAV module
+The editorial content is created and edited in {fs}.
+In this case, however, it is {ccloud} that transfers it to the live state.
+This means that the content has to be made available to {ccloud}.
+For this purpose, the <<module,_{modulname}_ module>> creates one XML file for the library and one for the <<slot_configuration,slot configuration>> as part of a <<schedule,deployment>>.
+These files must be transferred to {ccloud} along with the referenced media.
+
+This is the task of the WebDAV module, which acts as a link between {fs} and {ccloud} and stores the data in the {ccloud} storage location.
+{ccloud} reads out the data from this location.
+
+
+// ************************************ JSTL-Modul ************************************
+[[jstlmodule]]
+=== JSTL module
+Within the reference project, JSTL is required to <<uc_preview,preview>> certain pages.
+The JSTL module enables this.
+However, the module only needs to be installed on the {fs} Server if JSTL has not yet been integrated on the server in any other way.
+
+
+// ************************************ Cartridge ************************************
+[[cartridges]]
+=== {ccloud} Cartridges
+The delivery includes the three cartridges `int_espirit_core`, `int_espirit_sfra`, and `int_espirit_sitegenesis`.
+They work with all locales and are not subject to any particular restrictions in this respect.
+
+int_espirit_core::
+The `int_espirit_core` cartridge contains scripts, which are used in the other two cartridges.
+The functions provided are used, for example, to map {ccloud} render templates on {fs} page templates and thereby to make it possible to create category and product pages 
+(see <<product_page_template_mapping,Product Page Template Mapping>>, <<cagegory_page_template_mappings,Category Page Template Mappings>>, and <<detail_pages,Category and product pages>>).
+
+int_espirit_sfra::
+The `int_espirit_sfra` cartridge overwrites a few templates from the {mfra} in order to enable a <<uc_preview,preview>> on the {fs} side.
+The cartridge also contains the following controllers:
+
+* *Common:* The `Common` controller provides the standard components of a {sf} shop as individual widgets.
+* *Content:* The `Content` controller receives the Velocity fragments maintained in {fs} and returns the HTML rendered on this basis.
+* *CategorySearchResult:* The `CategorySearchResult` controller determines the products of a sub-category and provides these as a separate widget.
+* *Product:* The `Product` controller provides the widgets of a product detail page and controls how the product detail page is displayed when the website is live.
+* *RenderTemplate:* The `RenderTemplate` controller determines the {ccloud} render template for a specified product or a specified category.
+   It uses the options of the {mfra} and draws on the functions of the `int_espirit_core` cartridge.
+* *Search:* The `Search` controller enables <<catdetailpage,{fs} category detail pages>> to be displayed in the live state.
+
+int_espirit_sitegenesis::
+For shops that are not based on the {mfra}, the `int_espirit_sitegenesis` cartridge contains a corresponding implementation of the `RenderTemplate` controller.

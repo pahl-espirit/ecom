@@ -1,0 +1,31 @@
+[[textpicture]]
+=== Text Picture
+As its name suggests, this section is used to add text and/or images.
+It is only permitted in <<blog_article,blog articles>> and <<login_page,login pages>>.
+
+
+[underline]#*Editor view*# +
+This section provides editors with five different options for entering content.
+These options are selected from within a form:
+
+Option 1 - only text:: 
+With the first option, only text can be added.
+
+Option 2 - 1 picture::
+The second option enables a single image to be added.
+
+Option 3 - 2 pictures side by side::
+In addition to the second option, the editor can use the third option to add two images, which are displayed side by side.
+
+Option 4 - picture left, text right::
+This option enables the image and text to be displayed simultaneously.
+The image is displayed on the left of the text.
+
+Option 5 - text left, picture right::
+The fourth and fifth option are equivalent to one another.
+In this case, however, the image is displayed on the right of the text.
+
+[underline]#*Developer view*# +
+The content selected by the editor is displayed and positioned accordingly within the HTML channel based on the option selected by the editor.
+As the content does not come from {ccloud}, it does not have to be labeled with HTML tags.
+It is shown in the preview without substitution.

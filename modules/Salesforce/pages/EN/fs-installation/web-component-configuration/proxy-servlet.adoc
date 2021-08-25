@@ -1,0 +1,36 @@
+[[previewproxy]]
+==== {proxy}
+If problems with cross-origin requests occur during the preview due to the same-origin policy of modern web servers, then these can be remedied by using the {proxy} included in the _{modulname}_ module.
+
+To do this, the calls to the resources concerned must be routed via the {proxy}.
+The <<uc_preview_proxy, Preview>> chapter explains how this is done in the project.
+
+The {proxy} is configurable via the `web.xml` with the following parameter:
+
+[options="header", cols="25,25,80" ]
+|=======
+|Parameter | Default value | Description
+|connection.keepalive | 60 | Duration of maintaining a connection within the {proxy} in seconds. Too high values may cause problems when loading resources.
+|=======
+
+*Example*
+
+An example snippet of the `web.xml`, in which the {proxy}'s parameter is configured and the preconfigured URL path has been adjusted, might look as follows:
+
+[source,xml]
+.Example web.xml
+----
+<servlet>
+    <servlet-name>ContentConnectPreviewProxy</servlet-name>
+    <servlet-class>com.espirit.moddev.demandware.preview.proxy.ProxyServlet</servlet-class>
+    <load-on-startup>0</load-on-startup>
+    <init-param>
+      <param-name>connection.keepalive</param-name>
+      <param-value>120</param-value>
+   </init-param>
+</servlet>
+<servlet-mapping>
+    <servlet-name>ContentConnectPreviewProxy</servlet-name>
+    <url-pattern>/assets/*</url-pattern>
+</servlet-mapping>
+----

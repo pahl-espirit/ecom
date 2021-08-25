@@ -1,0 +1,166 @@
+=== Links
+The editorial content maintained on the {fs} side contains links that can be used to link content.
+In addition, links can be used to provide documents for download or for contact details.
+
+These are based on different link templates, which are described in detail in the following sub-chapters.
+
+[NOTE]
+====
+All link templates - with the exception of the article link - have the hidden _Add link tags_ toggle component.
+It ensures that the corresponding link has `<a>` tags when the associated link template is used within a `CMS_INPUT_DOM`.
+If it is used in the context of a `CMS_INPUT_LINK`, the link does not get any `<a>` tags.
+The toggle is activated via a rule.
+
+[source,xml]
+.Add link tags
+----
+$CMS_IF(lt_linkTags)$
+   <a href="$CMS_VALUE(lt_url)$" 
+    $CMS_IF(!lt_linktext.isEmpty)$ title="$CMS_VALUE(lt_linktext)$"$CMS_END_IF$ 
+    target="_blank">
+      $CMS_VALUE(lt_linktext, default: "Link")$
+   </a>
+$CMS_ELSE$
+   href="$CMS_VALUE(lt_url)$" 
+   $CMS_IF(!lt_linktext.isEmpty)$ title="$CMS_VALUE(lt_linktext)$"$CMS_END_IF$ 
+   target="_blank"
+$CMS_END_IF$
+----
+====
+
+// ************************************ Kategorie- und Produktlink ************************************
+[[cat_prod_link]]
+==== Category link and product link
+The category link and product link make it possible to link to <<detail_pages,category and product pages>>.
+They are almost equivalent to one another and are therefore described jointly in this chapter.
+
+[underline]#*Editor view*# +
+A link to a <<detail_pages,category or product page>> is specified by entering link text and the associated product or category ID.
+Both fields are automatically populated when a product or category is transferred from one of the two reports.
+While the ID cannot be changed, the link text can be changed at will by the editor.
+If the editor deletes the link text or if the form field remains empty for other reasons, the term `Product` or `Category` is used instead.
+
+In addition, category links allow the selection of a {sr}.
+{sr}s are used to sort the products displayed on a category page according to predefined criteria.
+If the editor does not make a selection, the sorting of the products on the displayed category page is based on the {sr} `Best Matches` by default.
+
+[underline]#*Developer view*# +
+Within the HTML channel of both templates, a differentiation is made between the preview and the generated state for the generation of links.
+In the case of the generated state, an instruction is created, which triggers the determination of the correct URL on the {sf} side.
+For a preview, the <<main_navigation,dispatcher>> included in the Site Store performs this task.
+To start with, it checks whether a {fs} page reference exists for the transferred product or category ID.
+If no such page reference exists, it determines the associated page from the storefront instead and displays this in the <<uc_preview,preview>>.
+Furthermore, the URL of a category link is extended by a corresponding URL parameter if a {sr} is selected for it.
+If the editor has not made a selection, a category page displays the `Best Matches` by default. 
+
+
+[NOTE]
+====
+At the current time, the <<main_navigation,dispatcher>> is not yet able to correctly assign references to variations of products to a {fs} page reference.
+Therefore, the corresponding page from Storefront is always displayed whenever references to variations of products appear.
+====
+
+[NOTE]
+====
+The use of {sr}s is only possible in the live state.
+There is no sorting of any kind within the preview.
+It always displays only the `Best Matches` - regardless of a selected {sr}.
+====
+
+// ************************************ Content Link ************************************
+[[content_link]]
+==== FS content link
+The FS content link is used to link page references within {fs}.
+
+[underline]#*Editor view*# +
+To create a content link, the editor selects a page reference from the Site Store and specifies any link text.
+Unlike the link text, selecting the page reference is a mandatory field.
+If the field for the link text remains empty, the term `Link` is used instead.
+
+[TIP]
+====
+If a link to a page that exists exclusively in the storefront is required, the <<ex_link,external link>> must be used instead of the content link.
+====
+
+[underline]#*Developer view*# +
+As an FS content link is an internal link within the project, the page reference selected by the editor for the preview can be directly referenced.
+Contrary to this, for the generated state, an instruction is created, which triggers the determination of the correct URL on the {sf} side.
+For this, the asset ID, which is calculated beforehand within the link template, is transferred as a URL parameter.
+
+// ************************************ Article Link ************************************
+[[article_link]]
+==== Article link
+The article link enables individual <<blog_article,blog articles>> within a continuous text to be linked.
+For this reason, it can only be used within the text or <<text_picture_section,Text Picture>> section.
+
+[underline]#*Editor view*# +
+The article link is equivalent to the <<content_link,FS content link>>.
+The difference is the link target, which, in the case of the article link, corresponds to a blog article.
+It therefore expects a dataset from the _Article_ data source to be referenced in addition to the link text.
+While the selection of the blog article is a mandatory field, the link text is optional.
+If the field remains empty, the heading of the blog article is used initially.
+If this has also not been specified, the term `Article Link` is used instead.
+
+[underline]#*Developer view*# +
+As with the content link, the article link is an internal link within the project.
+For this reason, the selected blog article can be referenced directly in the preview based on its FS ID.
+For the generated state, an instruction is created instead, which triggers the determination of the correct URL on the {sf} side.
+The asset ID is also transferred to it as a URL parameter.
+
+[NOTE]
+====
+To link the blog article, the reference name of the relevant page reference (_magazine_article_) was permanently added to the link template.
+In individual scenarios, this must be adapted accordingly.
+====
+
+// ************************************ External Link ************************************
+[[ex_link]]
+==== External link
+The external link is used to link external websites.
+
+[underline]#*Editor view*# +
+The external link functions similarly to the <<content_link,content link>>.
+Unlike this, however, it links to external content and therefore expects a URL in addition to the link text, rather than a page reference.
+While the URL is a mandatory field, the link text is optional.
+If the field for it remains empty, the term `Link` is used instead.
+
+[TIP]
+====
+By entering the corresponding storefront URL, the external link can also be used for links to content in {ccloud}.
+====
+
+[underline]#*Developer view*# +
+Within the HTML channel, only the external link defined by the editor is created.
+As with the <<content_link,content link>>, it is not necessary to use the <<main_navigation,dispatcher>>.
+
+// ************************************ Download Link ************************************
+==== Download link
+The download link is used to provide documents on the website.
+They can be downloaded by website visitors and provide them with additional information.
+
+[underline]#*Editor view*# +
+To provide a document on the website for downloading, the editor must select this from the media store and enter any link text.
+While selecting a document is mandatory, the field for the link text can remain empty.
+In this case, the term `Download` is used.
+
+[underline]#*Developer view*# +
+Using the information entered by the editor, the download link is created in the HTML channel.
+For the generated state, the `$staticlink` parameter is added to it, which triggers the determination of the correct URL on the {sf} side.
+In addition, the presentation channel does not contain any additional content.
+
+More information about linking static content in {sf} can be found under https://documentation.b2c.commercecloud.salesforce.com/DOC2/index.jsp?topic=%2Fcom.demandware.dochelp%2FContent%2FLinkingtoAnotherSiteURL.html[menu:Merchandising Your Site[Content Assets>Content Assets for Developers>Using Content Link Functions>Linking to Another Site URL]].
+
+
+// ************************************ E-Mail Link ************************************
+==== E-mail link
+The e-mail link gives the option of getting in touch via e-mail.
+
+[underline]#*Editor view*# +
+The form for the e-mail link consists of just two text fields.
+In these, the editor enters any link text as well as an e-mail address, the validity of which is checked using a regular expression in the Rules tab.
+Unlike the e-mail address, specifying link text is optional.
+If the field for it remains empty, the term `E-Mail` is used instead.
+
+[underline]#*Developer view*# +
+The information entered by the editor is used to create and output a mailto link in the HTML channel.
+In addition, the presentation channel does not contain any additional content.

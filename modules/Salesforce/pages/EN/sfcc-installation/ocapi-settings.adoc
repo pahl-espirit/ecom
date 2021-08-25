@@ -1,0 +1,43 @@
+[[ocapisettings]]
+=== OC API Settings
+The OC API is used for aspects including <<reports,reports>> and <<schedule,deployment>>.
+Therefore, the corresponding permissions must be set in Salesforce for the <<clientid,`Client ID`>> that is used.
+
+[NOTE]
+====
+The rights adjustments described below can also be found in the separate files _{ocapi_shop}_ and _{ocapi_data}_.
+====
+
+The `Client ID` that is used requires permission to execute GET queries via the ShopAPI for the resources indicated below.
+These must be implemented in the global or site-specific context according to the use case.
+
+* `/products/{asterisk}/variations`
+* `/products/{asterisk}`
+* `/product_search/variations`
+
+In addition when using content cleanup:
+
+* `/content_search`
+
+Permissions are additionally required to execute GET, POST, and DELETE queries via the DataAPI for the resources indicated below.
+They are to be exclusively defined in the global context.
+
+* `/catalogs` (GET only)
+* `/catalogs/{asterisk}/categories` (GET only)
+* `/jobs/{asterisk}/executions` (GET & POST)
+* `/jobs/{asterisk}/executions/{asterisk}` (GET only)
+
+In addition when using content cleanup:
+
+* `/sites/{asterisk}/slot_configuration_search` (POST only)
+* `/libraries/{asterisk}/content/{asterisk}` (DELETE only)
+* `/sites/{asterisk}/slots/{asterisk}/slot_configurations/{asterisk}` (DELETE only)
+
+Furthermore, the usage of the {sr}s requires the following definition:
+
+* /sites/*/sorting_rule_search (nur POST)
+
+If, as an option, workflows are to be used for deleting library folders and folder assignments, permissions are then required to execute DELETE queries via the DataAPI for the following resources:
+
+* `/libraries/{asterisk}/folders/{asterisk}`
+* `/libraries/{asterisk}/folder_assignments/{asterisk}/{asterisk}`

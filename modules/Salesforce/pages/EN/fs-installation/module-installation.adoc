@@ -1,0 +1,24 @@
+[[install]]
+=== Installing the modules
+The _{modulname}_ delivery contains three modules that must be added to the {fs} server.
+To install the modules, open the `*{manager}*` and select `*menu:Server properties[Modules]*`.
+
+[[modules]]
+.Module management in the server properties
+image::modules.png[]
+
+The main panel contains a list of all the modules installed on the {fs} server.
+Click btn:[Install], then select the _contentconnect-fsm-<version number>.fsm_ file provided first, followed by the _WebDavDeployment-<version number>.fsm_ and _jstl.fsm_ files.
+Each time you make a selection, click btn:[Open] to confirm it.
+Once installation has been successfully completed, the folders `{modulname}`, `WebDavDeployment` and `JSTL` are added to the list.
+Each of these must be given `All permissions`.
+
+[NOTE]
+====
+The JSTL module only needs to be installed on the {fs} Server if JSTL has not yet been integrated on the server in any other way.
+====
+
+[IMPORTANT]
+====
+After any module installation or update, the {fs} server needs to be restarted.
+====

@@ -1,0 +1,74 @@
+[[proddetailpage]]
+==== Product detail pages
+Like category detail pages, product pages are used to display products originating from {ccloud}.
+However, unlike category detail pages, they do not display an overview of multiple products.
+Instead, they provide a detail view of a single product.
+The product information originates from {ccloud} and cannot be edited by the {fs} editor.
+However, the editor can choose to show and hide this information.
+
+[underline]#*Editor view*# +
+Product detail pages offer the editor various options for entering content:
+
+* The page form contains various input components
+** to define a promotional text.
+   This text can contain a maximum of 1,024 characters.
+** to show/hide product information.
+* The header of the page displays a banner into which a <<banner_image,static image>> can be integrated.
+* The main area of the page enables the display of:
+** <<producttiles,Product Tiles>>.
+** a <<video,video>>.
+** a text with a heading.
+
+The sections required for entering content are covered in more detail in the corresponding sub-chapters.
+As the text section is self-explanatory, this is not described specifically. 
+
+[underline]#*Developer view*# +
+Just like <<catdetailpage,category detail pages>>, product detail pages use the `Content Integration API (CI API)`.
+This API enables Velocity fragments to be evaluated on the {sf} side.
+Moreover, product detail pages only generate a single asset. This asset is generated in the HTML channel of the page template.
+
+As both the form and the content of the HTML channel for product and <<catdetailpage,category detail pages>> broadly match, both developer views are also identical in terms of form and content.
+Therefore, only the differences between the two templates will be described here.
+
+The {sf} widgets of a product detail page are made available via the <<cartridges,`Product` controller>> and integrated into the page using Velocity fragments.
+Here too, the `$include.widget()` function of the `Content` controller is used for integration purposes (the function transfers the required widget as a parameter).
+
+The hidden input components necessary to use the `CI API` include, for example, the `Velocity rendering controller appendix` field.
+Since product detail pages, like the <<login_page,login page>>, use an individual controller to generate the preview, this must be specified here.
+Therefore, the field contains the `Content-Render` value, to which a reference to the `SFCC Context ID` field is added.
+This corresponds to the ID of the product to be displayed and is required by the controller.
+The `{filter}` reads out this value and adds it in the corresponding location.
+
+[source,FirstSpirit]
+.Default value for the Velocity rendering controller appendix form field
+----
+Content-Render?pid={pt_storefrontUrlContextId}
+----
+
+As well as the hidden input components, the form also contains a text field for the entry of a promotional text and various `CMS_INPUT_TOGGLEs`.
+The toggles offer the editor the option to show or hide the widgets on the product detail page individually:
+
+[source,FirstSpirit]
+.Integration with CMS_INPUT_TOGGLE
+----
+$CMS_IF(!pt_hideProductInfo)$
+   <!-- CMS-VELOCITY-PRODUCT_INFO-START -->
+   $include.widget('Product-WrapProductTemplate','pid',$product.id,
+                   'productTemplate','product/components/productInfo')
+   <!-- CMS-VELOCITY-PRODUCT_INFO-END -->
+$CMS_END_IF$
+----
+
+For generation purposes, it is important to ensure that product detail pages are also marked as translated and that the `SFCC Context ID` field is populated.
+In this case, the `SFCC Context ID` corresponds to the product ID from Storefront.
+If no product detail page maintained in the {fs} project exists, the preview shows the corresponding Storefront page.
+The Storefront page display is based on the `Product Detail Page Preview` page template.
+A button to create a product detail page is added to the Storefront page via the _Create Page_ template.
+This button functions in the same way as the button in the report.
+When creating a product detail page, the `Product Detail Page` page template is then used and the product ID is automatically saved to the associated form field.
+If the page is marked as translated and the `SFCC Context ID` field is populated, generation is carried out and the asset for the product detail page is created.
+
+As well as providing the widgets, the `Product` controller also controls how the product detail page is displayed when the website is live.
+It uses the product ID to check whether a product detail page that has been generated with {fs} exists.
+If it does, it is rendered in the live state with the Velocity engine.
+If it does not, a product detail page that already exists by default on the {sf} side is displayed.

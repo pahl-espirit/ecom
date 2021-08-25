@@ -1,0 +1,15 @@
+=== Setting up the cartridges
+The delivery includes three cartridges, which must be transferred to {ccloud} initially.
+Different methods for this are described in the {ccloud} documentation under
+https://documentation.demandware.com/DOC2/topic/com.demandware.dochelp/SiteDevelopment/Cartridges.html[menu:B2C Commerce Development[Development Components>Cartridges]].
+
+Next, the `int_espirit_core` cartridge must be added to all sites that are to receive {fs} content.
+You can find relevant instructions in the {ccloud} documentation under
+https://documentation.demandware.com/DOC2/topic/com.demandware.dochelp/SiteDevelopment/RegisterYourCartridge.html[menu:B2C Commerce Development[Getting Started for Developers>Register Your Cartridge]].
+Sites that are set up on the {mfra} and are maintained in {fs} also require `int_espirit_sfra` in their cartridge path.
+However, if a site is based on SiteGenesis, its cartridge path must include `int_espirit_sitegenesis`.
+
+[NOTE]
+====
+The three cartridges work with all locales and are not subject to any particular restrictions in this respect.
+====

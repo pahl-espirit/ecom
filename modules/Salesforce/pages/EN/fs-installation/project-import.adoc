@@ -1,0 +1,16 @@
+=== Project import
+A part of the {sp} included in the delivery is the reference project _{projectname}_, which must be installed on the {fs} server.
+To do this, open the import dialog in the `*{manager}*` via the menu item `*menu:Project[Import]*` and click the {local} button to select the `{modulname}ReferenceProject.tar.gz` file from your local data system.
+Then assign a project name and description and confirm the import with btn:[Yes].
+After successful installation, the project is added to the list in the main panel (see figure <<importedproject>>).
+
+[[importedproject]]
+.Imported project in the {manager}
+image::importedproject.png[]
+
+[IMPORTANT]
+====
+In addition to the standard groups `Everyone` and `Administrators`, there are four further user groups in the reference project: `Editors`, `ChiefEditors`, `Developers` and `ProjectAdmins`.
+The groups have different rights, which are selected according to their tasks and defined for the different stores.
+Users outside these groups are not allowed to use the reference project by default.
+====

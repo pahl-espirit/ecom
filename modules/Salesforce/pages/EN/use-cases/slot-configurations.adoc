@@ -1,0 +1,93 @@
+[[slot_configuration]]
+=== Slot configurations
+Within the supplied reference project _{projectname}_, assets are represented by sections.
+Depending on the use case, they each have a slot configuration, which makes it possible to deliver editorial content in a way that is specific to the target group and tailored to the customer.
+
+[underline]#*Editor view*# +
+The option to configure a slot is provided to an editor in the reference project in the form of an input component.
+It is included in the sections available to the editor and may include an unlimited number of slot configurations.
+A slot configuration is also defined as a default value for the input component in all available sections.
+
+[NOTE]
+====
+The preconfigured slot configuration is activated and selected as the default configuration for the associated slot.
+To change this, these properties must be modified manually.
+====
+
+[NOTE]
+====
+Unlike the <<hp,homepage>>, the <<login_page,login page>>, and the <<catlandingpage,category pages>>, the <<contentpage,content page>>, the <<catdetailpage,category detail page>>, and the <<proddetailpage,product detail pages>> only creates a single asset and summarizes all sections added to the page in this.
+For this reason, it is not possible to define a slot configuration for each section in these cases.
+The corresponding input component is therefore hidden for all sections of a content page, a category detail page, or a product detail page.
+====
+
+The slot configuration can be (de)activated by the editor and selected as the default configuration for the associated slot.
+In addition, it makes it possible to define the schedule parameters known from {sf}.
+By adding several sections of the same type (e.g. several sliders) but that have different slot configurations, it is possible to implement different types of content.
+
+[IMPORTANT]
+====
+One of the schedule parameters to be defined is the `Schedule Type`, for which the `Default` value, among others, can be selected.
+In this case, a `Rank` must also be entered, as otherwise errors will occur on the {sf} side.
+Without this information, it is not possible to release the associated page.
+====
+
+[underline]#*Developer view*# +
+An individual slot configuration is represented by the _SFCC Slot Configuration_ link template, which is used within the following sections of the _Slot Configuration_ input component:
+
+* Banner Image
+* Slider
+* Grid container
+* Shop the look
+* Text
+* Video
+* Product Tiles
+* Social Media Share
+* Social Media Embedding
+
+Within the HTML channel of the link template, the XML expected by {ccloud} is created in line with the configuration defined by the editor and written in the collector provided.
+The XML is transferred to {ccloud} using a deployment.
+
+// ************************************ Varianten ************************************
+[[variants]]
+==== Variants
+Slot configurations enable the realisation of different content variants and thus the delivery of target group-specific and customer-specific editorial content.
+In order to generate these content variants:
+
+. either multiple slot configurations for a section
+. or several sections of the same type (e.g. several sliders) with different slot configurations in a content area
+
+must be created.
+
+Since in the second case all variants would be displayed in the <<uc_preview,preview>> by default, 
+the reference project has a variant selection for the <<hp,homepage>>, the <<login_page,login page>> and for <<catlandingpage,category landing pages>> (see figure <<img_variants>>).
+As soon as a content area contains more than one section, the variant selection is visible and only the section selected in it is displayed in the preview.
+
+[NOTE]
+====
+If a section has multiple slot configurations, the variant selection only considers the first one.
+====
+
+[[img_variants]]
+.Variant selection
+image::variants.png[]
+
+Each entry of the variant selection shows the title of the corresponding slot configuration and the parameters defined for it, whereby the default option is visualized in the form of a house icon and the rank as a double arrow.
+If the title of a slot configuration is missing, the variant selection represents the section type instead.
+In addition, deactivated slot configurations receive a gray background and a corresponding label. 
+
+In addition to the single entries, the variant selection has the {newvar} button, which is used to create new sections in the corresponding content area.
+It has the same function as the Easy Edit button on existing sections.
+
+The variant selection is integrated via so-called wrappers, which are integrated into the page or section templates in the form of the _MPP Body Wrapper_ and _MPP Section Wrapper_ format templates.
+Calling the _MPP Section Wrapper_ replaces the output of the variable `set_sectionContent` in sections, to which all editorial contents of a section are assigned in the reference project.
+Equivalent to this, the _MPP Body Wrapper_ in page templates replaces the output of the respective content area, which must be passed to the wrapper instead.
+
+[source,FirstSpirit]
+.MPP Body Wrapper call for the main area of the homepage
+----
+<!-- CMS-HOME-MAIN-START -->
+   $CMS_RENDER(template:"mpp_body_wrapper",body:"home_main_m")$
+   $CMS_RENDER(template:"empty_content_slot",label:"Home Main",body:"home_main_m")$ 
+<!-- CMS-HOME-MAIN-END -->
+----

@@ -1,0 +1,175 @@
+== Introduction
+{fs} is used for creating versatile and project-specific content.
+Thanks to the _{modulname}_ module, it is now possible to transfer this content to the {sf} {ccloud} e-commerce shop system and use it there.
+
+[NOTE]
+====
+In the remainder of this document, the abbreviated form "`{ccloud}`" will be used instead of "`{sf} {ccloud}`".
+This abbreviated form refers to {sf} {ccloud} in all cases.
+====
+
+The module combines the functional strengths of both systems,
+delivering the key advantages that each offers and creating a highly effective overall system made up of two areas that work in parallel and are largely decoupled from one another:
+
+_Components on the {fs} side_::
+These components are used for creating and maintaining editorial data, which is transferred to {ccloud} in the form of XML files and media.
+
+_Components on the {ccloud} side_::
+These components are used for processing editorial content created in {fs}.
+{ccloud} integrates this data into the shop and transfers it to the live state.
+
+A part of the delivery of the _{modulname}_ module is a {sp}, including a reference project and various cartridge components, which in large part are set up on the {mfra}.
+This documentation is consistently based on the reference project and provides an explanation of the functions made available by the module using common use cases.
+Description is given from the view of an editor as well as a {fs} developer.
+
+// ************************************ Funktionsumfang ************************************
+=== Range of functions
+_{modulname}_ allows editors to:
+
+* Create native {ccloud} content using {fs}
+* Access product information via the `Open Commerce API` (OC API)
+* Display shop elements and editorial content in the {fs} preview simultaneously
+* Transfer content to the {ccloud} storage location via `WebDAV`
+
+The corresponding functions are made available in both the {jc} and the {wc} when the module is installed and configured.
+
+Familiar {fs} tools are used to maintain the content, meaning that editors who are already familiar with {fs} do not require any additional knowledge.
+The content is made available to {ccloud} as part of a deployment so that it can be imported.
+{ccloud} then transfers the information to the live state.
+
+As far as {ccloud} is concerned, this means there is no difference when it comes to delivering editorial content to the live state.
+Even if the {fs} server is shut down because of maintenance work, for example, this has no effect on {ccloud}.
+
+// ************************************ Architektur ************************************
+=== Architecture
+{fs} and {ccloud} are linked by an architecture made up of a range of components (see figure <<img_architecture>>).
+These components are:
+
+* The modules installed on the {fs} server:
+** {modulname} module
+** WebDAV module
+** JSTL module
+* {ccloud} instances (Staging & Production)
+
+[[img_architecture]]
+.Architecture
+image::architecture.png[]
+
+The individual components always interact in accordance with the following schema:
+
+. The editorial content is created and edited in {fs}.
+   The content replaces placeholders in the HTML framework; however, the framework - like the products displayed on the live page - comes from {ccloud}.
+   It is transferred via `https` to {fs}, where it is required in order to display the preview in full.
+   For product and category pages, this also requires communication with controllers that are part of the delivered cartridge.
+   Products are transferred to {fs} via the `OC API` interface of the {ccloud} Staging instance.
+   This interface is also used to start various actions in the {ccloud}.
+
+. All content changes carried out in {fs} are made available to the {ccloud} Staging instance via `WebDAV` as part of a deployment.
+   They are stored in various `WebDAV` directories in the form of media and XML files.
+   From this point, they are then imported into the {ccloud} Staging instance library via jobs, which are initiated by a deployment action.
+
+. This library is replicated in the live {ccloud} instance together with the product catalog.
+   As far as {ccloud} is concerned, this means there is no difference when it comes to delivering editorial content to the live state.
+
+{ccloud} thus represents the main component in this architecture.
+It delivers the content that has been created and/or maintained in {fs} to the customer and provides all shop functions.
+There is only one loose link between the two systems; they primarily work in parallel with one another.
+If the {fs} server is shut down because of maintenance work, for example, this has no effect on {ccloud}.
+
+// ************************************ Konzept ************************************
+=== Concept
+The _{modulname}_ module enables editorial content to be maintained in {fs} and this to be transferred into {ccloud} via deployment.
+For this, the processing of content in both systems must be coordinated and be mutually compatible.
+The sub-chapters below describe the underlying concept used to achieve this compatibility.
+
+// ************************************ Seiten ************************************
+[[slot_concept]]
+==== Pages
+Similar to {fs}, the pages in {ccloud} are based on a structure of various components.
+To enable editorial content to be exchanged between both systems, these components must be coordinated.
+
+Within the reference project _{projectname}_ included in the delivery, the slots are represented by the content areas of a page template.
+Sections can be added to them; each one corresponds to an asset and, depending on the use cases, also has a slot configuration (see figure <<rendering>>).
+With the aid of these configurations, it is possible to define which target group can see the corresponding content, or for how long this remains visible, for example.
+Each slot configuration refers to exactly one asset.
+
+With FirstSpirit assets can thus be generated that are displayed on a page via slots.
+
+[[rendering]]
+.Page Rendering
+image::salesforce.png[]
+
+// ************************************ Vorschau ************************************
+==== Preview
+The integration effected by the _{modulname}_ module only allows {fs} to generate and maintain editorial content and to publish it in the form of assets.
+{ccloud}, however, continues to determine the framework of a page, whose slots integrate the generated assets.
+
+To present the preview of a page, {fs} therefore determines its current view in {ccloud} Storefront and downloads the HTML.
+The slots it contains are uniquely labeled with HTML comments.
+{fs} substitutes these areas with the appropriate editorial content and displays the result in the preview.
+
+// ************************************ Velocity ************************************
+==== Velocity
+{sf} provides the `Content Integration API (CI API)` as an alternative to the <<slot_concept,slot-based approach>> described previously.
+This API enables Velocity fragments to be evaluated on the {sf} side, and therefore provides an easy way of implementing business logic on a page.
+In addition, it affords editors more control over the page layout than they have in the slot-based approach.
+The Velocity fragments, including the business logic, are maintained within {fs}.
+
+
+// ************************************ Sprachen ************************************
+==== Languages
+Editorial content is maintained in different languages on both the {sf} and the {fs} side.
+For integration, an assignment between the languages of both systems is therefore required.
+For this, a convention has been adopted for the languages used in the reference project, which relates to their abbreviation defined in {fs}.
+This is oriented towards the existing languages in {sf} and ensures every abbreviation is designated in accordance with the formula `LANGUAGE CODE_COUNTRY CODE` (see figure <<img_languages>>).
+The language code corresponds to ISO 639 and the country code to ISO 3166.
+
+Furthermore, in the project it is ensured that the {fs} master language is assigned to the default language in {sf}.
+
+[[img_languages]]
+.Languages
+image::languages.png[]
+
+This information is presented in more detail in the <<generation,Generation>> and <<hp,Homepage>> chapters.
+
+// ************************************ Generierung & Deployment ************************************
+[[generation_and_deployment]]
+==== Generation & deployment
+It is {ccloud} that transfers the content created in {fs} to the live state.
+The content must be made available to {ccloud} in the form of two XML files, which have been created during generation.
+While one of these files contains all the slot configurations created in the {fs} project, the second contains all the assets.
+
+The <<wddeployment,WebDAV deployment>> transfers both XML files together with the generated media to {ccloud} and stores them in the {ccloud} storage location.
+From this point, they are then imported via a <<sfcc_job_schedules,job schedule>>, which is initiated by means of the {fs} schedule.
+
+// ************************************ Löschen ************************************
+==== Delete
+The content of a {fs} project can be changed or deleted at any time as part of the usual editorial process.
+These changes have to be applied to {sf}.
+In the same way that new content is transferred, it is also deleted by means of <<schedule,deployment>>.
+
+A current time stamp is added to all assets and slot configurations at the start of each full generation.
+Therefore, its time stamp diverges from the time stamps of the content, which is still present in {sf}, but which has already been deleted in the {fs} project.
+The last action of the generation schedule identifies the assets and slot configurations with an outdated time stamp and triggers their deletion.
+
+// ************************************ Technische Voraussetzungen ************************************
+=== Technical requirements
+The _{modulname}_ module has the following technical requirements:
+
+* {fs} version: {fs} (isolated or legacy mode) since 2020-01
+* {ccloud} e-commerce shop system
+* {mfra} version 4.4.1
+* e-Spirit LINK Cartridges `int_espirit_core`, `int_espirit_sfra` resp. `int_espirit_sitegenesis` version 20.1.0
+* Open Commerce API version 19.5 (Compatibility Mode 18.10 or 19.10)
+* Latest JSTL version (provided with the <<jstlmodule,JSTL module>>)
+* Java 11 or higher
+
+// ************************************ Wichtige Hinweise ************************************
+[[hints]]
+=== Important information
+This section contains information that should be noted when using the _{modulname}_ module.
+
+// ************************************ Content Asset ID ************************************
+==== Content asset ID
+Content assets that are created in {fs} get a unique ID from {fs}.
+If a content asset with the exact same ID is created in {ccloud}, this is overwritten by {fs} when it is deployed.

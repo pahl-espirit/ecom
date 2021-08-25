@@ -1,0 +1,77 @@
+[[catlandingpage]]
+==== Category landing pages
+Category landing pages are used to display the products originating from {ccloud}.
+They provide an overview of all the products belonging to a selected main category.
+The products are arranged and the product information is displayed automatically; this cannot be influenced by the {fs} editor.
+
+[underline]#*Editor view*# +
+The category landing page offers the editor different options for entering content:
+
+* The header of the page displays a banner into which a <<banner_image,static image>> can be integrated.
+* The main area has two content areas, in which:
+** a <<grid_container,grid containers>>,
+** a <<video,video>> or
+** text with a heading
+
+may be used.
+
+[underline]#*Developer view*# +
+As both the form and the content of the HTML channel for the category landing page and the <<hp,homepage>> broadly match, both developer views are also nearly identical.
+This is therefore where only the discrepancy between both templates is described:
+
+The page type to be used for the {fs} preview is also defined for the category landing pages in the hidden `Preview Page Type` form field.
+In contrast to the homepage, it can assume different values in theory.
+For the reference project supplied, however, only the `Search` parameter is required and is selected as the default value.
+
+Furthermore, the form has the `SFCC Context ID` field.
+The `SFCC Context ID` corresponds to the category ID from the storefront.
+If the field is empty, a category landing page maintained in the {fs} project does not exist and the <<uc_preview,preview>> shows the corresponding Storefront page.
+A button to create a category landing page is added to the Storefront page via the _Create Page_ template.
+This button functions in the same way as the button in the <<create_detailpage,report>>.
+When generating a category landing page, the category ID is automatically saved to the associated form field.
+
+The _Preview Generation_ format template needs the category ID to generate the preview for all pages.
+For each page, it expects to receive the category ID in the form of the `SFCC Context ID` variable.
+This ID must therefore be included in every page template, with the exception of the <<hp,homepage>>.
+If the associated form field is empty or the corresponding page in {fs} is not marked as translated, generation is canceled.
+
+[source,FirstSpirit]
+----
+$CMS_IF(!#global.preview && !#global.page.isTranslated || pt_storefrontUrlContextId.isEmpty)$
+   $CMS_SET(#global.stopGenerate, true)$
+$CMS_END_IF$ 
+----
+
+As described <<detail_pages_dialog_not_shown_note,above>>, the form for the category landing pages does not contain any elements to be completed by the editor.
+No dialog is therefore shown when a page of this nature is created.
+If a form only contains elements for that the attribute `hidden` has the value `yes`, the _{modulname}_ module decides for itself that the form does not need to be shown.
+In the reference project, the form for the category landing pages does, however, contain an `FS_BUTTON`, which is only hidden dynamically in {wc} by means of a rule.
+In both clients, this button should not result in the dialog being shown when a category landing page is created.
+For this reason, the following elements were added to the form:
+
+[source,xml]
+.Form
+----
+<CMS_INPUT_TOGGLE name="pt_hideNewPageDialogCC" hFill="yes" hidden="yes" singleLine="no">
+  <LANGINFOS>
+    <LANGINFO
+      lang="*"
+      label="Hide New Page Dialog in ContentCreator"
+      description="Hide the dialog in the ContentCreator when creating a new landing page."
+    />
+  </LANGINFOS>
+</CMS_INPUT_TOGGLE>
+
+<CMS_INPUT_TOGGLE name="pt_hideNewPageDialogSA" hFill="yes" hidden="yes" singleLine="no">
+  <LANGINFOS>
+    <LANGINFO
+      lang="*"
+      label="Hide New Page Dialog in SiteArchitect"
+      description="Hide the dialog in the SiteArchitect when creating a new landing page."
+    />
+  </LANGINFOS>
+</CMS_INPUT_TOGGLE>
+----
+
+These explicitly instruct the _{modulname}_ module not to show the dialog in {wc} or in {jc}.
+Their fallback values are therefore `true`.

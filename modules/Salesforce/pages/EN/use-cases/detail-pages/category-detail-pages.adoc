@@ -1,0 +1,95 @@
+[[catdetailpage]]
+==== Category detail pages
+As with the <<catlandingpage,category landing pages>>, the category detail pages are used to display the products originating from {ccloud}.
+However, unlike the category landing pages, they provide an overview of all products belonging to a subcategory.
+The products are arranged and the product information displayed automatically and cannot be influenced by the {fs} editor.
+
+[underline]#*Editor view*# +
+The category detail page only allows an editor to integrate a <<banner_image,static image>> into the header of the page.
+Furthermore, the editor is unable to maintain content.
+
+[underline]#*Developer view*# +
+Unlike the other pages, which follow the slot-based approach, both <<proddetailpage,product>> and category detail pages use the `Content Integration API (CI API)`.
+This API enables Velocity fragments that are maintained in the {fs} template to be evaluated on the {sf} side.
+
+If the `CI API` is being used, the hidden `Use velocity rendering` toggle is activated in the form of the page template within the reference project,
+and the `Custom` parameter is defined in the `Preview Page Type` form field.
+The `Content-Render` value is also entered in the `Velocity rendering controller appendix` form field.
+This value defines the call of the `Content` controller that is supplied in the `int_espirit_sfra` cartridge and carries out Velocity rendering on the {sf} side.
+The value must be adapted accordingly if an external controller is being used.
+
+[TIP]
+====
+The chapter about the <<login_page,login page>> describes in more detail how an individual page type can be defined.
+====
+
+Another difference compared to the other pages is that the category detail pages only generate a single asset, just like the <<contentpage,content pages>>.
+This asset is created in the HTML channel of the page template, which differentiates between the display of the page in the <<uc_preview,{fs} preview>> and in the live state.
+The developer view must therefore take both the preview as well as the generation and the live state into account.
+
+*Preview*
+
+The Velocity fragments can be used to insert {sf} widgets provided by the `Common` controller in a page.
+The `$include.widget()` function, which is defined in the `Content` controller, deals with the integration process.
+The required widget must be transferred to this function as a parameter.
+
+The code example below shows the integration of the {sf} Page Header in the category detail page:
+
+[source,FirstSpirit]
+.Page Header integration
+----
+<!-- CMS-VELOCITY-PAGE_HEADER-START -->
+   $include.widget('Common-PageHeader')
+<!-- CMS-VELOCITY-PAGE_HEADER-END -->	
+----
+
+In addition to the general widgets, the `CategorySearchResult` controller integrates specific data into the category detail page:
+In the case of the preview, for example, it uses the category ID of the selected subcategory to determine the corresponding products, and then displays these in the <<uc_preview,preview>>.
+This data is already provided in the live state and is available to use via the `$categorySearchResult` variable.
+
+[source,FirstSpirit]
+.Integrating subcategory products
+----
+<!-- CMS-VELOCITY-SEARCH_RESULT-START -->
+   $CMS_IF(#global.preview)$
+      $include.widget('CategorySearchResult-Show', 'cgid', '$CMS_VALUE(pt_storefrontUrlContextId)$')
+   $CMS_ELSE$
+      $categorySearchResult
+   $CMS_END_IF$
+   [...]
+<!-- CMS-VELOCITY-SEARCH_RESULT-END -->
+----
+
+*Generation*
+
+For generation purposes, it is important to ensure firstly that the corresponding page is marked as translated in {fs} and that the `SFCC Context ID` field is populated.
+The `SFCC Context ID` corresponds to the category ID from the storefront.
+When a category detail page is being generated via the report, the ID is automatically saved to the associated form field.
+The generation is only carried out and the asset for the category detail page is only created once the form field is populated and the corresponding page is marked as translated in {fs}.
+
+[source,FirstSpirit]
+----
+$CMS_IF(!#global.preview && !#global.page.isTranslated || pt_storefrontUrlContextId.isEmpty)$
+   $CMS_SET(#global.stopGenerate, true)$
+$CMS_END_IF$ 
+----
+
+The editorial content is then saved in the `set_pageContent` variable, and the `set_parent_id` variable is assigned the value of the hidden `SFCC Parent Folder` field.
+This value specifies where the created asset is filed in the {sf} folder structure.
+
+[source,FirstSpirit]
+----
+$CMS_SET(set_parent_id,pt_dwre_parentFolder)$	
+----
+
+Both variables are evaluated while the XML collector is populated, a process that is carried out subsequently.
+In the process, a new content node is created, to which the editorial content of the page, among other things, is added.
+
+*Live state*
+
+A category detail page already exists for subcategories on the {sf} side as standard.
+This page is used for the live state.
+The display is controlled by the <<cartridges,Search controller>>, which has been expanded to take account of assets generated on the {fs} side.
+Using this expansion and a category ID assigned to it, the controller first checks whether a category detail page that has been generated with {fs} is present.
+If one is present, it is rendered in the live state with the Velocity engine.
+Otherwise, the {sf} standard page is displayed.

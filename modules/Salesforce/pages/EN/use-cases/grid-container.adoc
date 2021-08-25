@@ -1,0 +1,48 @@
+[[grid_container]]
+=== Grid Container
+In contrast to simple <<contentpage,content pages>>, the <<hp,homepage>> and <<catlandingpage,category landing pages>> are able to display a group of three to five images via the grid container, each corresponding to a grid container element.
+
+.Grid container
+image::grid.png[]
+
+[underline]#*Editor view*# +
+With the grid container, the editor is able to create a list of images, which can each be assigned a title as well as a link to a <<detail_pages,product, category>>, or <<contentpage,content page>>.
+Depending on the configuration, three to five images are displayed from this list and can be individually cropped to the required image section.
+The images can originate from the media store or can be uploaded with the help of the input component.
+
+The images are arranged according to a certain layout that is predetermined by the editor.
+The following seven options are available here.
+
+[NOTE]
+====
+If the list created by the editor contains more entries than is envisaged by the layout, then only the first entries are taken into account.
+Surplus elements are ignored by the layout.
+The editor receives a notification about this in the form.
+
+If the list created by the editor contains fewer entries than is envisaged by the layout, or if the editor does not select an image for an element, placeholders are displayed instead.
+In both cases, the page cannot be released until the layout is completed.
+====
+
+.Grid container - Layout options
+image::grid_opt.png[]
+
+[underline]#*Developer view*# +
+Within the HTML channel and based on the image section and layout chosen by the editor, the selected images are referenced and their configured titles and links displayed.
+Only the number of images corresponding to the layout are taken into account, and all other entries ignored.
+
+To crop the images, the `GRID_ELEMENT_SQUARE`, `GRID_ELEMENT_HIGH`, and `GRID_ELEMENT_WIDE` <<resolutions,resolutions>> are required.
+They are already applied in the project properties of the reference project and must be specified in the HTML:
+
+[source,xml]
+.Specifying the resolution
+----
+$CMS_REF(st_picture, resolution:"GRID_ELEMENT_SQUARE")$
+$CMS_REF(st_picture, resolution:"GRID_ELEMENT_HIGH")$
+$CMS_REF(st_picture, resolution:"GRID_ELEMENT_WIDE")$
+----
+
+The _st_picture_ input component has the `upload=yes` parameter, which allows the editor to upload new images, as well as to select an existing image from the media store.
+
+The content is assigned to the `set_sectionContent` variable, which is required during generation of the <<hp,homepage>> or a <<catlandingpage,category landing page>> to populate the corresponding XML file.
+
+As the images are referenced from the {fs} media store and there is no substitution of {sf} content, they do not have to be labeled with HTML tags and are displayed in the preview in the usual way.

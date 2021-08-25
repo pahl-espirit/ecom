@@ -1,0 +1,27 @@
+[[video]]
+=== Video
+A page in the reference project can also contain videos alongside purely textual information.
+Each video corresponds to a section, which provides different configuration options.
+The associated section template can only be added to <<contentpage,content pages>> and <<catlandingpage,category landing pages>>, not the <<hp,homepage>>.
+
+[underline]#*Editor view*# +
+To reference videos, editors can make use of the _YouTube_ and _Vimeo_ platforms.
+Both providers use a unique ID, which in each case forms part of the video URL:
+
+* *Youtube*: \https://www.youtube.com/watch?v=<VIDEO ID>
+* *Vimeo*: \https://vimeo.com/<VIDEO ID>
+
+The corresponding video for the page can be added using this ID.
+The video is displayed in the standard format of `16:9`.
+For YouTube videos, however, the options `21:9`, `4:3`, or `1:1` are also available.
+Furthermore, the editor can define whether playback is started automatically and whether the video may be displayed in full screen mode.
+
+[underline]#*Developer view*# +
+Within the HTML channel, the selected video is first referenced in direct relation to the defined video platform.
+For this, the display format as well as the different URL parameters are set and, in a final step, the correct video URL generated in accordance with the editor's configured settings in the form.
+
+This content is assigned to the `set_sectionContent` variable, which is required during generation of a <<catlandingpage,category landing page>> to populate the corresponding XML file.
+For a <<contentpage,content page>>, however, the variable is only output.
+
+As the embedded video does not come from {ccloud}, it does not have to be labeled with HTML tags.
+It is shown in the preview without substitution.

@@ -1,0 +1,207 @@
+[[generation]]
+=== Generation
+In order to deploy editorial content, {fs} generates two XML files, which contain content assets and <<slot_configuration,slot configurations>>, and are transferred to the {ccloud}.
+The corresponding <<generation_and_deployment,generation and deployment schedule>> has already been described.
+This description also explains that templates in their presentation channels populate XML collectors with content (content assets) and <<slot_configuration,slot configurations>>.
+These collectors are initialized in the <<project_settings,project settings>>.
+All content and configurations to be deployed must be written to the XML collectors.
+Otherwise, they will not be transferred.
+
+One asset and one slot configuration are typically generated for each section, allowing for personalization at the section level.
+<<contentpage,Content pages>> are the only exception.
+In this case, a total of precisely one content asset and one slot configuration are created.
+
+This chapter explains how the content and configurations of the project are collected and the XML files generated.
+
+==== Content Assets
+Populating the XML collector for content assets involves the following steps:
+
+*Generating a content asset ID using a project-wide convention*
+
+In the reference project, the ID of a content asset is comprised of a project-wide prefix, the ID of the generated page reference, and the section ID.
+These components are separated from one another by means of a hyphen and any underscores are substituted with hyphens.
+
+[NOTE]
+====
+In case of a content page the content asset ID simply consists of the prefix and the ID of the generated page reference.
+====
+
+[source,FirstSpirit]
+----
+$CMS_SET(set_xml_id, ps_dwAssetIdPrefix + "-" + #global.node.uid + "-" + #global.section.id)$
+$CMS_SET(set_xml_id, set_xml_id.replaceAll("_","-"))$
+----
+
+*Creating a new content asset in the XML collector*
+
+Once the ID has been determined, a new content asset is created in the XML collector using the `useOrCreateContentNode` method.
+This asset must be populated with the content of all generated languages during the full generation.
+For this reason, `useOrCreateContentNode` only generates a new asset if no asset with the specified ID already exists.
+All subsequent method calls on the XML collector then operate on this asset.
+
+[source,FirstSpirit]
+----
+$CMS_SET(void, ps_xmlCollector.useOrCreateContentNode(set_xml_id))$
+----
+
+When a new content asset is created, the `fsGenerationTime` custom attribute is automatically added along with the current time stamp of the generation.
+This is necessary to ensure that the <<sfcccleanup,content cleanup>> only deletes obsolete content assets from the {ccloud} after deployment.
+
+[IMPORTANT]
+====
+The value of this attribute must not be changed manually following this.
+====
+
+[[generationlocale]]
+*Determining the locale*
+
+Some of the following actions require a locale to be specified for the {ccloud}.
+For this purpose, the _language_mapping_ format template maps a {fs} language onto a locale of this kind, and is therefore included in each page.
+In the template, two variables are generated in the context of the page: `set_previewLang` and `set_xml_lang`.
+The first of these is used for generating the preview and has the format `<language_COUNTRY>`.
+An example of a potential value is `fr_FR`.
+The <<hp, Homepage>> chapter also describes this aspect of the template in greater detail.
+
+The `set_xml_lang` variable is used during the process of populating the content assets.
+Its value for the master language is x-`default`.
+In all other cases, it assumes the value of `set_previewLang`, but substitutes the underscore with a hyphen.
+
+Since both variables are set in the context of the generated page, they are available in all sections of the page and can therefore be used both for generating the preview and for populating the XML collectors.
+
+*Setting the display-name property*
+
+For each language, the display name of the generated page reference corresponds to the display name of the associated content asset, which is set during generation by means of the `addContentAttribute` method.
+The `set_xml_lang` variable described above is required for this.
+
+[source,FirstSpirit]
+----
+$CMS_SET(void, ps_xmlCollector.addContentAttribute({
+    "name":"display-name",
+    "value":#global.node.getDisplayName(#global.language).toString(),
+    "attributes":{
+        "xml:lang":set_xml_lang
+    }
+}))$
+----
+
+*Setting the searchable-flag property to true*
+
+The content asset needs to be included in the search index of the {ccloud}, which is why the `searchable-flag` attribute is set to `true`.
+
+[source,FirstSpirit]
+----
+$CMS_SET(void, ps_xmlCollector.addContentAttribute({
+    "name":"searchable-flag",
+    "value":"true"
+}))$
+----
+
+*Setting the online-flag property to true*
+
+The asset also needs to be available in the shop, which is why the `online-flag` attribute is also set to `true`.
+
+[source,FirstSpirit]
+----
+$CMS_SET(void, ps_xmlCollector.addContentAttribute({
+    "name":"online-flag",
+    "value":"true"
+}))$
+----
+
+*Setting the body property*
+
+The editorial content from {fs} is saved in the `body` custom attribute.
+The `set_xml_body` variable is first created in the reference project, and the rendered content is then stored in this variable.
+The variable is then transferred to the XML collector.
+The collector automatically embeds the content in a CDATA section, which means that no special preparation is required.
+Since the content is language-dependent, the locale in `set_xml_lang` is used in this step too.
+
+[source,FirstSpirit]
+----
+$CMS_SET(void, ps_xmlCollector.addCustomAttribute({
+    "id":"body",
+    "cdata":set_xml_body.toString(),
+    "attributes":{
+        "xml:lang":set_xml_lang
+    }
+}))$
+----
+
+*Folder*
+
+The {ccloud} makes it possible to specify a library folder in which it is to store a content asset.
+For this purpose, the XML collector provides the `addFolderAttribute` method, which receives the ID of this kind of folder.
+In the reference project, the folder containing all the content assets for a page is stored in the form for the page itself.
+Each page template transfers the value of the corresponding form field to the `set_parent_id` variable.
+The sections then use this variable to generate their assets.
+
+[source,FirstSpirit]
+----
+$CMS_SET(void, ps_xmlCollector.addFolderAttribute({
+    "id":set_parent_id
+}))$
+----
+
+Folders that are referenced in this way must be identified to the {ccloud} by means of corresponding nodes in the generated XML file.
+This allows the {ccloud} to create any missing folders.
+The <<xml_generation,XML>> template takes responsibility for this task, and generates a defined set of folders.
+
+[IMPORTANT]
+====
+Unless any additional measures are taken, only the IDs of these folders can be reliably used in the reference project when generating content assets.
+This is because {fs} is only able to guarantee that precisely these folders exist.
+In the reference project, the corresponding form elements are therefore hidden in the page templates and assigned fallback values.
+====
+
+==== Slot configurations
+The XML collector for <<slot_configuration,slot configurations>> is populated in the _Slot Configuration_ link template.
+Therefore, both pages as well as sections output the corresponding form elements directly via `$CMS_VALUE$` calls:
+
+[source,FirstSpirit]
+----
+$CMS_IF(!st_slotConfig.isEmpty)$
+    $CMS_FOR(_slotConfig,st_slotConfig)$
+        $CMS_VALUE(_slotConfig)$ 
+    $CMS_END_FOR$
+$CMS_END_IF$
+----
+
+The XML for slot configurations is manually assembled in the _Slot Configuration_ template and written to the appropriate collector using the `addXml` method:
+
+[source,FirstSpirit]
+----
+$CMS_SET(void, ps_xmlCollectorContentSlot.addXml(null, set_slotConfig.toString(), null))$
+----
+
+As with the process of creating the content asset, the `fsGenerationTime` custom attribute is automatically added to a slot configuration along with the current time stamp of the generation.
+This is necessary to ensure that the <<sfcccleanup,content cleanup>> only deletes obsolete slot configurations from the {ccloud} after the deployment.
+
+[IMPORTANT]
+====
+The value of this attribute must not be changed manually following this.
+====
+
+[[xml_generation]]
+==== Generating the XML files
+Both generated XML files are based on the XML page template, which reads out the collected content and slot configurations from the XML collectors.
+For this purpose, the <<schedule,deployment schedule>> performs three generations:
+
+. A <<fdeployment,full generation>> for populating the XML collectors,
+. a <<pdeployment,partial generation>> for writing the content assets to an XML file, and
+. a <<pdeployment,partial generation>> for writing the slot configurations to an XML file.
+
+The full generation must be completed before {fs} can generate the XML files, which is why this step cancels the generation of the XML template.
+This is done using the `dwre_xmlGeneration` schedule variable, which has the value `false` in the <<fdeployment,full generation>> and the value `true` in both <<pdeployment,partial generations>>.
+
+Since both files are based on the same template, a feature is necessary in order to determine which XML collector is read out.
+This feature is the `ps_importType` form field, which can assume the `content_library` and `content_slot` values.
+
+In the case of `content_library`, a defined set of library folders is first written to the XML collector for content assets.
+The `getXml` method is then executed on this collector and the result - an XML document - is output via a `$CMS_VALUE$` call.
+If `ps_importType` has the value `content_slot`, `getXml` is called up on the collector for slot configurations instead and the result is also output.
+
+The `{modulname} Technical Pages` content folder contains two pages that are based on the _XML_ template:
+`Shop Assets`, for which `ps_importType` has the value `content_library`, and `Shop Slot Configurations`, for which this form field is set to `content_slot`.
+These pages form the basis of the `Shop Assets` and `Shop Slot Configurations` page references in the `{modulname} Export Files` structure folder; 
+a <<pdeployment,partial generation>> is executed for each of these page references.
+

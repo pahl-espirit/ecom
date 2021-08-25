@@ -1,0 +1,99 @@
+// *********** Konfiguration *********** //
+:lang: de
+:espirit: e-Spirit AG
+:copyright: {espirit}
+:creator: {espirit}
+:publisher: {espirit}
+:toc:
+:toclevels: 4
+:toc-placement: right
+:icons: font
+:sectanchors:
+:experimental:
+:title-logo: firstspirit-logo.png
+:sectnums:
+:source-highlighter: coderay
+ifdef::backend-pdf[]
+:pagenums:
+:pygments-style: bw
+:source-highlighter: pygments
+endif::[]
+:imagesdir: ../../resources/images/de-DE
+:homepage: http://www.e-spirit.com
+:description: Dieses Dokument enthält die Dokumentation für das {modulname}-Modul von {fs}.
+:asterisk: &#42;
+// *********** Begriffe *********** //
+:modulname: ContentConnect
+:projectname: {modulname} Reference Project
+:mfra: Storefront Reference Architecture
+:bwfs: BasicWorkflows
+:cat_page: Kategorieseite
+:cat_landingpage: Kategorie-Landingpage
+:cat_detailpage: Kategorie-Detailseite
+:prod_page: Produktseite
+:prod_detailpage: Produkt-Detailseite
+:fs: FirstSpirit
+:ccloud: Commerce Cloud
+:sf: Salesforce
+:sp: StarterPackage
+:sr: Sorting Rule
+:filter: Preview Filter
+:proxy: Preview Proxy
+:xmlcoll: XML-Kollektor
+:manager: ServerManager
+:pmanager: Produkt-Manager
+:s_settings: Server-Eigenschaften
+:p_settings: Projekt-Eigenschaften
+:p_comp: Projekt-Komponente
+:w_comp: Web-Komponente
+:server: FirstSpirit-Server
+:jc: SiteArchitect
+:wc: ContentCreator
+:sitestore: Strukturverwaltung
+:mediastore: Medienverwaltung
+:pagestore: Inhalteverwaltung
+:projectIdRaw: projectId
+// *********** Links *********** //
+:fsadmindoc: link:https://docs.e-spirit.com/odfs/edocs/admi/index.html[FirstSpirit Dokumentation für Administratoren]
+:fsadmindoc_en: link:https://docs.e-spirit.com/odfs/edocs/admi/introduction/index.html[FirstSpirit Documentation for Administrators]
+:basicwfsdoc: link:https://docs.e-spirit.com/module/basicworkflows/BasicWorkflows_Documentation_DE.html[BasicWorkflows-Dokumentation]
+:basicwfsdoc_en: link:https://docs.e-spirit.com/module/basicworkflows/BasicWorkflows_Documentation_EN.html[BasicWorkflows Documentation]
+:moduldoc: link:https://docs.e-spirit.com/ecom/contentconnect-salesforce/ContentConnect_Documentation_DE.html[ContentConnect-Dokumentation]
+:moduldoc_en: link:https://docs.e-spirit.com/ecom/contentconnect-salesforce/ContentConnect_Documentation_EN.html[ContentConnect Documentation]
+:ocapi_shop: link:OCAPI-Shop.txt[Shop OCAPI-Settings]
+:ocapi_data: link:OCAPI-Data.txt[Data OCAPI-Settings]
+// *********** Buttons *********** //
+:settings: btn:[Eigenschaften]
+:install: btn:[Installieren]
+:open: btn:[Öffnen]
+:config: btn:[Konfigurieren]
+:add: btn:[Hinzufügen]
+:create: btn:[Anlegen]
+:local: btn:[Lokal]
+:ok: btn:[OK]
+:yes: btn:[Ja]
+:activate: btn:[Aktivieren]
+:upload: btn:[Upload]
+:next: btn:[Next]
+:testConf: btn:[Test Configuration]
+:addvar: btn:[Neue Variable anlegen]
+:value: btn:[Für alle Sprachen übernehmen]
+:chandler: btn:[clickHandler]
+:dhandler: btn:[dropHandler]
+:copy: btn:[Copy to product clipboard]
+:addp: btn:[Add product from selection]
+:uploadpicture: btn:[Upload a picture]
+:newvar: btn:[Create a new variant]
+// *********** Übersetzungen *********** //
+:toc-title: Inhaltsverzeichnis
+:caution-caption: Achtung
+:important-caption: Wichtig
+:note-caption: Hinweis
+:tip-caption: Tip
+:warning-caption: Warnung
+:appendix-caption: Anhang
+:example-caption: Beispiel
+:figure-caption: Abbildung
+:table-caption: Tabelle
+// if defined, comments are visible in the output
+:showcomments:

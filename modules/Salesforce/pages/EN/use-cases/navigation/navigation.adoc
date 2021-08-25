@@ -1,0 +1,10 @@
+[[navigation]]
+=== Navigation
+The storefront's main navigation function can be used in {fs} to navigate both the shop and the content maintained on the {fs} side.
+Custom entries can also be added.
+
+// Hauptnavigation
+include::main-navigation.adoc[]
+
+// Erweiterung der Navigation
+include::custom-navigation.adoc[]

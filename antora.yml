@@ -4,4 +4,5 @@ version: '1.0'
 nav:
 - modules/Spryker/nav.adoc
 - modules/Spartacus/nav.adoc
+- modules/Salesforce/nav.adoc
 

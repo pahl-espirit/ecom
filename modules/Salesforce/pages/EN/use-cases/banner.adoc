@@ -1,0 +1,94 @@
+=== Banner
+The header of a page allows a banner to be displayed in which either a static image or a slider can be integrated.
+Both variants each correspond to a section, which is available for the <<hp, homepage>> and for normal <<contentpage,content pages>>, as well as in <<blog,articles>> and for <<detail_pages,category and product pages>>.
+
+These are described in detail in the following sub-chapters.
+
+.Slider
+image::slider.png[]
+
+
+// ************************************ Slider ************************************
+[[slider]]
+==== Slider
+The slider corresponds to an image list.
+All entries in this list correspond to a slider item and are displayed one after another in the header of a page.
+
+[underline]#*Editor view*# +
+With the slider, the editor is able to create a list of images, which can each be assigned a title as well as a link to a <<detail_pages,category or product page>>.
+The images can be selected from the media store or uploaded with the help of the input component.
+
+A <<cat_prod_link,link>> to a category or product page is specified by entering link text and the associated product or category ID.
+Both fields are automatically populated when a product or category is transferred from one of the two reports.
+As the link refers to the entire banner, its link text is only used as a tooltip and is not displayed as a clickable link.
+
+The selected images are displayed as a slider in the header of the corresponding page and can be cropped individually using the corresponding {fs} functionality.
+
+[underline]#*Developer view*# +
+The slider is based on the https://v4-alpha.getbootstrap.com/components/carousel/[Bootstrap carousel] and integrates the list of images selected by the editor.
+The images are selected via an `FS_CATALOG` input component, whose individual entries use the template for the slider item.
+The input component has the `upload=yes` parameter, which allows the editor to upload new images.
+
+To crop the images, the `SLIDE` <<resolutions,resolution>> is required, which is already applied in the project properties of the reference project and must be specified in the HTML channel:
+
+[source,xml]
+.Specifying the resolution
+----
+$CMS_RENDER(template:"media_link",mediaref: st_picture,res:"SLIDE")$
+----
+
+The entire slider is assigned to the `set_sectionContent` variable, which is required during generation of the <<hp,homepage>> or a <<detail_pages,category or product page>> to populate the corresponding XML file.
+For a <<contentpage,content page>>, however, the variable is only output.
+
+As the slider uses no content from {ccloud}, it does not have to be labeled with HTML tags, and is shown in the preview without substitution.
+
+// ************************************ Banner Image ************************************
+[[banner_image]]
+==== Banner image
+The banner image corresponds to a static image that is displayed in the header of a page.
+
+[underline]#*Editor view*# +
+The static banner image is selected either via the media store or by uploading a new image.
+With the help of the standard {fs} functionality, it can be cropped to the required image section.
+
+In addition, the section offers editors the following further configuration options:
+
+* Maintaining a one-line title
+* Specifying a link to a category or product page
+* Defining the size and banner display
+
+Once a title has been entered, it will have a blue background and can be positioned left, right, or center on the banner image.
+In doing so, it should be specified whether the blue-shaded background is displayed on the left or right, only as a narrow strip, or over the entire height of the banner.
+In the central position, it generally spans the entire height.
+The input component for positioning only becomes visible when the title is entered and is otherwise hidden.
+
+A <<cat_prod_link,link>> to a category or product page is specified by entering link text and the associated product or category ID.
+Both fields are automatically populated when a product or category is transferred from one of the two reports.
+As the link refers to the entire banner image, its link text is only used as a tooltip and is not displayed as a clickable link.
+
+To define the size of the banner, the options `Small` and `Big` are available for editors. +
+The `Small` option minimizes the height of the banner and displays it only as a narrow strip.
+This could lead to a selected image being cropped at the bottom. +
+The `Big` option displays the banner without any height restrictions and also allows the editor to define a design.
+
+The options `None`, `Top`, and `Bottom` are available for the design.
+The `None` option results in no changes being made to the banner, while for the other two options, a white overlay is added to the upper left or lower right corner.
+
+.Banner image with 'Top' design
+image::bannerimage.png[]
+
+[underline]#*Developer view*# +
+The HTML channel references the selected image and displays it together with the configured title and link, while taking into account the image section and layout defined by the editor.
+To crop the image, the `BANNER` <<resolutions,resolution>> is required, which is already applied in the project properties of the reference project and must be specified in the HTML:
+
+[source,xml]
+.Specifying the resolution
+----
+$CMS_RENDER(template:"media_link",mediaref:st_picture,res:"BANNER")$
+----
+
+The _st_picture_ input component has the `upload=yes` parameter, which allows the editor to upload new images, as well as to select an existing image from the media store.
+
+The entire content is assigned to the `set_sectionContent` variable, which is required during generation of the <<hp,homepage>> or a <<detail_pages,category or product page>> to populate the corresponding XML file. For a <<contentpage,content page>>, however, the variable is only output.
+
+As the image is referenced from the media store of the {fs} project and is therefore not affected by substitution of {sf} content, it does not have to be labeled with HTML tags.

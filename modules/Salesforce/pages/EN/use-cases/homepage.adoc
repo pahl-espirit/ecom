@@ -1,0 +1,87 @@
+[[hp]]
+=== Homepage
+The homepage corresponds to the start page of the reference project supplied and is therefore displayed when the {wc} is first opened.
+Since its structure differs from that of the other content pages, it has its own template.
+This is referenced in the project just once.
+
+[underline]#*Editor view*# +
+The homepage offers the editor three options for entering content:
+
+. The header of the page displays a banner in which either a <<banner_image,static image>> or a <<slider,slider>> can be integrated.
+. In the main area of the page:
+** Up to five products can be displayed in the form of a <<grid_container,grid container>>, which provides seven different options for arranging the products.
+** Any number of products can be linked in the form of <<hot_spots,hot spots>> on a static image.
+
+The sections required for entering content are covered in more detail in the corresponding sub-chapters.
+
+[underline]#*Developer view*# +
+The homepage template primarily defines how the page is displayed in the <<uc_preview,{fs} preview>>, whereas assets are predominantly generated in the integrated sections.
+However, certain requirements for generation are managed in the form as well as in the HTML channel.
+The developer view must therefore take both aspects into account.
+
+*Preview* +
+{ccloud} supports a range of page types.
+In order to display editorial content in the <<uc_preview,{fs} preview>> or in {wc}, {fs} must generate the correct storefront URL to query the corresponding page in {ccloud}.
+
+The page type to be used for the {fs} preview is defined in the `Preview Page Type` form field.
+As `Home` is the only parameter provided for the homepage, it is selected as a default value and the input component is hidden.
+
+To determine the desired storefront URL, it must also be ensured that the language codes used in {fs} and in {ccloud} match.
+This task is performed by the _language_mapping_ format template, which is integrated in the HTML channel.
+If the language codes do not match, {fs} is unable to determine the corresponding page for the preview.
+
+The sections maintained for the homepage are output within unique HTML comments.
+These always consist of a start and an end expression and denote the individual content areas.
+Based on the comments, {fs} substitutes the slots in the preview with editorial content.
+
+[source,FirstSpirit]
+----
+<!-- CMS-HOME-MAIN-START -->
+   $CMS_RENDER(template:"mpp_body_wrapper",body:"home_main_m")$
+   $CMS_RENDER(template:"empty_content_slot",label:"Home Main",body:"home_main")$
+<!-- CMS-HOME-MAIN-END -->
+
+<!-- CMS-HOME-CATEGORIES-START -->
+   $CMS_RENDER(template:"mpp_body_wrapper",body:"home_categories_m")$
+   $CMS_RENDER(template:"empty_content_slot",label:"Home Categories",body:"home_categories")$
+<!-- CMS-HOME-CATEGORIES-END -->
+
+<!-- CMS-HOME-CC-OVERRIDE-START -->
+   $CMS_RENDER(template: "cc_createsectionwe_api")$
+<!-- CMS-HOME-CC-OVERRIDE-END -->
+----
+
+If a content area has no sections, {fs} displays a gray-shaded area in the preview instead (see figure <<empty_slot_hp>>).
+This shows the name of the content area and has a button that allows new sections to be generated in {wc}.
+The display of the gray area controls the _empty_content_slot_ format template, while the function of the button is implemented in the _cc_createsectionwe_api_ format template.
+It contains JavaScript, which may be integrated in the page only once.
+
+[[empty_slot_hp]]
+.Empty Slot
+image::empty_slot_hp.png[]
+
+Should further substitutions be required in addition to the exchange of slots, specific regular expressions can be defined.
+These have their own syntax and are summarized in the _Preview Generation_ format template.
+It controls the generation of the <<uc_preview,preview>> and is referenced in all page templates of the reference project.
+
+*Generation* +
+The assets created during the generation are filed in a folder structure in {sf}.
+A corresponding folder is therefore defined for each page template in the reference project.
+The homepage form has the hidden `SFCC Parent Folder` field, whose value is assigned to the `set_parent_id` variable.
+It is evaluated in the integrated sections.
+
+[source,FirstSpirit]
+----
+$CMS_SET(set_parent_id,pt_sfcc_parentFolder)$	
+----
+
+A further requirement for generating assets is that the corresponding page must be marked as translated in {fs}.
+If this is not the case, the generation is canceled.
+
+[source,FirstSpirit]
+----
+$CMS_IF(!#global.preview && !#global.page.isTranslated)$
+   $CMS_SET(#global.stopGenerate, true)$
+$CMS_END_IF$ 
+----
+

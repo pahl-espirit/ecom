@@ -1,0 +1,176 @@
+[[detail_pages]]
+=== Category and product pages
+The _{modulname}_ module provides an individual report for products and categories in both {jc} and {wc}.
+These reports are used to display the category and product information originating from {ccloud}, which can be used to create and maintain editorial content (see figure <<reports>>).
+
+[NOTE]
+====
+To display the category report, the <<show_report,`Show Category Report`>> checkbox must be activated in the project component.
+====
+
+[[reports]]
+.Reports
+image::reports.png[]
+
+The corresponding report can be used to create both category pages as well as product pages.
+To use this feature, you must define the templates on which these pages will be based, and where they are to be integrated into the structure, in the <<pcomp,project component>>.
+
+[IMPORTANT]
+====
+The `SFCC Context ID` field must be included in the page template that is selected in each case so that the ID of the referenced object can be saved.
+The field can be hidden.
+If this field ought to have a differing identifier for project-specific reasons, then this must be specified within the <<project_settings,project settings>>.
+
+[source,xml]
+----
+<CMS_INPUT_TEXT name="pt_storefrontUrlContextId" hidden="yes" useLanguages="no">
+  <LANGINFOS>
+    <LANGINFO lang="*" label="SFCC Context ID"/>
+  </LANGINFOS>
+</CMS_INPUT_TEXT>
+----
+====
+
+With regard to its category or product page, an object in the report can adopt one of three states:
+
+. A category or product page does not exist and therefore can be created.
+. A category or product page exists, which can be called up.
+. A category or product page exists but either its page reference or the page cannot be found.
+
+The three cases are displayed in different ways and described below.
+
+[IMPORTANT]
+====
+Since the objects in the report are not permanently updated, the display might not reflect the current status.
+====
+
+// ************************************ Seitenerzeugung ************************************
+[[create_detailpage]]
+[underline]#*Creating a category or product page*# +
+Objects for that a category or product page does not yet exist are identified in the report by a gray icon (see figure <<report_create_normal>>).
+If a page template has been defined in the <<pcomp,project component>>, the image:new_detailpage.png[Create Page] button is displayed when such an object is hovered over.
+
+[[report_create_normal]]
+.Creating a category or product page
+image::report_create_normal.png[]
+
+[TIP]
+====
+A button is also displayed in the <<uc_preview,{fs} preview>> on <<catlandingpage,category landing pages>>, <<catdetailpage,category detail pages>>, and <<proddetailpage,product detail pages>> that can be accessed via the navigation.
+This button functions in the same way as the button in the report.
+It is only visible if a corresponding category landing page, category detail page, or product detail page does not exist in the {fs} project.
+
+.Creating a category landing page, category detail page, or product detail page
+image::landingpagebutton.png[]
+====
+
+Click on the button in the report or the button on a main category page to open a dialog that is split into two sections and in which a page can be created for the corresponding object.
+
+The top section of the dialog is the `structure selection area`; it is completed automatically and as such is always the same.
+Within the structure, the editor has the option to select the menu level at which to generate the new page.
+The corresponding input component may already have been preassigned.
+In this case, a <<default_folder,structure folder>> will already have been defined in the configuration dialog of the project component.
+However, the editor is free to change this selection.
+
+[NOTE]
+====
+In some cases, the `structure selection area` may be hidden in the dialog.
+In this case, a <<default_folder,structure folder>> will also have been predefined in the project component.
+At the same time, however, a setting will have been made to prevent the editor from changing this preassignment.
+====
+
+Unlike the `structure selection area`, the `form area` underneath is always project-specific.
+It shows the form for the page template specified in the project component.
+The rules defined in the template also apply here.
+
+[[detail_pages_dialog_not_shown_note]]
+[NOTE]
+====
+Within the reference project, the form fields of the category or product pages are automatically populated or have corresponding default values.
+In addition, a structure folder is predefined in the <<pcomp,project component>>, which cannot be changed by the editor.
+Both for the structure selection area and the form area, there is therefore no need for the editor to input anything.
+The dialog is not shown for this reason.
+====
+
+An example dialog is shown in the figure below:
+
+[[report_dialog_newpage]]
+.Dialog for creating a category or product page
+image::report_dialog_newpage.png[]
+
+Click on btn:[Create] to generate the page reference for the category or product page at the selected menu level.
+The corresponding page is created in a specific folder in the Page Store.
+Within this folder, a distinction between category and product pages is made once again on the basis of subfolders.
+The names of the page references and pages generated are based on the `product ID (product name)` or `category ID (category name) schema`.
+
+If a script has also been specified in the <<pcomp,project component>>, it is usually executed before and after the category or product page is created.
+The _create_sfcc_item_wizard_ script included in the reference project supplied does, however, have a corresponding query, which is used to initiate the script, but only once the page has been created.
+It marks each created category or product page as translated for all languages and saves its storefront ID in the form.
+
+[IMPORTANT]
+====
+Please note that only the code from the HTML channel of the script is executed.
+====
+
+The following parameters are transferred to this script:
+
+[options="header", cols="25,25,80" ]
+|=======
+|Data type | Object name | Description
+|BaseContext | context | The context in which the script is executed.
+|boolean | beforeInstantiation | `true` if the script is executed before the page is created; otherwise `false`.
+|KeyProvider | keyProvider | The object for that a category or product page is being created. This is either a `product` or a `category`.
+|=======
+
+[TIP]
+====
+The Javadoc documentation supplied describes the `KeyProvider`, `Product`, and `Category` interfaces.
+====
+
+Once the process to generate the category or product page and the execution of the script have been completed, the new page is called up automatically.
+
+
+// ************************************ Seitenaufruf ************************************
+[underline]#*Calling up an existing category or product page*# +
+Objects for that a category or product page already exists are identified in the report by a green icon (see figure <<report_jump_to>>).
+When you hover over them, the image:report_jump_icon.png[] button is displayed.
+Click this button to call up the corresponding category or product page.
+
+[[report_jump_to]]
+.Product with product page
+image::report_jump_to.png[]
+
+
+// ************************************ Defekte Referenzen ************************************
+[underline]#*Broken reference to a category or product page*# +
+If there are objects with a category or product page but the page reference or underlying page cannot be found, the objects are identified in the report by a red icon (see figure <<report_ref_broken>>).
+When you hover over them, the image:report_broken_icon.png[Broken Reference] button is displayed.
+Click on this button to open a dialog containing more information.
+
+[[report_ref_broken]]
+.Broken object
+image::report_ref_broken.png[]
+
+// ************************************ Versteckte Kategorien ************************************
+[[hidden_categories]]
+[underline]#*Hidden categories*# +
+When the category report is called up, both visible as well as hidden categories are displayed by default.
+By removing the `Include hidden categories` check mark, the results list can be limited to include only visible categories:
+
+[[exclude_hidden_categories]]
+.Hiding hidden categories
+image::category_report_hidden_excluded.png[]
+
+[NOTE]
+====
+The identification of existing, broken, and unavailable references to category pages described in this chapter applies also to hidden categories.
+====
+
+// Kategorie-Landingpages
+include::category-landing-pages.adoc[]
+
+// Kategoriedetailseiten
+include::category-detail-pages.adoc[]
+
+// Produkt-Detailseiten
+include::product-detail-pages.adoc[]

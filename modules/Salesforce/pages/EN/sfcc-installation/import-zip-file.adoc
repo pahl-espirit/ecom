@@ -1,0 +1,7 @@
+[[sfcc_zip_file_import]]
+=== Import of the zip file importExamples
+For the setup of the <<sfcc_job_schedules,job schedules>> and the <<sfcc_content_cleanup, content cleanup>> as well as for the <<sfcc_import_slot_configs, slot configurations>> 
+various files are required, which are stored in the file _importExamples.zip_.
+The zip file is included in the _metadata_ directory within the delivery and must be added to the {ccloud}.
+To do so, it must be imported via the `*menu:Administration[Site Development>Site Import & Export]*` page.
+The files contained in it require different configuration steps, which are explained in detail in the corresponding subchapters.

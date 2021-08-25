@@ -1,0 +1,50 @@
+=== Social Media
+Editors can use content from Facebook, Twitter, and Instagram in the reference project and embed it in a content page.
+There is also the option to place buttons on a page so that visitors can use them to share the website link via various platforms.
+
+==== Embedding content
+Content from social networking sites can be embedded in a website.
+
+[underline]#*Editor view*# +
+The _Social Media Embedding_ section template is used for embedding content from social networking sites.
+It requires one of the available platforms - Facebook, Twitter, or Instagram - to be selected within the section form.
+
+If Facebook is being used as a platform, the type of post to be embedded must also be defined.
+Posts, comments, and videos are available for selection.
+In all cases, the URL of the post must then be entered in the corresponding form field.
+There may also be additional options available for changing the way in which a post is displayed, depending on the type of post.
+
+Twitter also provides a whole host of different options for editors:
+It is possible to choose the List, Profile, or Collection Timelines option in the form in order to embed it in the page.
+To do this, the editor must enter the name of the Twitter account associated with the timeline in the `Screen Name` form field.
+List and Collection Timelines also require the timeline to be identified in the `ID` field.
+
+Embedding an Instagram post simply requires the URL of the post to be entered in the form.
+
+A <<slot_configuration,slot configuration>> must also be specified for all page templates, with the exception of the <<contentpage,content page>>.
+
+[underline]#*Developer view*# +
+The section template uses various mechanisms to embed the post in the page, depending on the selected platform.
+The resulting HTML markup saves them in the `set_sectionContent` variable, which simply outputs them if a <<uc_preview,{fs} preview>> is generated.
+When a content page is being generated, the value of the variable must also be output so that the value can be included in the content asset of the content page.
+A new asset is created on other pages instead, and the value of `set_sectionContent` is stored in this asset.
+
+==== Sharing the page
+It is possible to give visitors to the website the option of sharing the page via various social networking sites.
+A button for each supported platform can be placed on the page.
+
+[underline]#*Editor view*# +
+The _Social Media Share_ section template is provided for using this function.
+In this template, editors first select one or more social networking sites, for which they would like to add buttons in their page.
+The size and position of the buttons only need to be defined once for all the selected platforms.
+The supported platforms are Facebook and Twitter.
+
+In the case of Facebook, there is the option to add individual text to the button; this text is maintained in the section form.
+In the case of Twitter, editors have the option of storing the tweet text and hashtags.
+
+A <<slot_configuration,slot configuration>> must also be specified for all page templates, with the exception of the <<contentpage,content page>>.
+
+[underline]#*Developer view*# +
+Depending on the selected networks, this template also generates different HTML content for the implementation of buttons.
+Unlike <<contentpage,content pages>>, which simply output the markup, the other pages save the markup in a content asset.
+In the case of a <<uc_preview,preview>>, the markup is simply displayed.

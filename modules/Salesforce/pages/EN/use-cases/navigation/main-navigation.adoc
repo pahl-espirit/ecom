@@ -1,0 +1,42 @@
+[[navigation]]
+==== Main navigation
+The main menu is primarily used to navigate between the various <<catlandingpage,category pages>> within the preview (see figure <<main_navigation>>).
+The main menu is part of the HTML downloaded during the <<uc_preview,preview>> from the {ccloud} Storefront and is therefore predefined by {ccloud}.
+
+[[main_navigation]]
+.Navigation
+image::navigation.png[]
+
+[underline]#*Editor view*# +
+The main menu allows the editor to switch between <<catlandingpage,category pages>>.
+If an equivalent exists within {fs} for a category page that has been called up, then the content of this page is shown.
+The editor is then able to edit the content originating from {fs}.
+If no equivalent to the category page that has been called up exists within {fs}, the original content obtained from {ccloud} is issued instead.
+
+[underline]#*Developer view*# +
+To display a <<catlandingpage,category page>> that exists in {fs} to the editor, the links on the <<catlandingpage,category pages>> are redirected to a dispatcher page via a specific regular expression initially in the reference project.
+
+[source,xml]
+.Redirecting the navigation links
+----
+$-- Change Category Reference --$
+<!-- CMS-REGEX-PATTERN-START -->
+   regex-match="<a.*?\sdata-cgid="([^"]*?)""
+   regex-value="<a href="$CMS_REF(pageref:"preview_dispatcher")$/forceRefresh=1?type=category&id=$1" id="$1""
+<!-- CMS-REGEX-PATTERN-END -->
+----
+
+This regular expression, along with other specific regular expressions, forms part of the _Preview Generation_ format template.
+
+The _Preview Dispatcher_ referenced in this expression is a technical page based on the page template with the same name.
+The _Preview Dispatcher_ iterates over the content of the structure folder _category_pages_ by using the {fs} navigation function.
+
+[NOTE]
+====
+This structure folder corresponds to the folder that you configured as the target folder for creating new <<catlandingpage,category pages>> when <<pcomp,configuring the project component>>.
+====
+
+For each page found, the _Preview Dispatcher_ memorizes the associated category, together with a corresponding reference to the page.
+As a result, for each call it can then decide whether a page exists in {fs} for the requested category and forward accordingly.
+
+If it was not possible to identify any pages created in {fs} for a requested category, you are forwarded to a generic category preview page.

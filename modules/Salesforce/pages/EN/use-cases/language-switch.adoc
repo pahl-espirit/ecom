@@ -1,0 +1,40 @@
+=== Changing the language
+The reference project supplied uses English as the master language.
+It also has Italian, French, Japanese, and Chinese as project languages.
+To switch the view of a page to one of these languages, the project provides the option of changing languages in the <<uc_preview,preview>>.
+This is displayed either as a dropdown menu or within a menu as a list item, depending on the screen size used.
+
+[[langs]]
+.Changing the language
+image::langs.png[]
+
+[underline]#*Editor view*# +
+Within the preview of the reference project, the change of language is displayed on the <<hp,homepage>>, on <<contentpage,content pages>>, and on <<detail_pages,category and product pages>>.
+This enables the editor to maintain editorial content on each page for all the languages contained within the project.
+
+As the selection of existing languages is determined automatically based on the project languages and the display also cannot be influenced, the editor has no access to the function other than to simply use it.
+
+[underline]#*Developer view*# +
+The change of language option is generated through the _Language Dropdown_ format template and made available for use in the <<uc_preview,preview>> with the _Preview Generation_ format template.
+This is displayed either as a dropdown menu or within a menu as a list item, depending on the screen size used (see figure <<langs>>).
+
+Both variants reference the _Language Dropdown_ format template, which controls the display of variants via the `showInMenu` parameter to be transferred.
+As the change of language replaces all of the corresponding {sf} content, both variants must be labeled with unique HTML comments.
+
+[source,xml]
+.Changing the language in the Preview Generation format template
+// codeAnfang
+----
+$-- Preview Language Switch --$
+<!-- CMS-LANGUAGE-DROPDOWN-START -->
+   $CMS_RENDER(template:"sfcc_language_dropdown", mobile:false)$
+<!-- CMS-LANGUAGE-DROPDOWN-END -->
+
+<!-- CMS-LANGUAGE-DROPDOWN-MOBILE-START -->
+   $CMS_RENDER(template:"sfcc_language_dropdown", mobile:true)$
+<!-- CMS-LANGUAGE-DROPDOWN-MOBILE-END -->
+----
+// codeEnde
+
+The _Language Dropdown_ format template first determines the language currently displayed in the preview and shows this along with the corresponding icon as the first entry in the dropdown or language menu.
+The list of all languages contained within the project is then queried and made available as further selection options with the exception of the previously defined language.

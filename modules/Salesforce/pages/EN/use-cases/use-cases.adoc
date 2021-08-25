@@ -1,0 +1,62 @@
+== Use cases
+
+The _{modulname}_ module provides various options for accessing {ccloud} content and for using this in {fs}.
+These functions are equivalent in both clients and are described in the following using the reference project _{projectname}_ supplied in the form of use cases.
+The description of each use case is aimed at editors as well as {fs} developers.
+
+// Vorschau
+include::preview.adoc[]
+
+// Generierung
+include::generation.adoc[]
+
+// Navigation
+include::navigation/navigation.adoc[]
+
+// Homepage
+include::homepage.adoc[]
+
+// Inhaltsseiten
+include::content-pages.adoc[]
+
+// Login Seite
+include::login.adoc[]
+
+// Detailseiten
+include::detail-pages/detail-pages.adoc[]
+
+// Banner
+include::banner.adoc[]
+
+// Grid Container
+include::grid-container.adoc[]
+
+// Hot Spots
+include::hot-spots.adoc[]
+
+// Blog
+include::blog.adoc[]
+
+// Text-Bild-Absatz
+include::text-picture.adoc[]
+
+// Product Tiles
+include::product-tiles.adoc[]
+
+// Video
+include::video.adoc[]
+
+// Social Media
+include::social-media.adoc[]
+
+// Sprachwechsel
+include::language-switch.adoc[]
+
+// Links
+include::links.adoc[]
+
+// Slot-Konfigurationen
+include::slot-configurations.adoc[]
+
+// Freigabe, Löschung & Veröffentlichung
+include::workflows.adoc[]

@@ -1,0 +1,27 @@
+[[login_page]]
+=== Login page
+Just like the <<hp,homepage>>, the login page has a special role to play.
+This means that it differs from the other content pages.
+It is used to log into the shop and is only referenced once in the project.
+
+[underline]#*Editor view*# +
+The login page offers the editor various options for entering content:
+
+* The header of the page displays a banner in which either a <<banner_image,static image>> or a <<slider,slider>> can be integrated.
+* <<textpicture,Text Picture sections>> can be added to the top part of the main area of the page.
+* The bottom part of the main area of the page enables the display of:
+** <<producttiles,Product Tiles>>.
+** <<textpicture,Text Picture sections>>.
+
+[underline]#*Developer view*# +
+As both the form and the content of the HTML channel for the login page and the <<hp,homepage>> broadly match, both developer views are also nearly identical.
+Therefore, only the differences between the two templates will be described here.
+
+The page type to be used for the {fs} preview is also defined for the login pages in the hidden `Preview Page Type` form field.
+Just as for <<catdetailpage,category>> and <<proddetailpage,product detail pages>>, the `Custom` value is required in this context.
+It is used for the implementation of page types that are not covered by default by the <<webconf,`{filter}`>> as well as for the manual specification of the controller to be used.
+The controller must be specified using the hidden `pt_storefrontUrlCustomController` field.
+For login pages, its default value is `Login-Show`, which is added to the Storefront URL.
+
+For generation, as is the case with the <<hp,homepage>>, it is important to ensure that the login page is marked as translated in {fs}.
+Only then the generation is carried out and the associated assets will be created.

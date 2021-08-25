@@ -1,0 +1,10 @@
+[[webconf]]
+=== Configuration of the web component
+Part of the web component of the _{modulname}_ module are the {proxy} and the {filter}.
+Both components can be configured via the `web.xml` and are described in more detail in the following two chapters.
+
+// Der ContentConnect Preview Proxy
+include::proxy-servlet.adoc[]
+
+// Der ContentConnect Preview Filter
+include::preview-filter.adoc[]

@@ -1,0 +1,21 @@
+[[wcomp]]
+=== Adding web components
+Two web components are required for the `Preview` and for `{wc}` and have already been added to the reference project supplied.
+Nevertheless, they still need to be installed on an active web server.
+To do this, open the `*{manager}*` and select `*menu:Project properties[Web components]*`.
+
+Inside the main panel, various tab pages are visible.
+Each tab page contains a list of the existing web components.
+The list contains the following entries both for the `Preview` as well the `{wc}` (see figure <<webcomponents>>):
+
+* `{modulname} Web Component`
+* `FS_JSTL_WebApp` 
+
+Select a `Web server` on both tab pages via the selection box and start the installation by clicking the btn:[Install] button.
+After successful installation, a dialog opens, in which the activation of the `Web server` must be confirmed.
+
+More detailed information on how to add web components is available in the _{fsadmindoc_en}_.
+
+[[webcomponents]]
+.Web components in the project properties
+image::webcomponents.png[]

@@ -1,0 +1,34 @@
+=== Release, deleting, and deployment
+Content is released, deleted, and deployed within the supplied reference project _{projectname}_ via workflows.
+For this reason, it contains a publish workflow, as well as the _{bwfs}_.
+
+[underline]#*Editor view*# +
+The _{bwfs}_ provide an editor with the option to release modified content and to remove {fs} elements both from the Current State and the Release State.
+Both workflows are based on the four-eyes principle and are always executed in the context of a page.
+If a conflict arises while a workflow is running, the workflow can be continued once the conflict has been rectified.
+
+The publish workflow is available to editors to synchronize changes made in the {fs} project on the {sf} side.
+It initiates the <<schedule,deployment schedule>> and is therefore executed without any context.
+For this reason, it is started in {wc} via the `*Actions*` menu and in {jc} via the `*Task list*`.
+The deployment schedule transfers all released content to {ccloud} and triggers the deletion of assets and <<slot_configuration,slot configurations>>, which have been removed in {fs}, on the {sf} side.
+
+.Publish workflow in {wc}
+image::publish_wf.png[]
+
+[underline]#*Developer view*# +
+The release workflow and the delete workflow correspond to those of the _{bwfs}_ module and have not been changed.
+The release workflow is oriented towards the administrative direct release and provides its functionality for the editor.
+The delete workflow makes it possible to remove elements from the Current State and the Release State.
+
+To transfer the changes made in the {fs} project, the publish workflow has also been added to the reference project.
+Using the _SFCC Release Deployment_ script, this determines the <<schedule,deployment schedule>> and executes it.
+Unlike the other two workflows, it does not refer explicitly to one single page.
+For this reason, the option `Workflow executable without context` is activated in its `*Properties*`.
+
+.Publish workflow options
+image::wf_options.png[]
+
+[NOTE]
+====
+To also remove the assets and <<slot_configuration,slot configurations>> deleted in the {fs} project on the {sf} side, the publish workflow must be executed.
+====

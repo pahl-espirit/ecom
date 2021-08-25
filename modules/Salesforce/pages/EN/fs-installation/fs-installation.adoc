@@ -1,0 +1,33 @@
+== {fs} - Installation and configuration
+Various components must be installed and configured in order to use the functions of the _{modulname}_ module.
+The following sub-chapters explain the necessary steps for installing and configuring components in {fs}.
+
+// Installation der Module
+include::module-installation.adoc[]
+
+// WebDAV-Verwendung mit https
+include::webdav-https.adoc[]
+
+// Projekt-Import
+include::project-import.adoc[]
+
+// Konfiguration der Projektkomponente
+include::project-component-configuration.adoc[]
+
+// Hinzufügen der  Web-Komponenten
+include::web-components-installation.adoc[]
+
+// Konfiguration der Web-Komponente
+include::web-component-configuration/web-component-configuration.adoc[]
+
+// Auflösungen
+include::resolutions.adoc[]
+
+// Deployment-Auftrag
+include::deployment-schedule.adoc[]
+
+// Arbeitsabläufe
+include::workflows.adoc[]
+
+// Projekteinstellungen
+include::project-settings.adoc[]

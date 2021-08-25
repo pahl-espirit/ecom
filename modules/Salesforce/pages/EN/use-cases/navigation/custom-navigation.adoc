@@ -1,0 +1,50 @@
+==== Expanding the navigation function
+Editors can expand the main navigation function.
+New menu items are placed in front of those that already exist.
+
+[underline]#*Editor view*# +
+To add a navigation item, simply place a <<contentpage,content page>> below the `Left Navigation` menu item.
+Once the page has been released and transferred to the {ccloud}, the new navigation item will appear in the storefront.
+As shown in the <<custom_navigation>> figure, it is also possible to create nested menu structures.
+
+[[custom_navigation]]
+.Example of expanding the main navigation function
+image::custom_navigation.png[]
+
+[IMPORTANT]
+====
+Menu structures may be nested up to a maximum of 4 levels deep.
+====
+
+[underline]#*Developer view*# +
+The new `menu-custom-left` global slot has been introduced on the {sf} side using the `menu.isml` template supplied, and is surrounded by the following comments:
+`<!-- CMS-CUSTOM-NAVIGATION-LEFT-START -->` and `<!-- CMS-CUSTOM-NAVIGATION-LEFT-END -->`.
+This slot can be populated by {fs} in the same way as any other slot and substituted in the preview.
+A content asset for this slot contains the HTML for all elements that are to be used for expanding the navigation function.
+
+This markup is created in {fs} in the `custom_navigation` format template.
+This template contains a navigation function that searches all page references in the `Left Navigation` folder.
+It then generates the required HTML for all the pages found - both for the preview and for the live state.
+This is necessary so that the pages can be integrated into the main navigation function.
+For the preview, the result is also enclosed within the following HTML comments: `<!-- CMS-CUSTOM-NAVIGATION-LEFT-START -->` and `<!-- CMS-CUSTOM-NAVIGATION-LEFT-END -->`.
+The template outputs the HTML for the navigation function in both cases.
+
+To enable this navigation function to be used in the preview, each page template must integrate the `custom_navigation` format template by calling up the `CMS_RENDER` function.
+
+The `Left Navigation` page template, plus a page and a page reference based on this template, are provided for the purpose of generating a content asset.
+The page reference is stored in the `Left Navigation` structure folder.
+As described above, the page template integrates the `custom_navigation` format template and saves the generated content in a content asset via the XML collector.
+
+Unlike the other page templates, `Left Navigation` does not provide any sections.
+A <<slot_configuration,slot configuration>> that will be output in the event of a generation must therefore be maintained in its form.
+For this purpose, the page template sets two variables prior to output.
+The first of these is a `contentSlotId`, since there is no content area from that a slot ID could be derived.
+The value of these variable is `menu-custom-left`, since the new slot referred to above is to be populated.
+The second variable is `contentSlotTemplate`, which is set to the value of the `pt_sfccTemplate` form field.
+The fallback value of this field is `slots/content/contentAssetBody.isml`.
+Without this variable, the template for <<slot_configuration,slot configurations>> would attempt to derive the ISML template from the current section.
+
+[IMPORTANT]
+====
+The `Left Navigation` page reference as well as the corresponding page must be manually released once.
+====

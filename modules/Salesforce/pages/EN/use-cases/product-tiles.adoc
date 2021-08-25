@@ -1,0 +1,24 @@
+[[producttiles]]
+=== Product Tiles
+Like article tiles, which can only be used in <<blog_article,blog articles>>, this section presents three products side by side in a column view.
+It is only permitted in a blog article or on a product detail page and shows the name, image, and a description for each product.
+Clicking the product name opens the corresponding <<proddetailpage,product detail page>>.
+
+.Product Tiles
+image::product_tiles.png[]
+
+[underline]#*Editor view*# +
+In addition to the three products to be selected, the editor can specify an optional title made up of a maximum of 50 characters to be positioned on the left, on the right, or in the center above the product tiles.
+The products can be referenced in the form using drag-and-drop (the product name is added as link text).
+Unlike the product information, the product name can be edited.
+
+[NOTE]
+====
+If the selection created by the editor contains fewer than three products, the page cannot be released.
+It is not possible to select more than three products.
+====
+
+[underline]#*Developer view*# +
+The products selected by the editor are referenced and the title is positioned within the HTML channel.
+For each product, its name, a product image, and a description are determined and displayed.
+As the information is taken from {sf} without substitutions, HTML tags are not required.

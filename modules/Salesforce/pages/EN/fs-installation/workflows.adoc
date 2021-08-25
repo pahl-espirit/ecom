@@ -1,0 +1,46 @@
+=== Workflows
+Content is released, deleted, and published by editors within the supplied reference project _{projectname}_ via workflows.
+For this reason, it contains a publish workflow, as well as the _{bwfs}_, which can be used as an alternative to project-specific workflows.
+
+[underline]#*Installing the {bwfs} module*#
+
+Before using the workflows, you must install the _{bwfs}_ module on the {fs} server and activate the web component.
+The necessary steps are the same as for <<install,installing the other modules>> and <<wcomp,activating the associated web components>>.
+However, the web component for the _{bwfs}_ is only needed on the `{wc}` tab page.
+
+In addition, to use _{bwfs}_ in the {wc}, the provided `{bwfs} Status Provider` must be selected in the `*menu:Project properties[{wc}]*` area within the `*{manager}*`.
+In the reference project _{projectname}_, this setting has already been applied (see figure <<statusprovider>>).
+
+[[statusprovider]]
+.Element Status Provider
+image::statusprovider.png[]
+
+In addition, in the `*menu:Project properties[Options]*` area, the `Workflow for deleting elements` is preselected.
+As a result, any action to delete elements within the project (Del button, delete icon) is executed via this workflow.
+The native (independent of a workflow) deletion of elements is therefore not available - not even for the administrator.
+
+[underline]#*Templates*#
+
+The _{bwfs}_ and the workflow supplied with the _{sp}_ require different templates.
+Usually, these need to be imported for the _{bwfs}_ via the context menu in the {fs} project used.
+However, they are already available in the reference project and importing the templates is therefore not necessary.
+
+[NOTE]
+====
+The publish workflow initiates the <<schedule,deployment schedule>> and requires its name for this.
+If this deviates from the _Generate and deploy to SFCC_ expression, the value of the `scheduleName` variables must be adjusted accordingly within the script _SFCC Release Deployment_.
+====
+
+[underline]#*Permission assignment*#
+
+In the final step, the workflows must be authorized in the individual stores so that they can be executed on {fs} elements.
+To do this, select `*menu:Extras[Change permissions]*` from the context menu of the stores' root nodes to call up the permission assignment.
+This step has also already been carried out in the reference project and is therefore omitted.
+
+[NOTE]
+====
+The permissions for executing workflows set on the stores' root nodes relate to the `Everyone` group.
+This can only be changed by modifying the permissions manually.
+====
+
+You can find more detailed information in the _{basicwfsdoc_en}_.

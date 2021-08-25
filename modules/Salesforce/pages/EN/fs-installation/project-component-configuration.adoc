@@ -1,0 +1,237 @@
+[[pcomp]]
+=== Configuring the project component
+A project-specific configuration is required in order to use the _{modulname}_ module.
+It is set up using the project component, which is already added to the reference project supplied.
+
+To configure the project component, open the `*{manager}*` and select `*menu:Project properties[Project components]*`.
+A list of all existing project components is displayed in the main panel.
+Select the entry `{modulname} Project Configuration` and click btn:[Configure] to open the associated dialog (see figure <<config>>).
+
+[IMPORTANT]
+====
+The subsequent configuration is used by the module services.
+The service and all running clients must be restarted each time the configuration is changed.
+Otherwise, the change in question will not be applied either to the services or to the clients.
+====
+
+[[config]]
+.Configuration dialog for the project component
+image::config.png[]
+
+[[project-app-config-base-url]]
+Base URL::
+Start by entering the `Base URL`, which is derived from the URL of the {ccloud} instance and the ID of the site being used:
++
+`\https://<SUBDOMAIN INSTANCE>.demandware.net/s/<SITE ID>`
++
+Based on this structure, a unique connection between the {fs} project and the {ccloud} site is always guaranteed.
++
+The `Base URL` field is a mandatory field.
+
+[IMPORTANT]
+====
+To avoid problems concerning the certificate, it must be ensured that the subdomain does not contain any periods in its name.
+====
+
+[[clientid]]
+Client ID::
+The `Client ID` is also a mandatory field.
+This is required in order to be able to use the `Open Commerce Shop API`.
+
+[IMPORTANT]
+====
+The `Client ID` and the `Base URL` are essential for the connection between {ccloud} and {fs}.
+If one of the two pieces of information is incorrect or is not available, then the relevant report for the product search is hidden in both {fs} Clients.
+====
+
+Password::
+The components of the _{modulname}_ API require password-based authentication against {ccloud}.
+For this reason, a password that is defined when the API client is registered with {ccloud} is required in addition to the client ID.
+
+Refinements::
+Refinements that improve product searches are defined in this configuration field.
+Refinements are entered as key value pairs separated using commas.
+
+[NOTE]
+====
+Up to the first nine key value pairs entered are used ({ccloud} will not accept more than nine refinements).
+
+The format of the values of the key value pairs matches the format {ccloud} expects for refinement values.
+Both multiple values and sets of values can be entered for a refinement:
+
+* `cgid=new-arrivals|electronics`
+* `price=(0..100)`
+====
+
+[NOTE]
+====
+Since a refinement is also used for category searches, two special cases need to be considered:
+
+In the first case,
+
+* the product search is filtered by a category and
+* the configuration contains nine refinement definitions,
+* *none* of which is the `cgid` category refinement.
+
+In this case, there are a total of ten refinement definitions, which is not permitted.
+Therefore, one of the refinements from the configuration is ignored so that the product search can be filtered by a category.
+
+In the second case,
+
+* the product search is also filtered by a category and
+* the configuration contains the `cgid` category refinement.
+
+In this case, there is a duplicate definition for the `cgid` category refinement:
+one from the module configuration and one from the product search; the latter is used.
+The value from the configuration is then used as the default value. It can be overwritten by the editor.
+====
+
+Locale::
+The `Locale` identifies the language and region of the current project.
+A maximum of one ID for an active locale that is permitted for storefront requests in the site configured at the top of the dialog may be entered.
+If the field is left blank, the `locale` parameter will not be used in storefront requests.
+
+Auth User::
+If access restriction is activated in {ccloud}, the `storefront` user must be specified in this field.
+
+Auth Password::
+The password belonging to the `storefront` user is specified in this field.
+
+[[product_page_template_mapping]]
+Product Page Template Mapping::
+One of the functions supported by the product report is the user-friendly creation of product pages, which use the page template _Product Detail Page_ in the reference project.
+To enable this, this configuration field allows {sf} render templates to be mapped to {fs} page templates.
+The following rules apply here:
+* The field contains either no content at all or one or more mappings.
+* If the field remains empty, the use of product pages in the project is disabled.
+* Mappings are specified using a list separated by commas: *<mapping>,<mapping>*
+* Each mapping is arranged as follows: *<isml_template>:<fs_template>*
+* To configure a page template for all ISML templates that do not have an explicit mapping, the following form must be used: *default:<fs_template>*
+
+[[default_folder]]
+Default Folder (Product Pages)::
+To create a new product page, it is essential to know where the page is to be integrated into the structure.
+The reference name of the _Product Pages_ structure folder has already been entered here.
+All new product pages within the reference project are created in this folder.
+If the field is left empty, the editor must select a menu level.
+
+Editable Folder (Product Pages)::
+This checkbox makes it possible to specify whether an editor can change the selection made in the `Default Folder (Product Pages)` field.
+The function is activated initially.
+If it is then deactivated, the corresponding input component is hidden in the dialog for <<create_detailpage,creating a category or product page>>.
+In this case, it is not possible for the editor to select or change the menu item for a newly created category or product page.
+
+[IMPORTANT]
+====
+The field `Default Folder (Product Pages)` and the checkbox `Editable Folder (Product Pages)` are ignored if the field `Product Page Template Mapping` is empty.
+If, instead, a mapping is defined, it is *mandatory* that the reference name of a structure folder is specified or that the checkbox is activated.
+Otherwise, it will not be possible to create new product pages due to the lack of assignment to a menu level, and errors will occur.
+====
+
+[[cagegory_page_template_mappings]]
+Category Page Template Mappings::
+The mapping of page templates can be configured using this configuration field for the creation of <<detail_pages,category pages>> via the <<category_report,category report>>.
+The following rules apply here:
+* The field contains either no content at all or one or more mappings.
+* If the field remains empty, the use of category pages in the project is disabled.
+* Mappings are specified using a list separated by commas: *<mapping>,<mapping>*
+* Each mapping is arranged as follows: *<isml_template>:<fs_template>[:fallback_category]*
+* The third part of the mapping is optional and is used to specify a <<hidden_categories_note,fallback category>> for category pages that are based on the specified ISML template
+* To configure a page template and an optional fallback category for all ISML templates that do not have an explicit mapping, the following form must be used: *default:<fs_template>[:fallback_category]*
+
+[[hidden_categories_note]]
+[IMPORTANT]
+====
+Categories can be marked as offline within {ccloud}.
+These offline categories are not delivered via the storefront, whereby no preview can be generated for them.
+To make it possible to also maintain category pages for offline categories via the {fs} report, fallback categories must be specified for the associated ISML templates.
+Within the preview for an offline category page, this is then replaced by the configured fallback category.
+====
+
+[TIP]
+====
+We recommend using separate {fs} templates for product pages and category pages.
+====
+
+Default Folder (Category Pages)::
+In the same way as with product pages, for each new category page it is essential to know where the page is to be integrated into the structure.
+The reference name of the _Category Pages_ structure folder has already been entered here.
+All new category pages within the reference project are created in this folder.
+If the field is left empty, the editor must select a menu level.
+
+Editable Folder (Category Pages)::
+In the same way as with the `Editable Folder (Product Pages)` checkbox, here it is possible to specify whether editors can change the selection made in the `Default Folder (Category Pages)` field.
+The function is activated initially.
+If it is then deactivated, the selection option is hidden in the dialog for <<create_detailpage,creating a category page>>.
+In this case, it is not possible for the editor to select or change the menu item for a new page.
+
+[IMPORTANT]
+====
+The field `Default Folder (Category Pages)` and the checkbox `Editable Folder (Category Pages)` are ignored if the field `Category Page Template Mapping` is empty.
+If, instead, a mapping is defined, it is *mandatory* that the reference name of a structure folder is specified or that the checkbox is activated.
+Otherwise, it will not be possible to create new category pages due to the lack of assignment to a menu level, and errors will occur.
+====
+
+[[template_instantiation_script_uid]]
+Template Instantiation Script Uid::
+Select a script to be executed before and after <<detail_pages,category or product pages>> are created in this configuration field (the selection of a script is optional).
+The _create_sfcc_item_wizard_ script specified is used to execute project-specific actions, which are required to generate the preview.
+In the reference project, it marks the created category or product page as translated for all languages.
+
+[IMPORTANT]
+====
+Please note that only the code from the HTML channel of the script is executed.
+====
+
+View Type Priority::
+Images of products from {ccloud} are always provided in a range of sizes, but an image will not necessarily have been stored for every size.
+For this reason, the `View Type Priority` has been provided so that you can define which image sizes you wish to incorporate, separating the information you enter with commas.
++
+In the case shown in the figure <<config>>, the `medium` image associated with each product is identified and is used if it exists.
+If there is no medium image, the `large` image is called up, followed by the `small` one if necessary.
+
+[NOTE]
+====
+As this is not a mandatory input field, it may therefore remain empty if you do not wish to define an order of priority.
+If this is the case, search results from a product query will be shown without an image.
+====
+
+Image Service Base URL::
+{ccloud} provides what is known as an https://documentation.demandware.com/DOC2/topic/com.demandware.dochelp/ImageManagement/ImageTransformationService.html[`Image Service`].
+If you wish to use it, you must specify the URL of the Image Service in the form `http[s]://<image server host name>` at this point.
+Product images are then called up via the Image Service.
+
+[IMPORTANT]
+====
+Specifying the `Image Service Base URL` is optional.
+However, if the field is filled with a URL, then this entry must not contain any errors; otherwise, the relevant report for the product search is hidden in both {fs} Clients.
+This still applies even if the `Client ID` and the `Base URL` are correct (see above).
+====
+
+[[category-search]]
+Use Category Search::
+Next you must decide whether the reports for products and categories should provide filtering on categories in addition to the text search field.
+The corresponding checkbox `Use Category Search?` is deactivated by default.
+In this case, the category filter is not applied in the context of the product or category search.
+The associated dropdown list is hidden in the report.
+If filtering according to category is required, the checkbox must be activated.
+
+[NOTE]
+====
+Filtering by category differs depending on the report used.
+In the report for the product search, filtering is possible across all categories.
+In the report for the category search, however, filtering is only possible via the top-level categories.
+====
+
+[[show_report]]
+Show Category Report::
+This checkbox can be used to control the display of the category report.
+The checkbox is deactivated by default (i.e., only the report for product searches is active).
++
+[[category_report]]
+.Category report
+image::category_report.png[]
+
+Test Configuration::
+Click the {testConf} button to check the entries that have been entered.
+For this, the `Client ID`, the `Base URL` and - if available - the `Image Service Base URL` as well as the configurations for the product and category pages are taken into account.

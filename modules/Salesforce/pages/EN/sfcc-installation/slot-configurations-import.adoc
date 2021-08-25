@@ -1,0 +1,6 @@
+[[sfcc_import_slot_configs]]
+=== Slot configurations
+The templates from the `int_espirit_sfra` cartridge are used to add new slots to the site.
+Therefor, the delivery provides the zip file _importExamples.zip_ with slot configurations for these slots.
+It is stored within the _metadata_ directory, which is included in the delivery.
+The provision of the zip file _slotConfigurations.xml_ in the {ccloud} is done via the previously described <<sfcc_zip_file_import,import process>>.

@@ -1,0 +1,19 @@
+[[resolutions]]
+=== Resolutions
+The reference project _{projectname}_ has different sections, with which images can be integrated on the various pages.
+It should be possible for the editor to crop the images to a certain image section.
+This function is activated by specifying a resolution.
+
+[source,xml]
+.Specifying the resolution
+// codeAnfang
+----
+$CMS_REF(st_picture, resolution:"RESOLUTION")$
+----
+// codeEnde
+
+For the reference project, the following resolutions are required: `BANNER`, `SLIDE`, `GRID_ELEMENT_HIGH`, `GRID_ELEMENT_WIDE`, `GRID_ELEMENT_SQUARE`, `IMAGE_MAP`, `ARTICLE_TEASER_IMAGE` and `TECHNOLOGY_IMAGE`.
+They are already applied within the `*{manager}*` in the `*menu:Project properties[Resolutions]*` area and specified in the corresponding areas in the sections.
+
+.Resolutions
+image::resolutions.png[]

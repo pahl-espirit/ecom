@@ -1,0 +1,234 @@
+[[uc_preview]]
+=== Preview
+To display the preview of a page, the <<webconf,{modulname} {filter}>> determines the necessary information on the {sf} side.
+In the slot-based approach, it identifies the correct storefront URL for this purpose, downloads the HTML on the basis of this URL, and substitutes the slots it contains with the corresponding editorial content.
+The slots are uniquely labeled with HTML comments and are represented in {fs} by the content areas of a page template.
+If the `Content Integration API` is being used, however, the {filter} has the Velocity fragments maintained in {fs} evaluated on the {sf} side, and displays the result at the corresponding point on the page.
+
+[underline]#*Editor view*# +
+The editorial content is created and maintained in {fs}.
+Editors have the standard tools available to them and do not require any additional knowledge.
+From the view of an editor, the content of both systems is automatically merged and displayed in the preview or in the {wc}.
+
+[underline]#*Developer view*# +
+The pages within the reference project that is supplied are based on the slot-based approach as standard.
+However, as is the case in the example of the <<catdetailpage,category detail page>>, it is also possible to use the `CI API`.
+The two approaches are fundamentally different from one another, and whichever one is being used is automatically taken into account by the <<webconf, {modulname} {filter}>> when a preview is being generated.
+
+*Slot-based approach* +
+Within the reference project supplied, the slots from {sf} are represented by the content areas of the page templates.
+Sections can be added to them; each one corresponds to an asset and, depending on the use case, also has a <<slot_configuration,slot configuration>>.
+To display a page in the preview, the slots contained in the downloaded HTML are substituted by the editorial content.
+
+For the substitution, all content relevant for the preview must be labeled with unique HTML comments.
+From a technical point of view, these can occur in every template but are only included in page templates in the reference project.
+Each consists of a start as well as an end comment and has the format `<!-- CMS-<IDENTIFIER>-START -->` or `<!-- CMS-<IDENTIFIER>-END -->` by default.
+
+[NOTE]
+====
+The use of individual affixes can be activated for HTML comments via a toggle in the <<project_settings,project settings>>, which must be added if necessary.
+In this case, the default values are overwritten and specific prefixes and suffixes are used instead.
+====
+
+[IMPORTANT]
+====
+These exact same HTML comments must also be inserted into the storefront page by the {sf} developer, and the slots to be substituted must be indicated.
+It is important to make sure that the identifier in the {fs} template and in the storefront page match.
+Otherwise, there is an error in the presentation of the preview.
+====
+
+*Using the Content Integration API* +
+The `Content Integration API` enables Velocity fragments to be evaluated on the {sf} side.
+These fragments are maintained in the {fs} templates and substituted when a page is displayed in the preview.
+For this purpose, the {filter} receives the results of the evaluation conducted on the {sf} side and inserts them at the corresponding points on the page.
+The Velocity fragments must also be labeled with unique HTML comments to enable the {filter} to carry out this step.
+The comments consist of a start comment and an end comment, and must always use the following format: `<!-- CMS-VELOCITY-<IDENTIFIER>-START -->` or `<!-- CMS-VELOCITY-<IDENTIFIER>-END -->`.
+
+*Substitutions with regular expressions* +
+Should further substitutions be additionally required, specific regular expressions can be defined.
+These have their own syntax and always take the following form:
+
+[source,FirstSpirit]
+.Syntax
+----
+<!-- CMS-REGEX-PATTERN-START -->
+   regex-match="<REGEX>"
+   regex-value="<REPLACEMENT>"
+<!-- CMS-REGEX-PATTERN-END -->
+----
+
+While the expression `regex-match` saves the regular expression, it is the expression `regex-value` that specifies the content, which will substitute all regex matches in the document.
+Both expressions are to be summarized as an instruction by the HTML comments `<!-- CMS-REGEX-PATTERN-START -->` and `<!-- CMS-REGEX-PATTERN-END -->`.
+
+With respect to the reference project, for example in the _Preview Generation_ format template, this enables additional CSS to be integrated into each page template or any link on the <<hp,Homepage>> to be substituted:
+
+[source,FirstSpirit]
+.Format template
+----
+$-- Set Bootstrap CSS--$
+<!-- CMS-REGEX-PATTERN-START -->
+   regex-match="<\/head>"
+   regex-value="$CMS_IF(#global.is("PREVIEW"))$$CMS_RENDER(template: "preview_css_additions")$$CMS_END_IF$</head>"
+<!-- CMS-REGEX-PATTERN-END -->
+
+$-- Change Homepage Reference --$
+<!-- CMS-REGEX-PATTERN-START -->
+   regex-match="href=("|').*.home[?]"
+   regex-value="href="$CMS_REF(pageref:"homepage")$""
+<!-- CMS-REGEX-PATTERN-END -->
+----
+
+[IMPORTANT]
+====
+If a convert2 is used within the regular expressions applied, it is important to make sure that all special characters are correctly resolved.
+It may be necessary to adjust the conversion rule, in particular in conjunction with the dollar sign (`*menu:{manager}[Server properties>Conversion rules]*`).
+====
+
+[NOTE]
+====
+Please note that the replacement of the URL depends on the new storefront URL.
+The settings can be found under the menu item `*menu:Merchant Tools[Site Preferences > Storefront URL]*`.
+====
+
+*{modulname} Preview Language*
+
+The following pattern is needed to configure the display language in the {wc}:
+
+[source,FirstSpirit]
+.Pattern
+----
+$-- Set Preview Language --$
+<!-- CMS-PARAM-PREVIEWLANG-START -->
+	$CMS_VALUE(set_previewLang)$
+<!-- CMS-PARAM-PREVIEWLANG-END -->
+----
+
+The format of the language abbreviation that is provided within the pattern is explained by the paragraph <<generationlocale,Determining the locale>>.
+If the {filter} cannot find this pattern it will use `default` as a value for the preview language.
+
+[[uc_preview_proxy]]
+*{modulname} preview proxy*
+
+If problems with cross-origin requests occur during the preview due to the same-origin policy of modern web servers, then these can be remedied by using the preview proxy included in the _{modulname}_ module.
+
+In the supplied reference project, this is the case when loading the Font Awesome font via an integrated CSS file, for example.
+If the preview proxy is not used, a cross-origin request will be executed when the font is loaded, which will be blocked by the same-origin policy.
+
+To manage the loading of the resources in question via the preview proxy and therefore avoid cross-origin requests, the _Preview Generation_ format template includes the following regular expression.
+As a result, the configuration of the supplied web server does not need to be adapted.
+
+[NOTE]
+====
+If the preconfigured `/proxy` URL path is not to be used for the preview proxy, it must be adjusted in both the format template and in the `web.xml`.
+A more detailed description of the configuration options via the `web.xml` is given in the chapter <<webconf,Configuration of the web component>>.
+====
+
+[source,xml]
+.Proxy integration
+----
+$-- Redirect to proxy --$
+<!-- CMS-REGEX-PATTERN-START -->
+   regex-match="[^"'(]*?\/on\/demandware\.static\/"
+   $CMS_IF(#global.is("WEBEDIT"))$
+      regex-value="/fs5webedit_$CMS_VALUE(#global.project.id)$/s=****/proxy/on/demandware.static/"
+   $CMS_ELSE$
+      regex-value="/fs5preview_$CMS_VALUE(#global.project.id)$/proxy/on/demandware.static/"
+   $CMS_END_IF$
+<!-- CMS-REGEX-PATTERN-END -->
+----
+
+*Troubleshooting*
+
+{modulname} supports developers when analyzing problems and errors in the preview, such as erroneous substitutions or poor response times while generating a preview.
+
+Developers can add special parameters to the URL of a preview page in order to influence how the {filter} works and receive useful information as a result.
+The available URL extensions are `/debugTimings=true` and `/debugCCFilter=true`.
+
+`/debugTimings=true` instructs the {filter} to write the execution times of its processing steps as a comment at the end of the HTML document.
+For this purpose, the {filter} measures the duration of the following actions:
+
+* Search for content to be substituted
+* Substitution of slots with the current editorial content
+* Execution of particular substitutions via specific regular expressions
+* Complete processing of the page
+
+If this parameter is specified, the {filter} generates the following output for the homepage of the reference project:
+
+[source,html]
+.Output of the {filter} for the homepage with /debugTimings=true
+----
+<!--
+*** TIMING STATS ***
+
+LANGUAGE-DROPDOWN = 0ms
+&lt;script [^&lt;]*?/dwux-init.js.*?&lt;/script&gt; = 0ms
+[^&quot;'(]*/s/SiteGenesisGlobal_MF_SP/[^&quot;')]* = 53ms
+Scanning for content replacement blocks = 1ms
+CUSTOM-NAVIGATION-LEFT = 0ms
+[^&quot;'(]*?/on/demandware.static/ = 113ms
+(&lt;!-- dw.+?--&gt;) = 1ms
+&lt;iframe.*?id=&quot;DW-SFToolkit&quot;&gt;.*?&lt;/iframe&gt; = 1ms
+LANGUAGE-DROPDOWN-MOBILE = 0ms
+&lt;a.*?sid=&quot;([^&quot;]*?)&quot; = 1ms
+&lt;/head&gt; = 0ms
+WILL-IGNORE-FOR-PREVIEW = 0ms
+HOME-CATEGORIES = 0ms
+href=(&quot;|').*.home[?] = 1ms
+&lt;!-- Demandware Analytics(([sS]*)&lt;/script&gt;) = 1ms
+&lt;!-- Demandware Active Data (([sS]*)&lt;/script&gt;) = 0ms
+HOME-MAIN = 0ms
+HOME-CC-OVERRIDE = 0ms
+
+Total time = 172ms
+
+-->
+----
+
+In addition, the {filter} logs some information in the {fs} Server log if the `/debugTimings=true` parameter is specified.
+
+`/debugCCFilter=true` means that the {filter} does not download the storefront, perform substitutions or present the result in the preview.
+The page actually generated by {fs} is shown in the preview instead.
+The HTML therefore contains the substitution comments and specifications in addition to the editorial content.
+If this parameter is specified, the {filter} therefore generates the following output (in a shortened form) for the homepage of the reference project:
+
+[source,html]
+.Output of the {filter} for the homepage with /debugCCFilter=true
+----
+<!-- CMS-HOME-MAIN-START -->
+    [...]
+<!-- CMS-HOME-MAIN-END -->
+
+<!-- CMS-HOME-CATEGORIES-START -->
+    [...]
+<!-- CMS-HOME-CATEGORIES-END -->
+
+[...]
+
+<!-- CMS-REGEX-PATTERN-START -->
+    regex-match="href=("|').*.home[?]"
+    regex-value="href="/fs5webedit_90169/s=qgkM/preview/90169/site/EN_GB/current/90172/90361""
+<!-- CMS-REGEX-PATTERN-END -->
+
+[...]
+----
+
+Using these functions requires a preview page to be called up.
+The address of the preview page must have one of the parameters presented here added to it.
+There are various ways of doing this:
+
+. Via the iFrame address in the {wc}
+. Via the address of a page in the external preview
+. Via generated links in the {fs} preview, as shown here using the example of links on the homepage:
+
+[source,html]
+----
+<!-- CMS-REGEX-PATTERN-START -->
+    regex-match="href=("|').*.home[?]"
+    regex-value="href="$CMS_REF(pageref:"homepage")$/debugCCFilter=true""
+<!-- CMS-REGEX-PATTERN-END -->
+----
+
+[IMPORTANT]
+====
+Due to their functions, the `/debugTimings=true` and `/debugCCFilter=true` parameters cannot be used in combination with one another.
+====

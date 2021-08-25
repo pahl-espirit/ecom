@@ -1,0 +1,42 @@
+[[hot_spots]]
+=== Hot spots
+In addition to the <<grid_container,grid container>>, products can be displayed in the form of hot spots.
+Each hot spot corresponds to a <<cat_prod_link,product link>>, which is defined on a single static image parallel to the other hot spots.
+When you click, a flyout opens for each hot spot, which includes the name, an image, and a description of the corresponding product.
+
+The static image is selected and the hot spots are defined with the help of the _Shop the look_ section template, which can only be added to the <<hp,homepage>> and <<contentpage,content pages>>.
+
+.Hot spots
+image::hotspot.png[]
+
+[underline]#*Editor view*# +
+In addition to the static image, the editor can specify a title made up of maximum 20 characters, which can be positioned on the left, on the right or in the center on the image.
+The image can either be selected from the media store or uploaded via drag-and-drop on the btn:[Upload a picture] button in the form.
+It can be cropped with the help of the familiar {fs} functionality.
+
+[NOTE]
+====
+If the section is used within a <<blog_article,blog article>>, the image to be selected cannot be cropped.
+This functionality is only available if the section is directly integrated into a page.
+====
+
+The editor can create any number of hot spots on the image by selecting an image section and defining a <<cat_prod_link,product link>> for this.
+The link expects a link text and a product ID.
+Both fields are automatically populated when a product is transferred from the product report.
+After the form has been saved, the created hot spots are displayed in the relevant location on the image and the link text corresponds to the displayed product name.
+
+[underline]#*Developer view*# +
+The HTML channel initially references the selected image and displays it together with the title.
+The hot spots are then determined and positioned using the image sections specified by the editor.
+For each hot spot, the associated flyout is also created, which appears when the hot spot is clicked and automatically displays the corresponding product information.
+
+The entire content is assigned to the `set_sectionContent` variable, which is required during generation of the <<hp,homepage>> to populate the corresponding XML file.
+For a <<contentpage,content page>>, however, the variable is only output.
+
+As the image is referenced from the media store of the {fs} project and is therefore not affected by substitution of {sf} content, the content does not have to be labeled with HTML tags.
+
+[TIP]
+====
+As the image map in {fs} does not provide the option to upload and crop an image by default, the two scripts _cc_crop_ and _cc_upload_ have been added to the reference project.
+They make both functionalities available to the editor.
+====

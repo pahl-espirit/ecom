@@ -1,0 +1,34 @@
+[[sfcc_content_cleanup]]
+=== Setting up content cleanup
+In order to delete assets and <<slot_configuration,slot configurations>> managed and deleted by {fs} from {ccloud} too, the following steps must be taken:
+
+. <<import_attributes,Import the user-defined system object attributes>>
+. <<additional_custom_attributes_assets,Optional: Create additional custom attributes for assets>>
+. <<search_refinements,Generate search refinements for assets>>
+. <<ocapisettings,Adjust the OC API settings>>
+. <<schedule,Set up the deployment schedule>>
+
+[[import_attributes]]
+*Importing the user-defined system object attributes* +
+For the persistence of time stamps assigned during generation, content cleanup uses the user-defined `fsGenerationTime` attribute as part of assets and <<slot_configuration,slot configurations>>.
+This must initially be added to the system objects (content and slot configurations).
+To create the user-defined system object attributes, the zip file _importExamples.zip_ must be available in the {ccloud}.
+It is stored within the _metadata_ directory, which is included in the delivery.
+Its provision is done via the previously described <<sfcc_zip_file_import,import process>>.
+
+[[additional_custom_attributes_assets]]
+*Create additional custom attributes for assets* +
+The number of content assets to be deleted can be additionally restricted on the basis of any other custom attributes.
+If this is desired, appropriate attributes must be created for content assets.
+A description can be found in the Commerce Cloud documentation under https://documentation.demandware.com/DOC2/topic/com.demandware.dochelp/CustomObjects/CreatingCustomattributesforsystemObjects.html[menu:B2C Commerce Development[Business Objects>Creating Custom Attributes for Business Objects]]
+
+[[search_refinements]]
+*Generating search refinements for assets* +
+For the newly created `fsGenerationTime` attribute and the additionally created <<additional_custom_attributes_assets,custom attributes>>, a {ccloud} Search Refinement is to be generated.
+The {ccloud} documentation describes this under 
+https://documentation.demandware.com/DOC2/topic/com.demandware.dochelp/Content/CreatingContentSearchRefinements.html[menu:Merchandising Your Site[Content Assets>Working with Content Assets>Creating Content Search Refinements]].
+
+[IMPORTANT]
+====
+After importing the user-defined system object attributes and creating the search refinement, it is necessary to rebuild the site's search indexes.
+====

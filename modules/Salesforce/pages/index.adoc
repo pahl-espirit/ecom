@@ -1,0 +1,22 @@
+= {modulname}: For Salesforce Commerce Cloud
+e-Spirit AG
+{docdate}
+include::variables.adoc[]
+
+// Einleitung
+include::EN/introduction.adoc[]
+
+// Komponenten
+include::EN/components.adoc[]
+
+// Commerce Cloud - Installation und Konfiguration
+include::EN/sfcc-installation/sfcc-installation.adoc[]
+
+// FirstSpirit - Installation und Konfiguration
+include::EN/fs-installation/fs-installation.adoc[]
+
+// Anwendungsfälle
+include::EN/use-cases/use-cases.adoc[]
+
+// Rechtliche Hinweise
+include::EN/legal-notice.adoc[]

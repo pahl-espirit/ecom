@@ -1,0 +1,57 @@
+[[contentpage]]
+=== Content pages
+The content pages correspond to the standard pages of the project and are referenced multiple times.
+Unlike the <<hp,homepage>> and the <<detail_pages,category and product pages>>, they play a special role as they generate just one asset for the entire page.
+All editorial content from the content page and the sections added to it are summarized in this asset.
+
+[underline]#*Editor view*# +
+The content pages offer the editor three options for entering content:
+
+* The header of the page displays a banner in which either a <<banner_image,static image>> or a <<slider,slider>> can be integrated.
+* The main area of the page enables the display of:
+** <<hot_spots,hot spots>>
+** a single blog article or an overview of all blog articles
+** a <<video,video>>
+** a text with a heading
+
+The sections required for entering content are covered in more detail in the corresponding sub-chapters.
+As the text section is self-explanatory, this is not described specifically.
+
+[underline]#*Developer view*# +
+Unlike for the remaining pages, the editorial content of the content page and its sections are summarized in a single asset.
+This asset is created in the HTML channel of the page template, which differentiates between the display of the page in the <<uc_preview,{fs} preview>> and in the live state.
+The developer view must therefore take both aspects into account.
+
+*Preview* 
+
+As the creation of the asset only affects generation, both developer views of the content page and the <<hp,homepage>> are nearly identical with regard to the {fs} preview.
+
+The only discrepancy between both templates is in the configuration of the page type that is used, which is also defined in the hidden `Preview Page Type` form field for the content pages.
+In contrast to the <<hp,homepage>>, it can assume different values in theory.
+For the reference project supplied, however, the `Page` parameter is required and is selected as the default value.
+
+Furthermore, the content page has the hidden `SFCC Context ID` form field, in which a default content asset ID is saved.
+As a page still does not have an asset ID before generation, it is required to create the <<uc_preview,preview>>.
+
+*Generation*
+
+For generation, it is important to ensure firstly that the corresponding page is marked as translated in {fs}.
+Only when this is the case is generation carried out and the asset for the content page is created.
+
+[source,FirstSpirit]
+----
+$CMS_IF(!#global.preview && !#global.page.isTranslated)$
+   $CMS_SET(#global.stopGenerate, true)$
+$CMS_END_IF$ 
+----
+
+For this, the value of the hidden `SFCC Parent Folder` field is assigned to the `set_parent_id` variable initially.
+This value specifies where the created asset is filed in the {sf} folder structure.
+
+[source,FirstSpirit]
+----
+$CMS_SET(set_parent_id,pt_sfcc_parentFolder)$	
+----
+
+The variables are evaluated while the XML collector is populated, which is carried out subsequently.
+In the process, a new content node is created, to which the editorial content of the page, among other things, is added.

@@ -1,0 +1,195 @@
+[[previewfilter]]
+==== {filter}
+
+The `{modulname} {filter}` determines the necessary information for displaying a page in the <<uc_preview,{fs} preview>>.
+In the slot-based approach, it identifies the correct storefront URL for this purpose, downloads the HTML on the basis of this URL, and substitutes the slots it contains with the corresponding editorial content.
+If the `CI API` is being used, however, it has the Velocity fragments maintained in {fs} evaluated on the {sf} side, and displays the result at the corresponding point on the page in the <<uc_preview,{fs} preview>>.
+
+To carry out these steps, the filter requires some information that can be configured via various parameters in the `web.xml` of the <<wcomp,added web components>> (for the Preview as well as {wc}).
+This information relates to various aspects, which can be divided into four groups.
+
+
+[IMPORTANT]
+====
+The `web.xml` of the <<wcomp,added web component>> added in the tab `preview` requires the adjustment of the parameter `dispatcher`.
+By default, the `web.xml` contains the value `FORWARD` for this parameter.
+However, in the case of the preview in the {jc}, it requires the value `REQUEST` and must be replaced accordingly.
+
+[source,xml]
+.Adjustment in the web.xml for the preview in the {jc}
+----
+<filter-mapping>
+   <filter-name>ContentConnectPreviewFilter</filter-name>
+   <url-pattern>/*</url-pattern>
+   <dispatcher>REQUEST</dispatcher>
+</filter-mapping>
+----
+
+Beyond that, a configuration of the individual parameters is only necessary if their default values do not match the project-specific conditions.
+====
+
+*Storefront URL parameters*
+
+As described previously, the `{filter}` determines the necessary information on the {sf} side - both in the slot-based approach and when using the `CI API`.
+It then displays this information in the <<uc_preview,{fs} preview>>.
+To do this, a project-specific storefront URL is required.
+As this is maintained in the <<project_settings,project settings>>, the `{filter}` requires the associated input component to be specified for its query.
+
+[options="header", cols="25,25,80" ]
+|=======
+|Parameter | Default value | Description
+|storefront.url.baseUrlFormField | ps_storefrontUrlBaseUrl |
+The input component for specifying the storefront's base URL, which is extended with the page type and the ID of the element to be displayed (e.g., product, category, or asset ID).
+The component is maintained in the project settings.
+|=======
+
+[NOTE]
+====
+The syntax for the storefront base URL can be found in the https://documentation.demandware.com/DOC2/topic/com.demandware.dochelp/SearchEngineOptimization/DigitalURLSyntaxWithoutSEO.html[menu:Merchandising Your Site[Search Engine Optimization>URL Syntax>Salesforce B2C Commerce URL Syntax Without SEO]] chapter of the {sf} {ccloud} documentation.
+====
+
+[IMPORTANT]
+====
+As a value of the input component `ps_storefrontUrlBaseUrl`, only up to the locale, *not* the entire URL must be entered within the <<project_settings,project settings>>.
+
+E.g.: \https://www.mystore.com/on/demandware.store/​Sites-YourShopHere-Site/
+====
+
+[NOTE]
+====
+Changes to the <<project_settings,project settings>> do not take effect straight away, as they are saved in the session of the user.
+They require the client to be restarted.
+====
+
+*Storefront Crop Marks parameters*
+
+The placeholders included in the editorial content consist of a start as well as an end comment and have the format `<!-- CMS-<IDENTIFIER>-START -->` or `<!-- CMS-<IDENTIFIER>-END -->` by default.
+However, the use of individual affixes can be activated via a toggle in the <<project_settings,project settings>>, which must be added if necessary.
+In this case, the default values are overwritten and specific prefixes and suffixes are used instead.
+In order to grant the `{filter}` access to this information, it requires the associated input components to be specified.
+
+[options="header", cols="25,25,80" ]
+|=======
+|Parameter | Default value | Description
+|storefront.cropMarks. customAffixes.enabledFormField | ps_storefrontCropMarksCustomAffixesEnabled |
+The toggle in the project settings for (de)activating the use of individual affixes.
+|storefront.cropMarks. opening.prefixFormField | ps_storefrontCropMarksOpeningPrefix |
+The input component in the project settings for specifying a prefix for the start comment.
+|storefront.cropMarks. opening.suffixFormField | ps_storefrontCropMarksOpeningSuffix |
+The input component in the project settings for specifying a suffix for the start comment.
+|storefront.cropMarks. closing.prefixFormField | ps_storefrontCropMarksClosingPrefix |
+The input component in the project settings for specifying a prefix for the end comment.
+|storefront.cropMarks. closing.suffixFormField | ps_storefrontCropMarksClosingSuffix |
+The input component in the project settings for specifying a suffix for the end comment.
+|=======
+
+
+*Storefront protection parameters*
+
+It is possible to protect the connection to {ccloud} via an authentication.
+This can be (de)activated in {sf} and must be applied to {fs} via the corresponding toggle in the <<project_settings,project settings>>.
+If it is activated, the required access data must also be specified.
+The `{filter}` must be able to access this information and therefore requires the associated input components to be specified.
+
+[options="header", cols="25,25,80" ]
+|=======
+|Parameter | Default value | Description
+|storefront.protection.enabledFormField | ps_storefrontProtectionEnabled | The input component in the project settings for (de)activating the authentication for the storefront URL.
+|storefront.protection.userFormField | ps_storefrontProtectionUser | The input component in the project settings for registering the storefront user.
+|storefront.protection.passwordFormField | ps_storefrontProtectionPassword | The input component in the project settings for the password of the storefront user.
+|=======
+
+
+*Storefront downloader parameters*
+
+In addition to the other parameters, which are primarily used to determine the correct storefront URL, in the slot-based approach it must be possible to control the behavior of the `{filter}` while the HTML of the corresponding page is downloading.
+For this, it has different parameters, which can be maintained in the <<project_settings,project settings>>.
+The `{filter}` must be able to access this information and therefore requires the associated input components to be specified.
+
+[NOTE]
+====
+The storefront downloader parameters are used to initialize the filter in the slot-based approach.
+As a result, they have a fixed fallback value for cases with a missing or empty input component.
+====
+
+[[storefront-download-parameter]]
+[options="header", cols="25,25,80" ]
+|=======
+|Parameter | Default value | Description
+|storefront.downloader.maxConnections | ps_storefrontDownloaderMaxConnections | The input component in the project settings for specifying the maximum permissible number of parallel connections to Storefront. +
+The fallback value is 100.
+|storefront.downloader.socketTimeout | ps_storefrontDownloaderSocketTimeout | The input component in the project settings for specifying the time span (in milliseconds) in which a response from Storefront is expected. +
+The fallback value is 10000.
+|storefront.downloader.retryCount | ps_storefrontDownloaderRetryCount | The input component in the project settings for specifying the maximum number of connection attempts. +
+The fallback value is 3.
+|=======
+
+[IMPORTANT]
+====
+The use of the following two parameters is only recommended in exceptional cases, as they bypass the certificate check for `https` requests.
+This may be necessary if certificate errors prevent the preview from being displayed and the problem can not be resolved on the server side.
+====
+
+[options="header," cols="25,25,80" ]
+|=======
+|Parameter | Default value | Description
+|storefront.downloader.certificatesCheck | true | Setting this parameter to `false` disables certificate checks for `https` requests.
+As a result, all `https` requests for viewing the preview will be blocked initially.
+To allow requests against individual pages, the host name of the corresponding pages must be entered in the `sslWhitelist`.
+|storefront.downloader.sslWhitelist | empty | If the certificate check is deactivated, the host names to be excluded from the blocking are maintained via the `sslWhitelist`.
+Several host names have to be entered as a comma-separated list.
+|=======
+
+*Storefront Cache Parameter*
+
+The HTML of slot-based pages downloaded by the `{filter}` is stored in a cache so that it does not have to be retrieved from the {ccloud} every time it is called.
+Such a cache exists across sessions for each project on the {fs} server.
+This cache has some parameters that can be maintained in the <<project_settings,project settings>>.
+The `{filter}` must be able to access this information and therefore needs to specify the associated input components.
+
+
+[NOTE]
+====
+Like the <<storefront-download-parameter,downloader parameters>>, the cache parameters are used to initialize the filter in the slot-based approach.
+For this reason they have a fixed fallback value in case of a missing or empty input component.
+====
+
+[options="header", cols="25,25,80" ]
+|=======
+|Parameter | Default value | Description
+|storefront.cache.maxEntries | ps_storefrontDownloaderMaxCacheEntries | The input component in the project settings for specifying the maximum number of elements in the cache. +
+The fallback value is 500.
+|storefront.cache.refreshAfterWrite | ps_storefrontCacheRefreshAfterWrite | The input component in the project settings for specifying the time span (in hours) until an element in the cache is marked as obsolete. +
+The fallback value is 1. +
+If an entry is marked as obsolete, it will be retrieved asynchronously from the {ccloud} at the next request.
+Until this process is completed, the cache returns the obsolete entry, so there is no delay.
+|storefront.cache.expireAfterWrite | ps_storefrontCacheExpireAfterWrite | The input component in the project settings for specifying the time span (in hours) until an item in the cache is marked as removable. +
+The fallback value is 24. +
+If an entry is marked as removable, it can be displaced from the cache by new elements.
+If an item is requested again after being displaced, it must be retrieved from the {ccloud} again.
+|storefront.cache.excludePatterns | ps_storefrontCacheExcludePatterns | The input component in the project settings for specifying storefront URLs that should not be kept in the cache.
+The URLs are specified in the form of a list of regular expressions. +
+The fallback value is an empty list. +
+Each element of the list component must have a text field named `st_storefrontCacheExcludePattern` containing the regular expression.
+|=======
+
+*Example*
+
+An example snippet of the `web.xml`, in which two parameters of the {filter} are configured, might look like as follows:
+
+[source,xml]
+.Example web.xml
+----
+<filter>
+   <filter-name>ContentConnectPreviewFilter</filter-name>
+   <filter-class>com.espirit.moddev.demandware.preview.PreviewFilter</filter-class>
+   <init-param>
+      <param-name>storefront.downloader.socketTimeout</param-name>
+      <param-value>ps_myCustomStorefrontDownloaderSocketTimeout</param-value>
+   </init-param>
+   <init-param>
+      <param-name>storefront.downloader.retryCount</param-name>
+      <param-value>ps_myCustomStorefrontDownloaderRetryCount</param-value>
+   </init-param>
+</filter>
+----
