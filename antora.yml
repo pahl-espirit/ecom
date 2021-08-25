@@ -3,4 +3,6 @@ title: E-Commerce
 version: '1.0'
 nav:
 - modules/ROOT/nav.adoc
+- modules/Spryker/nav.adoc
+- modules/Spartacus/nav.adoc
 
