@@ -1,3 +1,4 @@
+include::../../variables.adoc[]
 // Konzept
 === Concept
 The _{modulname}_ module offers the possibility to maintain editorial contents in {fs} and to transfer them afterwards via deployment to {sp}.
