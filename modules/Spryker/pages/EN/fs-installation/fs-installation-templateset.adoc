@@ -1,5 +1,5 @@
 [[fs-templateset]]
-=== Template set
+== Template set
 In addition to the existing template sets of a project, another XML channel is required.
 This must be created manually for empty projects, but is already contained within the supplied {refproject_github}[reference project _{refproject}_].
 

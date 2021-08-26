@@ -1,5 +1,5 @@
 [[fs_pcomp]]
-=== Configuration of the project component
+== Configuration of the project component
 A project-specific configuration is necessary for the use of the _{modulname}_ module.
 This is done via the project component, which is already added to the supplied {refproject_github}[reference project].
 

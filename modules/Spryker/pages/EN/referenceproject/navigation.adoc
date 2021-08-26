@@ -1,5 +1,5 @@
 [[rp_navigation]]
-=== Extension of the main navigation
+== Extension of the main navigation
 In addition to the different page types, the main navigation of the {sp} B2C Demo Shop can be edited in the {cc}.
 In {fs} the navigation is represented by a {navigation_extensions}[global page], a {navigation_section}[section template] and a {tech_nav_github}[technical page reference].
 These enable the creation of further menu items in the first level of the navigation and their transfer to the _Preview {c}_ and to the _Online {c}_.
@@ -30,7 +30,7 @@ image::img_navigation.png[]
 
 
 [[rp_navigation_section]]
-==== Section template
+=== Section template
 The global page <<rp_navigation_globalpage,`navigation_extension`>> contained in the reference project enables the extension of the main navigation in the {cc}.
 The navigation can be enhanced by adding menu items on the first level, each of which corresponds to a structure folder and serves as a start node.
 Subfolders contained in such a structure folder are automatically interpreted as sub-items of the new menu item.
@@ -44,7 +44,7 @@ All these sub-navigations of the individual menu items are combined using the te
 
 
 [[rp_navigation_page]]
-==== Page template
+=== Page template
 In addition to the <<rp_navigation_globalpage,global page>> the reference project contains the {tech_nav_github}[technical page reference `navigations`].
 This is used to transfer all navigation changes made *in {fs}* to the _{c}_.
 
@@ -64,7 +64,7 @@ At the same time, it triggers a script that ensures that the technical page refe
 The publication of the adaptations and their transfer to the _Online {c}_ only takes place in the context of a <<fs-deployment,full generation>>.
 
 [[rp_navigation_twigtemplates]]
-==== Twig templates
+=== Twig templates
 In addition to the described {fs} templates, the adaptation of the following Twig templates is required in {sp},
 to enable the extension of the main navigation of the {sp} B2C Demo Shop in the {cc}.
 

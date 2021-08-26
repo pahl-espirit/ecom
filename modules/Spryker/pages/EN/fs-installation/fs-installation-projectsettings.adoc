@@ -1,5 +1,5 @@
 [[fs-projectsettings]]
-=== Project settings
+== Project settings
 There is some essential project-specific information that needs to be entered for the connection between {fs} and {sp}.
 It is entered using the project settings form and must be specified within the project being used.
 

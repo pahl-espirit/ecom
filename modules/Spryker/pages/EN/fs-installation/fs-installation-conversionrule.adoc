@@ -1,5 +1,5 @@
 [[fs-conversionrule]]
-=== Conversion rule
+== Conversion rule
 The data to be transferred to _{c}_ is defined in the <<fs-templateset,template set>> still to be created.
 The use of certain special characters could lead to invalid JSON objects.
 A conversion rule must therefore be created in order to prevent potential errors.

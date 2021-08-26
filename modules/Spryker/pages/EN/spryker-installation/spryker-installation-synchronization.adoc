@@ -1,4 +1,4 @@
-=== Synchronization
+== Synchronization
 During deployment, the content maintained in {fs} is retrieved from the _Online {c}_ using the importer.
 It transfers the data to {sp} and persists them in the backend in its data system.
 The display of the data in the live state additionally requires its transmission to Yves.

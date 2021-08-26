@@ -1,5 +1,5 @@
 [[fs-wf]]
-=== Workflows
+== Workflows
 // Content as well as menu items in the navigation are released, deleted and published within the provided {refproject_github}[reference project] via workflows.
 
 Content is released, deleted and published within the provided {refproject_github}[reference project] via workflows.
@@ -9,7 +9,7 @@ These are already added to the project and are described in the following subcha
 
 // ********************************************* Arbeitsablauf für die Navigation *********************************************
 [[fs-nav-wf]]
-==== Release workflow for navigation
+=== Release workflow for navigation
 The {refproject_github}[reference project] provides the possibility to extend an existing navigation or to create a brand new navigation.
 As with content changes, navigation changes must be released in order to publish them to the live state.
 The reference project therefore contains the workflow _Release Navigation_, which requires the release right for its execution.
@@ -20,7 +20,7 @@ It does not provide conflict handling, nor does it follow the principle of dual 
 
 // ********************************************* Arbeitsablauf für verwaiste Seiten *********************************************
 [[fs-delete-wf-report]]
-==== Delete workflow for automated deletion
+=== Delete workflow for automated deletion
 The {refproject_github}[reference project] contains the <<uc_orphanedpages,report `*Lost and Found*`>>, which shows an overview of all orphaned <<rp_productpages,product>> and <<rp_categorypages,category pages>>.
 These are pages that contain references to deleted or inactive products or categories in {sp}.
 
@@ -32,7 +32,7 @@ In addition to the deletion of the page, the workflow releases the parent struct
 
 // ********************************************* BasicWorkflows *********************************************
 [[fs-bwfs]]
-==== {bwfs}
+=== {bwfs}
 Content is released, deleted, and published by editors within the supplied {refproject_github}[reference project _{refproject}_] via the _{bwfs}_.
 These were adapted project-specifically and extended by the possibility to execute a <<fs-deployment, full generation>>.
 Just like the direct release or delete option, this option is only available to roles that have the release or delete right.
@@ -84,7 +84,7 @@ More information about the installation, configuration and functionality of the 
 
 // ********************************************* projektspezifische Anpassungen *********************************************
 [[fs-wf-adaptions]]
-==== Project-specific adjustments
+=== Project-specific adjustments
 By default, the _{bwfs}_ workflows has two ways to release or to delete an item:
 
 * Direct release | Direct delete

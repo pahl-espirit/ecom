@@ -1,5 +1,5 @@
 [[uc_orphanedpages]]
-=== Removal of orphaned product and category pages
+== Removal of orphaned product and category pages
 In the course of a project, a {sp}-sided deletion or deactivation of no longer needed products or categories can occur at any time.
 However, these are possibly still referenced within the {fs} project.
 The deletion or deactivation results in orphaned <<rp_productpages,product>> and <<rp_categorypages,category pages>>, which can cause errors and warnings during the import.

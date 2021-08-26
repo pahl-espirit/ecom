@@ -1,5 +1,5 @@
 include::../../variables.adoc[]
-== {sp} - Installation and configuration
+= {sp} - Installation and configuration
 {fs} is used to create and maintain editorial data that is transferred to and persisted by the _{c}_.
 To integrate the data, {sp} needs access to the _{c}_.
 This is provided by the {sp} modules `firstspirit-preview` and `firstspirit-caas`, which require an installation and configuration in {sp}.

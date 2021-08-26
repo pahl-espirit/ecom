@@ -1,5 +1,5 @@
 [[sp_slotimport]]
-==== Slots import 
+=== Slots import 
 In both {sp} and {fs}, pages are based on a structure of different components.
 In {sp}, these include the CMS slots, which are represented in {fs} by the content areas of a page template.
 The slots bind CMS blocks, each of which corresponds to a {fs} section.

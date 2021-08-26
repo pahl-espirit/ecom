@@ -1,5 +1,5 @@
 [[sp-importcommand]]
-=== Import command
+== Import command
 The integration of the contents created or maintained in {fs} into the Shop takes place through {sp}.
 Therefore, {sp} imports the data from the _Online {c}_ and persists them in its data system.
 The transfer of the information must take place with each <<fs-deployment,{fs} deployment>>, which for this reason each time triggers a {sp} sided import command.

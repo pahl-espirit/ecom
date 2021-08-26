@@ -1,5 +1,5 @@
 include::../variables.adoc[]
-== Legal notices
+= Legal notices
 _{modulname}_ is a product of {creator}, Dortmund, Germany.
 Only a license agreed upon with {creator} is valid for using the module.
 

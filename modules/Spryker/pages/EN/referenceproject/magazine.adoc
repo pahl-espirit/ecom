@@ -1,5 +1,5 @@
 [[rp_magazine]]
-=== Creation of a magazine
+== Creation of a magazine
 Based on the previously described <<rp_contentpage,dynamic content pages>>, the _{modulname}_ module allows the creation of a magazine.
 This consists of any number of magazine articles and an overview page.
 Both the magazine articles and the overview page can be maintained in the {cc} just like the other pages.
@@ -21,7 +21,7 @@ For this reason, they do not require any additional extensions that go beyond th
 
 // ********************************************* Seitenvorlage *********************************************
 [[rp_m_pagetemplate]]
-==== Page template
+=== Page template
 Both the magazine articles and the overview page are based on <<rp_contentpage,dynamic content pages>>.
 Since they differ in their structure, the magazine articles need their own page template in contrast to the overview page.
 In the reference project this corresponds to the page template `magazine_detail_page` and is a copy of a <<rp_dcp_pagetemp,`contentpage`>>.
@@ -102,7 +102,7 @@ For this reason, it does not need its own page template.
 
 // ********************************************* Tabellenvorlage *********************************************
 [[rp_m_tabletemplate]]
-==== Table template
+=== Table template
 In contrast to the other pages, the magazine articles represent individual data sets, which are integrated into a <<rp_m_pagetemplate,content page>> via content projection.
 Their maintenance and processing is therefore based on a table template that provides the corresponding form and forms the basis for the corresponding data source.
 
@@ -173,7 +173,7 @@ $CMS_SET(void, json.put("previewId", "" + previewId()))$
 
 // ********************************************* Absatz *********************************************
 [[rp_m_section]]
-==== Section template
+=== Section template
 In addition to the magazine articles, there is an overview page on which the articles are listed in the form of teasers sorted by date in ascending or descending order.
 In contrast to magazine articles, the editorial content is not rendered via a content projection, but via two ContentSelects.
 The reference project therefore contains the {magazine_overview}[section template `magazine_overview`], which can only be used in <<rp_contentpage, dynamic content pages>>.
@@ -312,7 +312,7 @@ $CMS_END_IF$
 
 // ********************************************* Twig-Templates *********************************************
 [[rp_m_twigtemplates]]
-==== Twig Templates
+=== Twig Templates
 Both the magazine articles and the overview page are based on <<rp_contentpage,dynamic content pages>> and are therefore represented by the Twig template <<rp_dcp_twigtemp,`fs-content-page.twig`>> on {sp} side.
 This contains the placeholders `content_top` and `content_body`, which reference the CMS blocks assigned to them.
 In this way, the molecule `fs-magazine-intro.twig` is called for the intro data of the magazine articles and the molecule `fs-magazine-overview.twig` for the teaser information of the overview page.

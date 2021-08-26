@@ -1,7 +1,7 @@
 include::../../variables.adoc[]
 // Anwendungsfälle
 [[usecases]]
-== Use cases
+= Use cases
 Within the progress of a project, different situations can arise that require certain steps to be taken.
 The following subchapters describe situations that can typically occur in integration projects,
  and describe the necessary steps for resolving them by using the {refproject_github}[reference project] supplied as a reference. 

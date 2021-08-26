@@ -1,5 +1,5 @@
 [[fs-partialdeployment]]
-=== Generation schedule - partial generation
+== Generation schedule - partial generation
 In addition to the <<fs-deployment,generation of the entire project>> there may be the requirement to publish only individual pages.
 This requires a partial generation.
 

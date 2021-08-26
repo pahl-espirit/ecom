@@ -1,5 +1,5 @@
 [[rp_links]]
-=== Links
+== Links
 The editorial contents maintained in {fs} can contain the following references, which link them with other contents.
 They are based on various link templates that are already included in the {refproject_github}[reference project].
 

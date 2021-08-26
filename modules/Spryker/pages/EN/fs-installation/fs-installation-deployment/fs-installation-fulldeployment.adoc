@@ -1,5 +1,5 @@
 [[fs-deployment]]
-=== Generation schedule - full generation
+== Generation schedule - full generation
 By default, releasing content does not update the _Online {c}_ and does not transfer data to {sp}.
 Instead, it only includes the {fs} release process, which can be mapped using the _{bwfs}_ release workflow, for example.
 An update of the _Online {c}_ as well as a data transfer to {sp} takes place only in the context of a deployment.
@@ -34,7 +34,7 @@ image::deploy_groups.png[]
 
 // ********************************************* Execute Publish Media to CDN *********************************************
 [[fs-deployment-media]]
-==== Execute Publish Media to CDN
+=== Execute Publish Media to CDN
 Unlike the content created with {fs}, the released media is not transferred to the _{c}_, but to the CDN provided by the {creator}.
 Therefore the schedule contains the script action _Execute Publish Media to CDN_.
 
@@ -71,7 +71,7 @@ If the name changes, it must also be adjusted accordingly here.
 
 // ********************************************* Setup CaaS Blocks Aggregations *********************************************
 [[fs-deployment-aggregations]]
-==== Setup {c} Blocks Aggregations
+=== Setup {c} Blocks Aggregations
 By default, _{c}_ stores and delivers the content transferred from {fs} page-based.
 However, the processing and persistence of editorial content in {sp} is done on the basis of CMS blocks, each corresponding to a {fs} section.
 In order to resolve this discrepancy, the data stored in the _Online {c}_ must be prepared accordingly, before importing.
@@ -100,7 +100,7 @@ image::deployparams.png[]
 
 // ********************************************* Trigger Spryker Import *********************************************
 [[fs-deployment-spryker-import]]
-==== Trigger {sp} Import
+=== Trigger {sp} Import
 In {fs}, the creation and editing of editorial content takes place in the {cc}.
 After release, they are transferred by deployment to the _Online {c}_ and imported from there by {sp} to be integrated into the shop.
 In order to keep the contents always up-to-date in {sp}, the import process must be triggered by the deployment. 
@@ -128,7 +128,7 @@ Errors occurring in this context and recorded in the {sp} log are transferred to
 
 // ********************************************* Trigger Fetch Spryker Logs *********************************************
 [[fs-deployment-fetch-spryker-logs]]
-==== Trigger Fetch {sp} Logs
+=== Trigger Fetch {sp} Logs
 Deleting or deactivating categories or products in {sp} that are referenced in the {fs} project leads to errors and warnings during the import.
 However, by default these are only recorded in the {sp} log.
 To provide all information about a release in one place, the errors and warnings must also be recorded in the {fs} log.
@@ -147,7 +147,7 @@ com.espirit.ecom.contentconnect.spryker.module.trigger.triggerfetchlogs.TriggerF
 
 // ********************************************* Trigger Spryker Cleanup *********************************************
 [[fs-deployment-spryker-cleanup]]
-==== Trigger {sp} Cleanup
+=== Trigger {sp} Cleanup
 The creation and editing of editorial content takes place in {fs} before it is transferred to the _Online {c}_ via deployment and imported from there by {sp}.
 In order to keep the data in both systems up-to-date, deleted content from the {fs} project must also be removed on the {sp} side.
 Therefore, the schedule contains the script action _Trigger {sp} Cleanup_.
@@ -163,7 +163,7 @@ com.espirit.ecom.contentconnect.spryker.module.trigger.triggercleanup.TriggerCle
 
 // ********************************************* Send Result Mail *********************************************
 [[fs-deployment-spryker-sendmail]]
-==== Send Result Mail
+=== Send Result Mail
 In most cases, the deployment of the content created or edited in {fs} is performed via the {cc}.
 However, the {cc} does not inform the editor whether a publication was successful or failed.
 Therefore, the schedule contains the script action _Send Result Mail_.

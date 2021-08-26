@@ -1,5 +1,5 @@
 include::../../variables.adoc[]
-=== Range of functions
+== Range of functions
 
 _{modulname}_ enables editors to do the following:
 

@@ -1,5 +1,5 @@
 [[sp_controller]]
-=== Controllers
+== Controllers
 The previously installed <<sp_plugin,`CmsBlockTwigFunctionPlugin`>> allows mapping between the content stored in {fs} and in {sp}.
 For this, it assumes that the view data of a page contains its ID and type.
 The controllers of {sp} do not provide this information by default.

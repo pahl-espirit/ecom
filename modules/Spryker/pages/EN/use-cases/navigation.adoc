@@ -1,5 +1,5 @@
 [[uc_navigation]]
-=== Navigation maintenance
+== Navigation maintenance
 In addition to a <<sp_navigation,main navigation>>, a shop generally has numerous other navigations.
 The integration realised with the _{modulname}_ module offers the possibility to maintain these navigations with {fs} and to add further menu items.
 This requires the following steps to be carried out first.

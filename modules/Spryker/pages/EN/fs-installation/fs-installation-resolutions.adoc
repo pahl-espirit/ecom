@@ -1,4 +1,4 @@
-=== Resolutions
+== Resolutions
 The {refproject_github}[reference project _{refproject}_] has different sections, which can be used to include images on the various pages.
 The editor should be able to cut the images to a certain detail.
 This functionality is activated by specifying a resolution.

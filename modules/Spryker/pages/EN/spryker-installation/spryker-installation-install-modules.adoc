@@ -1,5 +1,5 @@
 [[sp_install_module]]
-==== Installation of the {sp} modules
+=== Installation of the {sp} modules
 The maintenance of shop contents in {cc} requires the installation of several {sp} modules, which are included in the delivery in the form of zip files.
 They have to be stored in any directory below the {sp} project directory, which must be announced to Composer as another repository.
 This is done via the following command to be executed in the project directory, which extends the `composer.json` file of the {sp} server accordingly.

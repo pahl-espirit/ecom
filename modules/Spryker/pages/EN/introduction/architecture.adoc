@@ -1,5 +1,5 @@
 include::../../variables.adoc[]
-=== Architecture
+== Architecture
 The connection of {fs} and {sp} is realized by an architecture made up of a range of components (see figure <<architecture>>).
 
 These components are:

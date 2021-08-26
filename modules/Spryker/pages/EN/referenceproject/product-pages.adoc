@@ -1,5 +1,5 @@
 [[rp_productpages]]
-=== Extension of existing product pages
+== Extension of existing product pages
 Product pages that already exist in {sp} are equivalent to the <<rp_categorypages,category pages>> described in the previous chapter.
 They can also be displayed and edited in the {cc} using the {ocm}.
 This also requires the filling of the output channel of the {fs} page template and an adaptation of the corresponding Twig templates in Spryker.
@@ -12,7 +12,7 @@ These can be removed from the project via the <<uc_orphanedpages,report `*Lost a
 
 // ********************************************* Seitenvorlage *********************************************
 [[rp_pdp_pagetemp]]
-==== Page template
+=== Page template
 Editing a product page is equivalent to extending a <<rp_categorypages,category page>> and is, in the {fs} project, also based on a page reference.
 This and its associated page are automatically created in the background and invisible to the editor.
 
@@ -46,7 +46,7 @@ By using the script {script_set_sku}[`set_product_sku`], the Product SKU is auto
 
 // ********************************************* Twig-Template *********************************************
 [[rp_pdp_twigtemp]]
-==== Twig template
+=== Twig template
 The Twig template `product-cms-block.twig` represents a product section on the {sp} side and extends the parent template `pdp.twig`, in which the basic layout of all product pages is defined.
 It is a part of the zip file `b2c-demo-shop-extensions-<VERSION>.zip` included in the delivery and must be stored under the path`*src/Pyz/Yves/CmsBlockWidget/Theme/default/components/molecules/product-cms-block*` in {sp}.
 

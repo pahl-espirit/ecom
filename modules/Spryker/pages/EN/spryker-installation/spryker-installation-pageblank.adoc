@@ -1,5 +1,5 @@
 [[sp_basetemp]]
-==== Extension of the basic template
+=== Extension of the basic template
 The _{ocm}_ enables the display and editing of external content in {cc}, for which it requires some preview-specific data attributes.
 In {sp}, it also requires a preview-specific JavaScript file, which is included by the {fs}Preview module.
 

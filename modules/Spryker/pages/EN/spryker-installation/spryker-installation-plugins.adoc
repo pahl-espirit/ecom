@@ -1,5 +1,5 @@
 [[sp_plugin]]
-=== Plugins
+== Plugins
 In addition to the installation of the <<sp_modules,{sp} modules>>, the following plugins must be included:
 
 * `HeadersSecurityExtensionPlugin`

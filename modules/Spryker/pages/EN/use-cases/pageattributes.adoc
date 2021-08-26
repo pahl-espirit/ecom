@@ -1,5 +1,5 @@
 [[uc-pageattributes]]
-=== Maintenance of page attributes
+== Maintenance of page attributes
 In contrast to the sections, the content pages do not have an EasyEdit frame, and so neither the buttons provided with it.
 Therefore, no direct editing options are available for content pages in the {cc}.
 Because of that, the `*Actions*` menu contains the menu item `*Edit Page*`, which is only visible for <<rp_contentpage,content pages>>.

@@ -1,5 +1,5 @@
 [[sp_widgets]]
-=== Widgets
+== Widgets
 In addition to the <<sp_modules,{sp} modules>> and the <<sp_plugin,plugins>> the delivery contains the following widgets.
 They enable the expandability of the <<rp_navigation,navigations>> contained in the shop, as well as the usage of the <<rp_links,DOM references>> and the <<sp_twigtemplates,Shoppable Image>> contained in the reference project.
 Only if these elements are used a registration of the widgets is required.

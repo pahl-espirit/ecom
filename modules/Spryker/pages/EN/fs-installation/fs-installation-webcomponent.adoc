@@ -1,5 +1,5 @@
 [[fs-webcomponents]]
-=== Adding the web component
+== Adding the web component
 To prepare the {cc}, a web component is needed, which is already added to the {refproject_github}[reference project].
 By default it is installed globally in the `*{manager}*` in the area `*menu:Server Properties[Web applications]*`.
 In this case, all installation or configuration steps required for the web component have already been performed by the {creator}.

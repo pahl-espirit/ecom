@@ -1,5 +1,5 @@
 [[sp_configuration]]
-==== Extension of the configuration
+=== Extension of the configuration
 In {fs}, the creation and editing of editorial content takes place in {cc}.
 The storefront is embedded in it using the _{ocm}_.
 

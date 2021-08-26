@@ -1,5 +1,5 @@
 [[fs-mediadeployment]]
-=== Generation schedule - Media generation
+== Generation schedule - Media generation
 Unlike the content created with {fs}, the released media is not transferred to the _{c}_, but to the CDN provided by the {creator}.
 Therefore, the {refproject_github}[reference project] has the schedule _Media Deployment_, which is created within the `*{manager}*` in the `*menu:Project properties[Schedule management]*` area.
 It is triggered by the <<fs-deployment-media,_Execute Publish Media to CDN_>> action contained in the full generation 
@@ -15,7 +15,7 @@ If it is desired to use a local CDN or a MAM instead of the CDN provided by the 
 ====
 
 [[fs-mediadeployment-generation]]
-==== Media Generation
+=== Media Generation
 To transfer the media to the CDN provided by the {creator}, they must first be generated.
 Therefore the schedule contains the generation action _Media Generation_.
 It represents a partial generation, which refers to the root node of the Media Store.
@@ -28,7 +28,7 @@ https://docs.e-spirit.com/module/caas/CaaS_FSM_Documentation_DE.html#schedule_co
 image::mediageneration_settings.png[]
 
 [[fs-mediadeployment-publish]]
-==== Publish to CDN
+=== Publish to CDN
 Once the media have been generated, they are transferred to the CDN.
 Therefore, the schedule contains the action _Publish to CDN_.
 In the Cloud environment, this action is added by the Cloud department of the {creator} and is thus already preconfigured.

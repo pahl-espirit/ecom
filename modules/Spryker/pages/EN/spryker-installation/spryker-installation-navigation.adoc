@@ -1,5 +1,5 @@
 [[sp_navigation]]
-=== Main navigation
+== Main navigation
 By default, the {sp} B2C Demo Shop contains different navigations, which can be created and edited in {sp}.
 The integration realised with the _{modulname}_ module offers the possibility to maintain these navigations with {fs} and to add further menu items.
 

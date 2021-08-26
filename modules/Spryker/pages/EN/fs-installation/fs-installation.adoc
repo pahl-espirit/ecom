@@ -1,6 +1,6 @@
 include::../../variables.adoc[]
 [[fs-installation]]
-== {fs} - Installation and Configuration
+= {fs} - Installation and Configuration
 Various components must be installed and configured in order to use the functions of the _{modulname}_ module.
 The following subchapters explain the steps required.
 

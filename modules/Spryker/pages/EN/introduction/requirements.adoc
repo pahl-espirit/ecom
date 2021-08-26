@@ -1,5 +1,5 @@
 include::../../variables.adoc[]
-=== Technical requirements
+== Technical requirements
 
 To use the _{modulname}_ module, the following technical requirements must be met:
 

@@ -1,4 +1,4 @@
-=== Query Container
+== Query Container
 The previously installed <sp_install_module,Cms Block Data Connector module>> creates a Zed table.
 During the import, the editorial contents determined from the _Online {c}_ are stored in this table.
 The CMS blocks are persisted in another table.

@@ -1,5 +1,5 @@
 [[fs_previewurl]]
-=== Definition of the external preview URL
+== Definition of the external preview URL
 By using the _{ocm}_, the {cc} displays external content from {sp} to which the _{ocm}_ needs access.
 The preview URL of the {sp} storefront must therefore be specified in the {cc} properties.
 Since the specification is always project-specific, there is no default configuration for it within the reference project.

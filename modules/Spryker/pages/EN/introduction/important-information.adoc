@@ -1,5 +1,5 @@
 include::../../variables.adoc[]
-=== Important information
+== Important information
 This chapter contains information that should be observed when using the _{modulname}_ module.
 
 ==== Configuration of the glue web server

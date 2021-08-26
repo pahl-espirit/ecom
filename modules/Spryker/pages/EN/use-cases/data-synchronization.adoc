@@ -1,5 +1,5 @@
 [[uc-datasync]]
-=== Content Exchange
+== Content Exchange
 The integration requires that the data within the {fs} project, the corresponding _{c}_ instance and in {sp} are consistent to each other.
 However, this consistency will be violated by the following situations that may occur during the progress of a project:
 

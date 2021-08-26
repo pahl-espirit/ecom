@@ -1,5 +1,5 @@
 [[rp_staticsite]]
-=== Extension of existing static pages
+== Extension of existing static pages
 The _{modulname}_ module allows editors to enrich static pages that already exist on {sp} side with {fs} content.
 The pages are displayed within the {cc} using the _{ocm}_ and thus integrate seamlessly into the editorial process familiar from {fs}.
 
@@ -8,7 +8,7 @@ In addition, an adaptation of the corresponding Twig templates is necessary on {
 
 // ********************************************* Seitenvorlage *********************************************
 [[rp_pagetemp]]
-==== Page template
+=== Page template
 Editorial content in the {fs} project is always edited on the basis of a page reference.
 It and the page on which it is based must first be created in the {fs} project.
 Within the {refproject_github}[reference project _{refproject}_], the creation of the page reference and its page runs automatically in the background and invisible to the editor.
@@ -54,7 +54,7 @@ The generated JSON object is part of the _{c}_ item to be generated, which is pe
 
 // ********************************************* Absatzvorlage *********************************************
 [[rp_section]]
-==== Section template
+=== Section template
 The {homepage_github}[page template `homepage`] contained in the reference project is an example of a static page.
 It contains the content areas `fs_slt_2`, and `fs_slt_3`.
 The content areas allow the addition of editorial content.
@@ -191,7 +191,7 @@ image::videoitem.png[]
 
 // ********************************************* Twig-Templates *********************************************
 [[rp_twigtemplates]]
-==== Twig templates
+=== Twig templates
 In {fs}, the creation and editing of editorial content takes place in {cc}.
 The storefront is embedded in it using the _{ocm}_.
 This in turn accesses the _Preview {c}_ and determines the current {fs} contents from there.

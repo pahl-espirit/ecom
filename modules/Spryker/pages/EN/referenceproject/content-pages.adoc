@@ -1,5 +1,5 @@
 [[rp_contentpage]]
-=== Creation of dynamic content pages
+== Creation of dynamic content pages
 In addition to the extension of existing <<rp_staticsite,static pages>> or <<rp_categorypages,category pages>>, the _{modulname}_ module allows the creation of dynamic content pages.
 These correspond, for example, to the imprint, the data security explanation or the general terms and conditions.
 Just like the other pages, the dynamic content pages can also be displayed in {cc} using the _{ocm}_ and enriched with editorial content. 
@@ -14,7 +14,7 @@ For this reason, no additional extensions are required that go beyond the requir
 
 // ********************************************* Seitenvorlage *********************************************
 [[rp_dcp_pagetemp]]
-==== Page template
+=== Page template
 Just like <<rp_staticsite,static pages>> and <<rp_categorypages,category pages>>, the maintenance of dynamic content pages in the {fs} project is based on a page reference.
 However, in contrast to the other pages that already exist in the project, dynamic content pages are created using the familiar editing process.
 For this reason, they are initially empty.
@@ -168,7 +168,7 @@ $CMS_VALUE(json.toJSON)$
 
 // ********************************************* Twig-Template *********************************************
 [[rp_dcp_twigtemp]]
-==== Twig template
+=== Twig template
 In {sp}, the <<sp_twigtemplates,Twig template `fs-content-page.twig`>> represents a dynamic content page.
 Unlike <<rp_staticsite,static pages>> and <<rp_categorypages,category pages>>, dynamic content pages have placeholders.
 To make the placeholders editable in {cc}, it is necessary to use the Twig function `fsSpyCms` to include them.

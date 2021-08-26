@@ -1,5 +1,5 @@
 [[fs-previewdeployment]]
-=== Generation schedule - preview generation
+== Generation schedule - preview generation
 Under certain <<uc-datasync,circumstances>> it might happen that the datasets in the {fs} project, the {c} and in {sp} differ.
 In this case the contents from the _Online {c}_ and in {sp} can be updated by a <<fs-deployment,full generation>>.
 In contrast, updating the _Preview {c}_ would require all pages within the {fs} project to be saved again separately.

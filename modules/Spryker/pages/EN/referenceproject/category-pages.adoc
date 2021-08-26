@@ -1,5 +1,5 @@
 [[rp_categorypages]]
-=== Extension of existing category pages 
+== Extension of existing category pages 
 Just like the <<rp_staticsite,static pages>> described above, category pages that already exist on the {sp} side can also be displayed in {cc} using the _{ocm}_ and enriched with editorial content.
 This also requires the filling of the output channel of the page and section template within the {fs} project as well as a adaptation of the corresponding Twig templates in {sp}.
 
@@ -11,7 +11,7 @@ These can be removed from the project via the <<uc_orphanedpages,report `*Lost a
 
 // ********************************************* Seitenvorlage *********************************************
 [[rp_cp_pagetemp]]
-==== Page template
+=== Page template
 Just like <<rp_pagetemp,static pages>>, the extension of a category page in the {fs} project is based on a page reference.
 It and its associated page are also automatically created in the background and invisible to the editor.
 
@@ -47,7 +47,7 @@ They must therefore be named identically.
 
 // ********************************************* Absatzvorlage *********************************************
 [[rp_cp_sectiontemp]]
-==== Section template 
+=== Section template 
 In addition to the already described <<rp_section,Shoppable Video section>> and the Text-Image section, the {carousel_github}[section template `carousel_section`] is available for adding editorial content to category pages.
 The carousel section in turn embeds one or more {banner_github}[banners].
 
@@ -63,7 +63,7 @@ For this reason, no additional extensions are required that go beyond the requir
 
 // ********************************************* Twig-Templates *********************************************
 [[rp_cp_twigtemp]]
-==== Twig Templates
+=== Twig Templates
 The {categorypage_caas_channel}[{fs} page template `categorypage`] contained in the reference project is an example of a category page.
 It has the content areas `banner`, `top` and `bottom` and maps the Twig template `catalog-with-cms-slot.twig`.
 This is stored in {sp} under the path `*src/Pyz/Yves/CatalogPage/Theme/default/views/catalog-with-cms-slot*` 

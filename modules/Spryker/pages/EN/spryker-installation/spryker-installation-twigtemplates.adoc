@@ -1,5 +1,5 @@
 [[sp_twigtemplates]]
-==== Twig Templates
+=== Twig Templates
 The _{modulname}_ module provides different ways to access shop content from {sp} and use it in {fs}.
 These possibilities are described in the following of this documentation on the basis of the supplied reference project in the form of <<usecases,use cases>>.
 
