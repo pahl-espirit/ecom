@@ -15,5 +15,3 @@ The existence of the dummy page is mandatory for using the {fsdp}s.
 ====
 Further information on how to create new pages in {sp} is included in the {sapblog}[SAP blog].
 ====
-
-include::../../../../includes/dummy-page-impex.adoc[]
