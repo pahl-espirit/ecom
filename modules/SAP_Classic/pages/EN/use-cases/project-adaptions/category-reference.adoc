@@ -6,7 +6,6 @@ Category referencing requires modifications to the <<categoryform,form>> and <<c
 To reference categories in a template, this template must first include the appropriate form.
 The form requires an `FS_INDEX` component to store the category ID as a minimum.
 
-[[template-form]]
 [source,html]
 .Form
 ----
