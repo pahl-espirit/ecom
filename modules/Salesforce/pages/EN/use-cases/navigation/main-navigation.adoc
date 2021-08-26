@@ -1,9 +1,8 @@
 [[navigation]]
 ==== Main navigation
-The main menu is primarily used to navigate between the various <<catlandingpage,category pages>> within the preview (see figure <<main_navigation>>).
+The main menu is primarily used to navigate between the various <<catlandingpage,category pages>> within the preview.
 The main menu is part of the HTML downloaded during the <<uc_preview,preview>> from the {ccloud} Storefront and is therefore predefined by {ccloud}.
 
-[[main_navigation]]
 .Navigation
 image::navigation.png[]
 
