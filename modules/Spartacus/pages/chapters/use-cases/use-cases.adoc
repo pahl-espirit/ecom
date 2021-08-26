@@ -1,3 +1,4 @@
+include::../../variables.adoc[]
 [[use_cases]]
 == Use cases
 Within the progress of a project, different situations can arise that require certain steps to be taken.

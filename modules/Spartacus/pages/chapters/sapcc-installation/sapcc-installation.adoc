@@ -1,3 +1,4 @@
+include::../../variables.adoc[]
 == {ccloud} - Installation and configuration
 {fs} is used to create and maintain editorial data, which is then transferred to and persisted by the _{c}_.
 To integrate the data into the shop, the Storefront requires access to the _{c}_.

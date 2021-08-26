@@ -1,3 +1,8 @@
+= FirstSpirit Connect (Headless): For SAP Commerce Cloud
+e-Spirit AG
+{docdate}
+include::variables.adoc[]
+
 == Introduction
 Customers' expectations of modern e-commerce shop systems are becoming increasingly diverse:
 In addition to the pure display of product catalogs, they must provide customers with unique and personalized shopping experiences.
