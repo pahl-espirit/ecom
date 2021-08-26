@@ -2,7 +2,7 @@ include::../../variables.adoc[]
 == Important information
 This chapter contains information that should be observed when using the _{modulname}_ module.
 
-==== Configuration of the glue web server
+=== Configuration of the glue web server
 During deployment, the content maintained in {fs} is retrieved from the _Online {c}_ using the importer.
 It transfers the data to {sp} and persists them in the backend in its data system.
 
@@ -27,7 +27,7 @@ For this reason, a template must exist in the project and be configured in the p
 .Configuration of the project settings page in the project options
 image::p_settings.png[]
 
-==== Use of the {sp} B2C Demo Shop
+=== Use of the {sp} B2C Demo Shop
 As mentioned before, the entire documentation is geared to the connection of the {sp} B2C Demo Shop.
 When using it, some difficulties may occur that are neither caused by the _{modulname}_ module nor by the integration.
 However, they are listed below and a possible solution is outlined.

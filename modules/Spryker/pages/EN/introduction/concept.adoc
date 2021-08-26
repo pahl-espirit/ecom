@@ -5,7 +5,7 @@ The _{modulname}_ module offers the possibility to maintain editorial contents i
 For this, content processing in both systems must be coordinated and compatible with each other.
 The subchapters below describe the underlying concept used to archieve this compatibility.
 
-==== Pages
+=== Pages
 Similar to {fs}, pages in {sp} are based on a structure of different components.
 In order to exchange editorial content between the two systems, these components must be coordinated.
 
@@ -17,7 +17,7 @@ image::concept.png[]
 
 With {fs}, CMS blocks can be generated that are displayed in a page via CMS slots.
 
-==== Preview
+=== Preview
 The integration realized with the _{modulname}_ module only allows {fs} to generate and maintain editorial content and to publish it in the form of CMS blocks.
 However, {sp} still determines the framework of a page whose CMS slots integrate the generated blocks.
 
@@ -25,7 +25,7 @@ To present the preview of a page, {fs} determines its current view in the storef
 The storefront in turn queries the editorial content from the _Preview {c}_ and replaces the corresponding CMS blocks.
 {fs} displays the result using the _{ocm}s_ in {cc}.
 
-==== Deployment
+=== Deployment
 The transmission of the content created in {fs} into the live state is done by {sp}.
 For this, the content must be provided, which happens in form of the _Online {c}_.
 From it {sp} imports the editorial content and persists it in its data system.
