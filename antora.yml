@@ -2,8 +2,8 @@ name: ecom
 title: E-Commerce
 version: '1.0'
 nav:
-- modules/Spryker/nav.adoc
-- modules/Spartacus/nav.adoc
-- modules/Salesforce/nav.adoc
-- modules/SAP_Classic/nav.adoc
+#- modules/Spryker/nav.adoc
+#- modules/Spartacus/nav.adoc
+#- modules/Salesforce/nav.adoc
+#- modules/SAP_Classic/nav.adoc
 
