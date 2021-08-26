@@ -186,13 +186,11 @@ Once the <<sfcc_job_schedules,created job schedule>> has been executed, content 
 All outdated assets and <<slot_configuration,slot configurations>> are queried by the <<ocapisettings,OC API>> and then deleted.
 The _{modulname}_ module provides the `{sf} {ccloud} Cleanup` schedule action for this purpose:
 
-[[sfcc_task]]
 .Schedule action
 image::sfcc_cleanup.png[]
 
 In addition to a freely assignable name for this schedule action, the associated configuration dialog contains the following parameters:
 
-[[sfcc_task_config]]
 .Schedule action parameters
 image::cleanup_schedule_task.png[]
 
