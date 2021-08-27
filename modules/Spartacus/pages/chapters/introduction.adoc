@@ -60,7 +60,7 @@ Even if the {fs} server is maintained, this affects neither the Storefront nor t
 
 [[img_dataflow]]
 .Data flow
-image::dataflow.png[]
+image::../images/dataflow.png[]
 
 // *********************** Architektur *********************** //
 === Architecture
