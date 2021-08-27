@@ -16,6 +16,7 @@ ifdef::backend-pdf[]
 :pagenums:
 :pygments-style: bw
 :source-highlighter: pygments
+:imagesdir: /images
 endif::[]
 :homepage: http://www.e-spirit.com
 :asterisk: &#42;
