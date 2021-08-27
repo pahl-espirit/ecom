@@ -1,7 +1,7 @@
 = FirstSpirit Connect (Headless): For SAP Commerce Cloud
 e-Spirit AG
 {docdate}
-include::variables.adoc[]
+include::../variables.adoc[]
 
 == Introduction
 Customers' expectations of modern e-commerce shop systems are becoming increasingly diverse:
