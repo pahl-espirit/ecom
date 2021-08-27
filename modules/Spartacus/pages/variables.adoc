@@ -4,7 +4,6 @@
 :copyright: {espirit}
 :creator: {espirit}
 :publisher: {espirit}
-// :toc:
 :toclevels: 4
 :toc-placement: right
 :icons: font
