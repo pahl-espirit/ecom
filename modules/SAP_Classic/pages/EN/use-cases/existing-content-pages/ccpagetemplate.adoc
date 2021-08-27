@@ -113,9 +113,7 @@ If the fallback is applied and existing content from {ccloud} is displayed, the 
 This means that there is not yet any content in {fs} for the content area.
 For this reason, the existing content can only be overwritten and not edited.
 The previously described code extract shows this option.
-+
-.override content button
-image::overridecontent.png[]
+
 
 add content::
 If the fallback is applied and the Dom element does not contain any content, the button is displayed with the `add content` label while hovering.

@@ -4,9 +4,6 @@ The module provides a product and a category report in {wc}.
 These reports present the products and categories originating from _{ccloud}_.
 The lists can be filtered via the search field in the report.
 
-.Products and categories in the report
-image::reports.png[]
-
 === Inclusion of a product or category
 A product or category can be dragged from the report and dropped into an `FS_INDEX` input component in the editing dialog.
 Alternatively, the component has an btn:[Add] button which opens a selection dialog.

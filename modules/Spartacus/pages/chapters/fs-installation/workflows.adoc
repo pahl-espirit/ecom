@@ -12,8 +12,6 @@ The web component of the _{bwfs}_ is also required in the `*{wc}*` tab.
 The use of _{bwfs}_ in {wc} also requires the selection of the provided `{bwfs} Status Provider` in the `*menu:Project properties[{wc}]*` area within the `*{manager}*`.
 This setting has already been made in the reference project _{refproject}_.
 
-.Element Status Provider
-image::images/statusprovider.png[]
 
 [underline]#*Templates*#
 

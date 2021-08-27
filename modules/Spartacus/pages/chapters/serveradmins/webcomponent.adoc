@@ -13,9 +13,6 @@ Choose the `*{wc}*` tab and add the following web components:
 
 Select the web components one after the other using the btn:[Add] button and confirm each selection with btn:[OK].
 
-.Web components in the Server Properties
-image::images/sp_webcomponents.png[]
-
 Finally, select an `Active web server` in the tab using the selection box of the same name and start the installation by clicking the btn:[Install] button.
 After successful installation, a dialog opens, in which the activation of the web server is to be confirmed.
 

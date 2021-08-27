@@ -4,9 +4,6 @@ For empty projects, this channel must be created manually; however, it is alread
 
 The presentation channel was created in the `*{manager}*` under `*menu:Project properties[Template sets]*` and is configured as follows:
 
-[[templateset]]
-.Presentation channel
-image::templateset.png[]
 
 [IMPORTANT]
 ====

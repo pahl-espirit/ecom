@@ -8,8 +8,7 @@ The _{modulname}_ module thus allows multiple sites to be connected to {fs}.
 The configuration of the sites is done in the {ccloud} backoffice.
 Under the item `*Administration*` each site has the fields visible in the following figure.
 
-.configuration parameters of a site
-image::config_parameters.png[]
+
 
 The information defined in the fields always refers to the corresponding site only.
 If no entry exists for a field, the parameter specified in the <<addon-config,configuration file of the add-on>> represents a fallback value.

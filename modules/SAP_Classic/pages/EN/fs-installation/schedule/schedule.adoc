@@ -19,8 +19,7 @@ In this case, the synchronization of the data must be ensured on a project-speci
 
 The supplied reference project contains a schedule that incorporates the following actions:
 
-.Generation schedule actions
-image::schedule.png[]
+
 
 The actions `Initialize {c}Generation`, `{c} Generate`, `{c} CleanUp`, and `Finalize {c} Generation` make up the _{c}_ schedule.
 The actions described in the following sub-chapters are added to the schedule.

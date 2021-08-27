@@ -9,9 +9,7 @@ These components are:
 ** _{caas}_
 * {ccloud}-Instanz
 
-[[img_architecture]]
-.Architecture
-image::architecture.png[]
+
 
 The individual components always interact in accordance with the following schema:
 

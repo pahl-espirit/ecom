@@ -18,10 +18,6 @@ An adjustment of the configuration is therefore only to be made after prior cons
 
 To perform configuration, open the `*{manager}*` and select `*menu:Project properties[Project components]*`.
 
-[[projectComponents]]
-.Project properties - Project components
-image::images/projectcomponents.png[Project properties - Project components]
-
 A list of all existing project components is displayed in the main panel.
 Select the entry `{modulname} for SAP {ccloud} Project Configuration` and open the corresponding configuration dialog via btn:[Configure].
 
@@ -38,8 +34,7 @@ The tabs `*Preview*` and `*Content*` currently do not have any functionality.
 The configuration dialog of the project component first contains the tab `*General*`.
 The information to be defined in it must be known to the {server} for a connection to the {ccloud}.
 
-.Project component - General
-image::images/config-general.png[]
+
 
 URI::
 Within the tab `*General*` the URI of the {ccloud} instance has to be entered first.
@@ -87,8 +82,6 @@ If overriding the OAuth authentication was activated in one of the other tabs, t
 In addition to the tab <<fs_installation_pcomp_general,`*General*`>>, the configuration dialog of the project component has the tabs `*Product DAP*` and <<fs_installation_pcomp_category_dap,`*Category DAP*`>>.
 They are used to configure the reports in the {wc}, which require various information.
 
-.Project component - Product DAP
-image::images/config-product-dap.png[]
 
 Collection::
 The product report in the {wc} lists the products originating from the {ccloud} and enables editors to use these products.
@@ -127,9 +120,6 @@ Otherwise, the entries from the `*General*` tab will be used for authentication.
 [[fs_installation_pcomp_category_dap]]
 ==== Category DAP
 The tab `*Category DAP*` is equivalent to the tab <<fs_installation_pcomp_product_dap,`*Product DAP*`>> and is used to configure the category report in the {wc}.
-
-.Project component - Category DAP
-image::images/config-category-dap.png[]
 
 Catalog::
 The category report in the {wc} contains the categories from the {ccloud} and makes them available to the editors.

@@ -7,5 +7,4 @@ Since the specification is always project-specific, there is no default configur
 
 Open the `*menu:Project properties[{wc}]*` area within the `*{manager}*` and enter the URL of the Storefront in the `External preview URL` field.
 
-.External Preview URL
-image::images/previewurl.png[]
+

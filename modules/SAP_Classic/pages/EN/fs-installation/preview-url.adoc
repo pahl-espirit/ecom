@@ -9,5 +9,4 @@ Since the specification of the URL is always project-specific, there is no defau
 
 Open the `*menu:Project properties[{wc}]*` area within the `*{manager}*` and enter the URL of the storefront in the `External preview URL` field.
 
-.External Preview URL
-image::previewurl.png[]
+

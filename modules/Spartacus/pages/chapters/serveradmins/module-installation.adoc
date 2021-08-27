@@ -10,8 +10,7 @@ The _{ccon}_ and _{ocm}_ modules as well as the _{bwfs}_, the _{cxt}_, and the _
 
 To install the modules, open `*{manager}*` and select `*menu:Server properties[Modules]*`.
 
-.Server properties - Module installation
-image::images/modules.png[]
+
 
 The main panel displays a list of all modules installed on the {fs} server.
 After clicking btn:[Install], select the following files one after the other and confirm your selection with btn:[Open]:

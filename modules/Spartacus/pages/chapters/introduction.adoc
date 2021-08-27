@@ -58,9 +58,6 @@ This means that within the newly created overall system there is no difference f
 It is still carried out by the Storefront.
 Even if the {fs} server is maintained, this affects neither the Storefront nor the {ccloud}.
 
-[[img_dataflow]]
-.Data flow
-image::/images/dataflow.png[]
 
 // *********************** Architektur *********************** //
 === Architecture
@@ -71,10 +68,7 @@ With the _{modulname} (Headless) for SAP {ccloud}_ solution, {fs} and the {caasp
 The integration thus creates an overall system that combines the functional strengths of the individual systems.
 Within this overall system {fs} and the {ccloud} represent the backend, while the _{c}_ forms the middleware and the Storefront is the front end.
 
-The following graphic shows the high-level architecture of this overall system:
 
-.High-level architecture
-image::images/sp_architecture_simple.png[]
 
 Within the newly created overall system, the Storefront continues to deliver the content, which it by default obtains from the {ccloud}.
 In addition, it queries the content of the respective _{c}_ instance and links it with those of the {ccloud}.
@@ -98,9 +92,7 @@ In order to display content originating from the reference project, the Storefro
 The overall system of {fs}, {sp} and the {ccloud} thus has an architecture in which the editorial backend of {fs} is clearly separated from the Storefront.
 A maintenance of {fs} affects neither the Storefront nor the {ccloud}.
 
-[[img_architecture2]]
-.Low-level architecture
-image::images/sp_architecture.png[]
+
 
 
 // *********************** Concept *********************** //

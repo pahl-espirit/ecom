@@ -21,6 +21,3 @@ All reference names of the input components contained in the project settings us
 When extending the project settings, this schema must be adopted for the reference names of new input components.
 ====
 
-.Project settings - Mapping for product pages
-image::images/project_set.png[]
-

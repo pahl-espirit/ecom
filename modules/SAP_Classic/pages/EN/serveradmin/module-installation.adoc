@@ -11,8 +11,7 @@ The _{caas}_ and _{ocm}_ modules as well as the _{bwfs}_ and the _{cxt}_ can be 
 
 To install the modules, open the `*{manager}*` and select `*menu:Server properties[Modules]*`.
 
-.Server properties - Module installation
-image::modules.png[]
+
 
 The main panel contains a list of all modules installed on the {fs} server.
 After clicking btn:[Install], select the following files one after the other and confirm your selection with btn:[Open]:

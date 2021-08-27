@@ -78,9 +78,6 @@ In order for the second schedule to write into the online content catalog, the p
 If the value is missing or the configuration is incorrect, the bulk update terminates and an exception occurs.
 Otherwise, the log contains the information about which content catalog is used for deployment.
 +
-.Parameter catalogVersion
-image::schedule-parameter.png[]
-+
 [IMPORTANT]
 ====
 If, as described in this section, writing to the Online Content Catalog is done by a separate schedule, the _{c}_ generation must be adjusted in the schedule that writes to the Staged Content Catalog.

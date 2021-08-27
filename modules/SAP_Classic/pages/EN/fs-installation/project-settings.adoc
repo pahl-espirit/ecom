@@ -12,8 +12,7 @@ Changes to the project settings do not take effect straight away, as they are sa
 They require the client to be restarted.
 ====
 
-.Project settings
-image::project_set.png[]
+
 
 CONTENT PAGE | LANDINGPAGE2 TEMPLATE::
 For the maintenance of <<edit-existing-content-pages,existing {ccloud} content pages>> in {fs} each {ccloud} page template must be assigned to a {fs} template.

@@ -17,7 +17,7 @@ ifdef::backend-pdf[]
 :pygments-style: bw
 :source-highlighter: pygments
 endif::[]
-:imagesdir: ../../resources/images/de-DE
+:imagesdir: ../images
 :homepage: http://www.e-spirit.com
 :description: Dieses Dokument enthält die Dokumentation für das {modulname}-Modul von {fs}.
 :asterisk: &#42;

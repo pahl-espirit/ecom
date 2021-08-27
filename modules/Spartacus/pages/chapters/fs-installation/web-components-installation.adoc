@@ -8,10 +8,6 @@ Alternatively, you may install the web component in the `*Project properties*`.
 *Only in this case* it still needs to be installed on an active web server.
 Therefore, open the `*{manager}*` and select `*menu:Project properties[Web components]*`.
 
-[[webcomponents]]
-.Web components in the Project properties
-image::images/webcomponents.png[]
-
 Within the main panel several tabs are visible, each with a list of the existing web components.
 This list contains the following entries for the `*{wc}*`:
 

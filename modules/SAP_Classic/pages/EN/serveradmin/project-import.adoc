@@ -4,8 +4,7 @@ To do this, open the import dialog in the `*{manager}*` via the menu item `*menu
 Then assign a project name and description and confirm the import with btn:[Yes].
 After successful installation, the project is added to the list in the main panel.
 
-.Imported project in the ServerManager
-image::importedproject.png[]
+
 
 [NOTE]
 ====

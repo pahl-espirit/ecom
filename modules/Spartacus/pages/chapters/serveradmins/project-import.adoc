@@ -6,8 +6,6 @@ to select the `spartacus-reference-project-<VERSION>.tar.gz` file from your loca
 Then assign a project name and a description and confirm the import with btn:[Yes].
 After the successful installation, the project is added to the list in the main panel.
 
-.Imported project in the {manager}
-image::images/importedproject.png[]
 
 [NOTE]
 ====

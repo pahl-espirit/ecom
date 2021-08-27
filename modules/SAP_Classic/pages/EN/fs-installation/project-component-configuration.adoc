@@ -18,9 +18,6 @@ An adjustment of the configuration is therefore only to be made after prior cons
 
 To perform configuration, open the `*{manager}*` and select `*menu:Project properties[Project components]*`.
 
-[[projectComponents]]
-.Server properties - Project components
-image::projectcomponents.png[Server properties - Project components]
 
 A list of all existing project components is displayed in the main panel.
 Select the entry `{modulname} for SAP {ccloud} Project Configuration` and open the corresponding configuration dialog via btn:[Configure].
@@ -31,9 +28,7 @@ Select the entry `{modulname} for SAP {ccloud} Project Configuration` and open t
 
 // ************************************ Allgemein ************************************
 
-[[config]]
-.Project component - General
-image::config-general.png[]
+
 
 URI::
 The indicated URI is the server URI to the {ccloud} instance.
@@ -88,9 +83,7 @@ If the `Override general OAuth settings` option is checked on the other tabs, th
 
 // ************************************ Produkt DAP ************************************
 
-[[config2]]
-.Project component - Product DAP
-image::config-product-dap.png[]
+
 
 Collection::
 This field is used to define the end point for product data queries.
@@ -126,9 +119,7 @@ Otherwise, the entries from the `*General*` tab will be used for authentication.
 
 // ************************************ Kategorie DAP ************************************
 
-[[configCategoryDap]]
-.Project component - Category DAP
-image::config-category-dap.png[]
+
 
 Katalog Id::
 The catalog defined here is used as the source of the categories for the category DAP.
@@ -150,9 +141,6 @@ Otherwise, the entries from the `*General*` tab will be used for authentication.
 
 // ************************************ Vorschau ************************************
 
-[[configPreview]]
-.Project component - Preview
-image::config-preview.png[]
 
 Language::
 The language abbreviation entered in this field sets the language of the generated preview ticket.
@@ -184,9 +172,6 @@ Otherwise, the entries from the `*General*` tab will be used for authentication.
 
 // ************************************ Inhalte ************************************
 
-[[configContent]]
-.Project component - Contents
-image::config-content.png[]
 
 Site Id::
 The ID of the {ccloud} site (e.g. `powertools`) must be entered in this field.

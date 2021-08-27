@@ -84,9 +84,6 @@ The parameters `uid` and `typeCode` contained in the displayed data are assumed 
 They must therefore be included in the return value of the <<create_converter,converter>> to be created subsequently.
 ====
 +
-.Data Visualizer
-image::images/datavisualizer.png[]
-+
 *Example* +
 In the case of a section, for example, which only contains a `CMS_INPUT_TEXT` input component for a headline (`st_headline`), the output of the `DataVisualizer` corresponds to the following code snippet:
 +
